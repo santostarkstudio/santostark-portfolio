@@ -1,8 +1,8 @@
-﻿{
-  name: santostark-portfolio,
-  private: true,
-  version: 1.0.0,
-  scripts: {
-    build: echo Ready
+{
+  "name": "santostark-portfolio",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "build": "echo Static site ready"
   }
 }
