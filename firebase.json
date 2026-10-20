@@ -1,0 +1,17 @@
+﻿{
+  hosting: {
+    public: .,
+    ignore: [
+      firebase.json,
+      **/.*,
+      **/*.bat,
+      **/*.bak
+    ],
+    rewrites: [
+      {
+        source: **,
+        destination: /index.html
+      }
+    ]
+  }
+}
