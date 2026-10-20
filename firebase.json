@@ -1,16 +1,16 @@
-﻿{
-  hosting: {
-    public: .,
-    ignore: [
-      firebase.json,
-      **/.*,
-      **/*.bat,
-      **/*.bak
+{
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/*.bat",
+      "**/*.bak"
     ],
-    rewrites: [
+    "rewrites": [
       {
-        source: **,
-        destination: /index.html
+        "source": "**",
+        "destination": "/index.html"
       }
     ]
   }
