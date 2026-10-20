@@ -15,10 +15,7 @@ import {
   Database,
   Users,
   Smartphone,
-  Mail,
-  KeyRound,
   RefreshCw,
-  Send,
   Edit3,
   Trash2,
   Save,
@@ -36,8 +33,6 @@ import PageWrapper from '../components/PageWrapper';
 import { 
   auth, 
   isRealFirebase, 
-  RecaptchaVerifier,
-  signInWithPhoneNumber,
   fetchCollectionData, 
   subscribeToCollection,
   subscribeToDoc,
@@ -66,22 +61,14 @@ import {
 // ----------------------------------------------------
 const DEFAULT_USERNAME = 'santostark';
 const DEFAULT_EMAIL = 'santoshdabadiaiyyanna@gmail.com';
-const DEFAULT_PHONE = '8431069633';
 const DEFAULT_PASSWORD = 'Santo@2017';
 
 export default function Admin() {
   const [authenticated, setAuthenticated] = useState(false);
   
-  // Auth Mode State ('totp', 'otp', or 'password')
+  // Auth Mode State ('totp' or 'password')
   const [authMode, setAuthMode] = useState('totp');
   const [totpInput, setTotpInput] = useState('');
-  const [otpStep, setOtpStep] = useState(1); // 1: Credential input, 2: Enter SMS OTP code
-  const [phoneOrEmailInput, setPhoneOrEmailInput] = useState(DEFAULT_PHONE);
-  const [otpInput, setOtpInput] = useState('');
-  const [sessionOtpCode, setSessionOtpCode] = useState('');
-  const [confirmationResult, setConfirmationResult] = useState(null);
-  const [otpStatusMsg, setOtpStatusMsg] = useState('');
-  const [isSendingOtp, setIsSendingOtp] = useState(false);
 
   // Username & Password Auth States
   const [usernameInput, setUsernameInput] = useState('');
@@ -223,105 +210,7 @@ export default function Admin() {
   // Normalize input
   const clean = (val) => val.trim().toLowerCase();
 
-  // ----------------------------------------------------
-  // REAL MOBILE SMS OTP AUTHENTICATION HANDLERS
-  // ----------------------------------------------------
-
-  // Step 1: Send SMS OTP directly to Santo's Mobile Phone
-  const handleSendOtp = async (e) => {
-    e.preventDefault();
-    setAuthError('');
-    setOtpStatusMsg('');
-    setIsSendingOtp(true);
-
-    const inputVal = clean(phoneOrEmailInput);
-    if (!inputVal) {
-      setAuthError('Please enter your registered Phone Number or Email address.');
-      setIsSendingOtp(false);
-      return;
-    }
-
-    // Strict Whitelist Check for Santo's Credentials
-    const allowedPhones = ['8431069633', '+918431069633', '918431069633'];
-    const allowedEmails = ['santoshdabadiaiyyanna@gmail.com', 'santo@portfolio.dev'];
-
-    const cleanDigits = inputVal.replace(/\D/g, '');
-    const isSantoPhone = allowedPhones.some((p) => p.replace(/\D/g, '') === cleanDigits);
-    const isSantoEmail = allowedEmails.some((m) => clean(m) === inputVal);
-
-    if (!isSantoPhone && !isSantoEmail) {
-      setAuthError("⛔ ACCESS DENIED: Unregistered credential. SMS OTPs are strictly restricted to Santo's authorized mobile phone (+91 8431069633) or email (santoshdabadiaiyyanna@gmail.com).");
-      setIsSendingOtp(false);
-      return;
-    }
-
-    // E.164 Phone Formatting for India (+91)
-    let formattedPhone = '+918431069633';
-    if (cleanDigits.length === 10) {
-      formattedPhone = `+91${cleanDigits}`;
-    } else if (cleanDigits.startsWith('91') && cleanDigits.length === 12) {
-      formattedPhone = `+${cleanDigits}`;
-    }
-
-    // 1. Try Real Firebase Phone Auth SMS Service
-    if (isRealFirebase && auth && isSantoPhone) {
-      try {
-        if (!window.recaptchaVerifier) {
-          window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-            size: 'invisible'
-          });
-        }
-        const confirmation = await signInWithPhoneNumber(auth, formattedPhone, window.recaptchaVerifier);
-        setConfirmationResult(confirmation);
-        setOtpStep(2);
-        setOtpStatusMsg(`📲 Real SMS OTP dispatched to mobile phone ${formattedPhone}. Please check your phone's SMS inbox!`);
-        setIsSendingOtp(false);
-        return;
-      } catch (err) {
-        console.warn("Firebase Phone Auth gateway fallback mode active:", err);
-      }
-    }
-
-    // 2. Standalone Secure SMS OTP Protocol (dispatched to Santo's mobile device, NEVER displayed on website)
-    const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
-    setSessionOtpCode(generatedOtp);
-    setOtpStep(2);
-    setOtpStatusMsg(`📲 Real SMS OTP dispatched to mobile phone ${formattedPhone}. Please check your phone's SMS inbox!`);
-    setIsSendingOtp(false);
-  };
-
-  // Step 2: Verify 6-Digit Code Received on Mobile Phone
-  const handleVerifyOtp = async (e) => {
-    e.preventDefault();
-    setAuthError('');
-    const enteredPin = otpInput.trim();
-
-    if (!enteredPin) {
-      setAuthError('Please enter the 6-digit SMS OTP code sent to your phone.');
-      return;
-    }
-
-    // Verify via Firebase Confirmation Result if active
-    if (confirmationResult) {
-      try {
-        await confirmationResult.confirm(enteredPin);
-        setAuthenticated(true);
-        sessionStorage.setItem('admin_authenticated', 'true');
-        return;
-      } catch (err) {
-        setAuthError('Invalid SMS OTP code. Please check the text message on your phone and try again.');
-        return;
-      }
-    }
-
-    // Verify against real session OTP code sent to phone
-    if (sessionOtpCode && enteredPin === sessionOtpCode) {
-      setAuthenticated(true);
-      sessionStorage.setItem('admin_authenticated', 'true');
-    } else {
-      setAuthError('Incorrect 6-Digit SMS OTP. Please check the text message received on your phone.');
-    }
-  };
+  // (SMS OTP authentication removed — Admin secured by TOTP + Password only)
 
   // ----------------------------------------------------
   // REAL ANDROID GOOGLE AUTHENTICATOR (RFC 6238 TOTP)
@@ -435,10 +324,7 @@ export default function Admin() {
     setAuthenticated(false);
     setUsernameInput('');
     setPasswordInput('');
-    setOtpStep(1);
-    setOtpInput('');
-    setSessionOtpCode('');
-    setConfirmationResult(null);
+    setTotpInput('');
     sessionStorage.removeItem('admin_authenticated');
   };
 
@@ -703,8 +589,8 @@ export default function Admin() {
               <h3 className="text-2xl font-extrabold text-slate-100">ME</h3>
             </div>
 
-            {/* Auth Mode Toggle Pills */}
-            <div className="grid grid-cols-3 gap-1.5 p-1 rounded-2xl bg-slate-900/60 border border-white/10 text-xs">
+            {/* Auth Mode Toggle Pills — TOTP & Password Only */}
+            <div className="grid grid-cols-2 gap-1.5 p-1 rounded-2xl bg-slate-900/60 border border-white/10 text-xs">
               <button
                 type="button"
                 onClick={() => { setAuthMode('totp'); setAuthError(''); }}
@@ -716,18 +602,6 @@ export default function Admin() {
               >
                 <Smartphone className="w-3.5 h-3.5" />
                 <span>Auth App</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => { setAuthMode('otp'); setAuthError(''); }}
-                className={`py-2 rounded-xl font-semibold transition-all flex items-center justify-center space-x-1 ${
-                  authMode === 'otp'
-                    ? 'bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 shadow-lg'
-                    : 'text-slate-400 hover:text-slate-200'
-                }`}
-              >
-                <Send className="w-3.5 h-3.5" />
-                <span>SMS OTP</span>
               </button>
               <button
                 type="button"
@@ -791,95 +665,7 @@ export default function Admin() {
               </form>
             )}
 
-            {/* MODE 2: REAL MOBILE SMS OTP AUTHENTICATION */}
-            {authMode === 'otp' && (
-              <div className="space-y-4">
-                {otpStep === 1 ? (
-                  <form onSubmit={handleSendOtp} className="space-y-4">
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-300 mb-1.5 flex items-center justify-between">
-                        <span>Santo's Phone Number or Email</span>
-                        <Smartphone className="w-3.5 h-3.5 text-cyan-400" />
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        placeholder="e.g. 8431069633 or email..."
-                        value={phoneOrEmailInput}
-                        onChange={(e) => setPhoneOrEmailInput(e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl glass-input text-xs text-slate-100 placeholder:text-slate-500 outline-none focus:border-cyan-400 transition-colors font-mono"
-                      />
-                      <p className="text-[10px] text-slate-400 mt-1.5 leading-relaxed">
-                        🔒 Restricted to Santo's phone (<span className="text-cyan-300 font-semibold">+91 8431069633</span>). OTP will be sent directly as a text message to your physical phone.
-                      </p>
-                    </div>
 
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.97 }}
-                      type="submit"
-                      disabled={isSendingOtp}
-                      className="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 font-bold text-xs text-slate-950 shadow-xl shadow-cyan-500/30 flex items-center justify-center space-x-2 disabled:opacity-50"
-                    >
-                      <Send className="w-4 h-4" />
-                      <span>{isSendingOtp ? 'Sending SMS OTP...' : 'Send SMS OTP to My Phone 📲'}</span>
-                    </motion.button>
-                  </form>
-                ) : (
-                  <form onSubmit={handleVerifyOtp} className="space-y-4">
-                    {otpStatusMsg && (
-                      <div className="p-3.5 rounded-xl bg-cyan-500/20 border border-cyan-500/40 text-cyan-200 text-xs flex items-start space-x-2 leading-relaxed">
-                        <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5 text-cyan-400" />
-                        <span>{otpStatusMsg}</span>
-                      </div>
-                    )}
-
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-300 mb-1.5 flex items-center justify-between">
-                        <span>Enter 6-Digit Code Received on Mobile Phone</span>
-                        <KeyRound className="w-3.5 h-3.5 text-cyan-400" />
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        maxLength={6}
-                        placeholder="Enter 6-digit SMS code..."
-                        value={otpInput}
-                        onChange={(e) => setOtpInput(e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl glass-input text-base text-center font-mono tracking-widest text-cyan-300 placeholder:text-slate-500 outline-none focus:border-cyan-400 transition-colors"
-                      />
-                    </div>
-
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.97 }}
-                      type="submit"
-                      className="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 font-bold text-xs text-slate-950 shadow-xl shadow-cyan-500/30 flex items-center justify-center space-x-2"
-                    >
-                      <ShieldCheck className="w-4 h-4" />
-                      <span>Verify SMS OTP &amp; Unlock Admin CMS 🔓</span>
-                    </motion.button>
-
-                    <div className="flex items-center justify-between pt-1 text-[11px]">
-                      <button
-                        type="button"
-                        onClick={() => { setOtpStep(1); setAuthError(''); }}
-                        className="text-slate-400 hover:text-cyan-400 transition-colors"
-                      >
-                        ← Change Phone / Re-send
-                      </button>
-                      <button
-                        type="button"
-                        onClick={handleSendOtp}
-                        className="text-cyan-400 hover:underline"
-                      >
-                        Resend SMS OTP
-                      </button>
-                    </div>
-                  </form>
-                )}
-              </div>
-            )}
 
             {/* MODE 3: ADMIN PASSWORD AUTHENTICATION */}
             {authMode === 'password' && (

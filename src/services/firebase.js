@@ -250,7 +250,7 @@ export const initialHeroInfo = {
   instagram: "https://instagram.com",
   youtube: "https://youtube.com",
   leetcode: "https://leetcode.com",
-  resume: "",
+  resume: "https://drive.google.com/file/d/YOUR_RESUME_FILE_ID/view",
   skillPill1: "<> C++ & Python",
   skillPill2: "⚛ React & Three.js 3D",
   skillPill3: ">_ Firebase & Cloud"
