@@ -1,0 +1,5 @@
+node_modules\
+dist\
+assets_OLD_BACKUP\
+xcopy_exclude.txt
+copy_log.txt
