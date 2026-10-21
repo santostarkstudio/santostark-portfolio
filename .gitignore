@@ -1,6 +1,8 @@
-﻿node_modules/
-*.bak
+node_modules/
+*.bak*
 *.bat
 .DS_Store
 Thumbs.db
 .vercel
+.firebase/
+/bg-video.mp4

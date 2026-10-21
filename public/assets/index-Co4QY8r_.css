@@ -99,3 +99,91 @@ header.fixed {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.35);
 }
+
+
+/* ==========================================================================
+   PURE INFINITE COSMOS - Section Transparency & Readability
+   ========================================================================== */
+
+/* Ensure all sections and wrappers are transparent so 3D starfield shows through */
+section, .bg-transparent {
+  background: transparent !important;
+}
+
+/* Body & root stay deep-space black */
+#root {
+  background: transparent;
+}
+
+/* Section divider: subtle glowing line between sections */
+.scroll-mt-24 + .scroll-mt-24,
+section[id] + section[id] {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Section title gradient - brighter and more legible */
+.text-transparent.bg-clip-text {
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+}
+
+/* Body copy readability — ensure description/subtitle text is visible */
+p, li, span:not(.badge):not(.chip) {
+  color: inherit;
+}
+
+/* Force readable text on dark cosmos bg */
+.text-slate-400 {
+  color: #94a3b8 !important;
+}
+
+.text-slate-300 {
+  color: #cbd5e1 !important;
+}
+
+/* Section header underline accent */
+.w-16.h-1, .w-20.h-1 {
+  background: linear-gradient(90deg, #ffffff, rgba(148,163,184,0.3)) !important;
+  border-radius: 4px;
+}
+
+/* Card glass gets a very faint nebula-like ambient glow on hover */
+.glass-card:hover {
+  box-shadow: 0 14px 40px -10px rgba(0, 0, 0, 0.85),
+              0 0 30px rgba(255, 255, 255, 0.04),
+              0 0 60px rgba(100, 120, 200, 0.06) !important;
+}
+
+/* Ensure section spacing feels airy without photos */
+.relative.w-full.py-10, .relative.w-full.py-12,
+.relative.w-full.py-14, .relative.w-full.py-16,
+.relative.w-full.py-20 {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+/* Section badge chips — white glow on dark bg */
+.glass-panel span, .rounded-full.border {
+  letter-spacing: 0.04em;
+}
+
+/* Footer stays solid */
+footer {
+  background: rgba(8, 9, 12, 0.92) !important;
+  border-top: 1px solid rgba(255,255,255,0.08) !important;
+}
+
+/* Scrollbar refinement */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #08090c;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
