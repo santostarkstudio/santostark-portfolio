@@ -23,95 +23,102 @@
   </head>
   <body class="bg-[#090a0f] text-slate-100 font-sans antialiased selection:bg-cyan-500 selection:text-black overflow-x-hidden touch-manipulation">
     
-    <!-- Orbital Fly-Through Video Backdrop -->
-    <div id="orbital-video-container" style="position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; overflow: hidden; opacity: 0; transform: scale(1.05); will-change: opacity, transform;">
-      <video id="orbital-bg-video" autoplay loop muted playsinline preload="auto" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center;">
+    
+    <!-- 4K Space Video Backdrop -->
+    <div id="orbital-video-container" style="position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; overflow: hidden; opacity: 0.35; will-change: opacity, transform;">
+      <video id="orbital-bg-video" autoplay loop muted playsinline preload="auto" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; filter: brightness(0.68) contrast(1.35) saturate(1.15);">
         <source src="/bg-video.mp4" type="video/mp4" />
       </video>
       
-      <!-- Obsidian Shield (for 100% text readability) -->
-      <div style="position: absolute; inset: 0; background: rgba(9, 10, 15, 0.68);"></div>
+      <!-- Obsidian Shield (40% darkness so 4K video shines brightly while text remains 100% readable) -->
+      <div style="position: absolute; inset: 0; background: rgba(5, 7, 10, 0.65);"></div><div style="position: absolute; inset: 0; background: radial-gradient(circle at 50% 45%, rgba(0, 0, 0, 0.1) 20%, rgba(5, 7, 10, 0.85) 90%);"></div>
       
-      <!-- Top/Bottom Edge Feathering & Space Horizon Blend -->
-      <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, #090a0f 0%, rgba(9, 10, 15, 0.15) 20%, rgba(9, 10, 15, 0.15) 80%, #090a0f 100%);"></div>
-      
-      <!-- Radial Vignette for Deep Tech Immersion -->
-      <div style="position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0) 25%, rgba(9, 10, 15, 0.75) 90%);"></div>
+      <!-- Seamless Edge Feathering -->
+      <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, #090a0f 0%, transparent 15%, transparent 85%, #090a0f 100%);"></div>
     </div>
 
-    <div id="root" style="position: relative; z-index: 10;"></div>
+    <div id="root" style="position: relative; z-index: 10; background: transparent;"></div>
 
     <script>
       (function() {
+        // Bulletproof scroll-to-section with multi-interval layout stabilization
+        window.starkScrollTo = function(targetId) {
+          const el = document.getElementById(targetId);
+          if (!el) return;
+          const navOffset = 75;
+          const scrollNow = function() {
+            const rect = el.getBoundingClientRect();
+            const topY = rect.top + window.pageYOffset - navOffset;
+            window.scrollTo({ top: Math.max(0, topY), behavior: 'smooth' });
+          };
+          scrollNow();
+          setTimeout(scrollNow, 250);
+          setTimeout(scrollNow, 600);
+          setTimeout(scrollNow, 1100);
+        };
+
         const videoContainer = document.getElementById('orbital-video-container');
         const videoEl = document.getElementById('orbital-bg-video');
-        if (!videoContainer || !videoEl) return;
+        if (!videoEl || !videoContainer) return;
 
-        // Auto-play safety
-        function tryPlayVideo() {
-          const playPromise = videoEl.play();
-          if (playPromise !== undefined) {
-            playPromise.catch(function() {
-              window.addEventListener('click', function() { videoEl.play(); }, { once: true });
-              window.addEventListener('scroll', function() { videoEl.play(); }, { once: true });
-              window.addEventListener('touchstart', function() { videoEl.play(); }, { once: true });
+        // Force muted and start playback
+        videoEl.muted = true;
+        videoEl.defaultMuted = true;
+        videoEl.playsInline = true;
+        
+        function startVideo() {
+          const p = videoEl.play();
+          if (p !== undefined) {
+            p.catch(function(err) {
+              console.log("Video autoplay waiting for interaction:", err);
             });
           }
         }
-        tryPlayVideo();
+        startVideo();
+        window.addEventListener('click', startVideo, { once: true });
+        window.addEventListener('scroll', startVideo, { once: true });
+        window.addEventListener('touchstart', startVideo, { once: true });
 
+        // Scroll-driven crossfade
         let ticking = false;
-
-        function updateOrbitalCrossfade() {
+        function updateVideoCrossfade() {
           const scrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
           const homeEl = document.getElementById('home');
           const heroHeight = (homeEl && homeEl.offsetHeight) ? homeEl.offsetHeight : window.innerHeight;
           
-          // Crossfade runs across the first 75% of the hero section
-          const transitionDistance = Math.max(300, heroHeight * 0.75);
-          const rawProgress = Math.min(1, Math.max(0, scrollY / transitionDistance));
+          // In hero: opacity is 0.35 (subtle cosmic glow)
+          // As you scroll into About: smoothly transitions to 0.88 (full video immersion)
+          const transitionDist = Math.max(300, heroHeight * 0.75);
+          const p = Math.min(1, Math.max(0, scrollY / transitionDist));
+          const smooth = p * p * (3 - 2 * p);
           
-          // Smoothstep easing: S-curve for ultra-natural feel
-          const smooth = rawProgress * rawProgress * (3 - 2 * rawProgress);
+          const currentOpacity = 0.35 + (smooth * 0.53); // 0.35 -> 0.88
+          videoContainer.style.opacity = currentOpacity.toFixed(3);
+          videoContainer.style.transform = 'scale(' + (1.03 - smooth * 0.03).toFixed(3) + ')';
           
-          // 1. Video Container: Fades in (0 -> 1) and settles scale gently (1.04 -> 1.0)
-          videoContainer.style.opacity = smooth.toFixed(3);
-          videoContainer.style.transform = 'scale(' + (1.04 - smooth * 0.04).toFixed(3) + ')';
-          
-          // 2. Hero 3D Solar System: Dives forward into cosmos and dissolves
           if (homeEl) {
             const canvasEl = homeEl.querySelector('canvas') || homeEl.querySelector('.pointer-events-auto');
             if (canvasEl) {
-              const canvasScale = 1 + smooth * 0.38;
-              const canvasOpacity = Math.max(0, 1 - smooth * 1.12);
-              const canvasBlur = smooth * 5;
+              const canvasScale = 1 + smooth * 0.35;
+              const canvasOpacity = Math.max(0, 1 - smooth * 1.1);
               canvasEl.style.transform = 'scale(' + canvasScale.toFixed(3) + ')';
               canvasEl.style.opacity = canvasOpacity.toFixed(3);
-              canvasEl.style.filter = 'blur(' + canvasBlur.toFixed(1) + 'px)';
-              canvasEl.style.willChange = 'transform, opacity, filter';
             }
           }
         }
 
-        function onScroll() {
+        window.addEventListener('scroll', function() {
           if (!ticking) {
             window.requestAnimationFrame(function() {
-              updateOrbitalCrossfade();
+              updateVideoCrossfade();
               ticking = false;
             });
             ticking = true;
           }
-        }
+        }, { passive: true });
 
-        window.addEventListener('scroll', onScroll, { passive: true });
-        window.addEventListener('resize', onScroll, { passive: true });
-        
-        // Initial run
-        if (document.readyState === 'complete') {
-          updateOrbitalCrossfade();
-        } else {
-          window.addEventListener('load', updateOrbitalCrossfade);
-        }
+        window.addEventListener('resize', updateVideoCrossfade, { passive: true });
+        updateVideoCrossfade();
       })();
     </script>
 
