@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Santo Stark Studio | Document & Report Viewer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="/pdf.min.js"></script>
+  <style>
+    :root {
+      --bg: #090a0f;
+      --card-bg: #0f131f;
+      --accent: #22d3ee;
+      --accent-glow: rgba(34, 211, 238, 0.25);
+      --border: rgba(255, 255, 255, 0.1);
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Obsidian Glass Toolbar */
+    .toolbar {
+      flex-shrink: 0;
+      height: 58px;
+      background: rgba(9, 10, 15, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      z-index: 100;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    }
+    .toolbar-left, .toolbar-center, .toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 12px;
+      background: rgba(34, 211, 238, 0.1);
+      border: 1px solid rgba(34, 211, 238, 0.3);
+      font-family: 'Fira Code', monospace;
+      font-size: 11px;
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .doc-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      max-width: 320px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Control Buttons */
+    .btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: #e2e8f0;
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      border-color: rgba(34, 211, 238, 0.4);
+      transform: translateY(-1px);
+    }
+    .btn-icon {
+      padding: 6px 10px;
+      font-size: 14px;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #06b6d4, #3b82f6);
+      color: #090a0f;
+      border: none;
+      font-weight: 700;
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
+    }
+    .btn-primary:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+      box-shadow: 0 0 25px rgba(6, 182, 212, 0.5);
+    }
+    .btn-close {
+      background: rgba(244, 63, 94, 0.15);
+      color: #fb7185;
+      border: 1px solid rgba(244, 63, 94, 0.3);
+    }
+    .btn-close:hover {
+      background: rgba(244, 63, 94, 0.25);
+      color: #fff;
+      border-color: rgba(244, 63, 94, 0.5);
+    }
+    .zoom-text {
+      font-family: 'Fira Code', monospace;
+      font-size: 11px;
+      color: var(--text-sub);
+      min-width: 44px;
+      text-align: center;
+    }
+
+    /* Viewer Stage Area */
+    .stage {
+      flex: 1;
+      width: 100%;
+      height: calc(100% - 58px);
+      overflow-y: auto;
+      overflow-x: auto;
+      padding: 30px 20px 80px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 25px;
+      background: radial-gradient(circle at 50% 20%, rgba(34, 211, 238, 0.04) 0%, transparent 60%), #090a0f;
+      scroll-behavior: smooth;
+    }
+    .stage::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    .stage::-webkit-scrollbar-track {
+      background: rgba(9, 10, 15, 0.5);
+    }
+    .stage::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+    }
+    .stage::-webkit-scrollbar-thumb:hover {
+      background: var(--accent);
+    }
+
+    /* PDF Canvas Page Card */
+    .pdf-page-card {
+      position: relative;
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .pdf-page-card:hover {
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(34, 211, 238, 0.15);
+    }
+    .pdf-page-badge {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      background: rgba(9, 10, 15, 0.85);
+      backdrop-filter: blur(8px);
+      color: #38bdf8;
+      font-family: 'Fira Code', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      z-index: 10;
+      pointer-events: none;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* Image Viewer Mode */
+    .image-card {
+      max-width: 95%;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(34, 211, 238, 0.15);
+      background: #000;
+    }
+    .image-card img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+
+    /* Loading Spinner */
+    .loading-wrap {
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      padding: 40px;
+      text-align: center;
+    }
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 3px solid rgba(34, 211, 238, 0.15);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .loading-text {
+      font-family: 'Fira Code', monospace;
+      font-size: 13px;
+      color: var(--accent);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    /* Error / Empty State */
+    .error-card {
+      margin: auto;
+      max-width: 480px;
+      padding: 32px;
+      background: rgba(244, 63, 94, 0.08);
+      border: 1px solid rgba(244, 63, 94, 0.3);
+      border-radius: 20px;
+      text-align: center;
+      space-y: 12px;
+    }
+    .error-card h3 {
+      color: #fb7185;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .error-card p {
+      color: #cbd5e1;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    /* Embedded Mode Tweaks */
+    body.embedded .toolbar {
+      height: 42px;
+      padding: 0 10px;
+    }
+    body.embedded .btn-close {
+      display: none;
+    }
+    body.embedded .stage {
+      padding: 15px 10px 40px 10px;
+      height: calc(100% - 42px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Glassmorphic Navigation Toolbar -->
+  <header class="toolbar">
+    <div class="toolbar-left">
+      <div class="brand-pill">
+        <span>📄</span>
+        <span id="badgeText">DOCUMENT</span>
+      </div>
+      <h1 class="doc-title" id="docTitle">Loading Document...</h1>
+    </div>
+
+    <div class="toolbar-center">
+      <button class="btn btn-icon" id="zoomOutBtn" title="Zoom Out (Ctrl -)">−</button>
+      <span class="zoom-text" id="zoomText">100%</span>
+      <button class="btn btn-icon" id="zoomInBtn" title="Zoom In (Ctrl +)">+</button>
+      <button class="btn" id="fitWidthBtn" title="Fit to Screen Width">↔ Fit</button>
+      <button class="btn" id="zoomResetBtn" title="Reset Zoom (100%)">100%</button>
+    </div>
+
+    <div class="toolbar-right">
+      <button class="btn" id="printBtn" title="Print Document">🖨️ Print</button>
+      <button class="btn btn-close" id="closeBtn" title="Close Tab">✕ Close</button>
+    </div>
+  </header>
+
+  <!-- Canvas Document Render Stage -->
+  <main class="stage" id="stage">
+    <div class="loading-wrap" id="loadingState">
+      <div class="spinner"></div>
+      <div class="loading-text" id="loadingMsg">DECODING IN-BROWSER DOCUMENT...</div>
+    </div>
+  </main>
+
+  <script>
+    (function() {
+      // Setup PDF.js worker
+      if (window.pdfjsLib) {
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
+      }
+
+      var stage = document.getElementById('stage');
+      var docTitle = document.getElementById('docTitle');
+      var badgeText = document.getElementById('badgeText');
+      var zoomText = document.getElementById('zoomText');
+      var zoomInBtn = document.getElementById('zoomInBtn');
+      var zoomOutBtn = document.getElementById('zoomOutBtn');
+      var fitWidthBtn = document.getElementById('fitWidthBtn');
+      var zoomResetBtn = document.getElementById('zoomResetBtn');
+      var printBtn = document.getElementById('printBtn');
+      var closeBtn = document.getElementById('closeBtn');
+
+      var currentScale = 1.0;
+      var activePdf = null;
+      var isRendering = false;
+
+      // Check embedded mode
+      var urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('embedded') === '1' || urlParams.get('embedded') === 'true') {
+        document.body.classList.add('embedded');
+      }
+
+      // Close button handler
+      closeBtn.addEventListener('click', function() {
+        if (window.history.length > 1) {
+          window.close();
+          // Fallback if window.close is blocked by browser
+          setTimeout(function() { window.history.back(); }, 100);
+        } else {
+          window.close();
+        }
+      });
+
+      // Retrieve Document Data from Multiple Secure Channels
+      var targetDoc = null;
+      var targetTitle = 'Engineering Document';
+
+      try {
+        if (window.opener && window.opener.starkActiveDocument) {
+          targetDoc = window.opener.starkActiveDocument.url;
+          targetTitle = window.opener.starkActiveDocument.title || targetTitle;
+        }
+      } catch(e) {}
+
+      if (!targetDoc) {
+        try {
+          targetDoc = sessionStorage.getItem('stark_viewer_doc');
+          var stTitle = sessionStorage.getItem('stark_viewer_title');
+          if (stTitle) targetTitle = stTitle;
+        } catch(e) {}
+      }
+
+      if (!targetDoc) {
+        try {
+          targetDoc = localStorage.getItem('stark_viewer_doc');
+          var ltTitle = localStorage.getItem('stark_viewer_title');
+          if (ltTitle) targetTitle = ltTitle;
+        } catch(e) {}
+      }
+
+      if (!targetDoc && urlParams.get('url')) {
+        targetDoc = urlParams.get('url');
+        if (urlParams.get('title')) targetTitle = urlParams.get('title');
+      }
+
+      docTitle.textContent = targetTitle;
+      document.title = targetTitle + ' | Santo Stark Studio';
+
+      if (!targetDoc) {
+        stage.innerHTML = 
+          '<div class="error-card">' +
+            '<h3>⚠️ No Document Data Found</h3>' +
+            '<p>Please select a document or report from the portfolio website to view it.</p>' +
+            '<button class="btn btn-primary" onclick="window.close()" style="margin-top:16px;">Return to Portfolio</button>' +
+          '</div>';
+        return;
+      }
+
+      // Determine Document Type
+      var isPdf = false;
+      var isImage = false;
+
+      if (typeof targetDoc === 'string') {
+        if (targetDoc.startsWith('data:application/pdf') || 
+            targetDoc.startsWith('data:image/pdf') || 
+            targetDoc.toLowerCase().includes('.pdf') ||
+            targetDoc.startsWith('data:application/octet-stream;base64,JVBERi') ||
+            targetDoc.includes('JVBERi0') || // Base64 '%PDF-' magic bytes
+            targetDoc.startsWith('%PDF')) {
+          isPdf = true;
+        } else if (targetDoc.startsWith('data:image/') || 
+                   targetDoc.match(/\.(png|jpe?g|webp|svg|gif)(\?|$)/i)) {
+          isImage = true;
+        } else if (targetDoc.startsWith('data:')) {
+          // If ambiguous data: URI, check magic bytes
+          if (targetDoc.includes('JVBERi')) {
+            isPdf = true;
+          } else {
+            isImage = true;
+          }
+        } else {
+          // Fallback guess: if URL contains report/cert or ends in pdf
+          if (targetDoc.indexOf('.pdf') !== -1) isPdf = true;
+          else isImage = true;
+        }
+      }
+
+      // Decode Base64 to Uint8Array safely for PDF.js
+      function base64ToUint8Array(base64Str) {
+        var cleanBase64 = base64Str;
+        if (base64Str.indexOf(',') !== -1) {
+          cleanBase64 = base64Str.split(',')[1];
+        }
+        cleanBase64 = cleanBase64.replace(/\s/g, '');
+        var binary = atob(cleanBase64);
+        var len = binary.length;
+        var bytes = new Uint8Array(len);
+        for (var i = 0; i < len; i++) {
+          bytes[i] = binary.charCodeAt(i);
+        }
+        return bytes;
+      }
+
+      // ----------------------------------------------------
+      // RENDER IMAGE MODE
+      // ----------------------------------------------------
+      if (isImage) {
+        badgeText.textContent = 'IMAGE';
+        var imgCard = document.createElement('div');
+        imgCard.className = 'image-card';
+        var img = document.createElement('img');
+        img.src = targetDoc;
+        img.alt = targetTitle;
+        imgCard.appendChild(img);
+        stage.innerHTML = '';
+        stage.appendChild(imgCard);
+
+        zoomInBtn.addEventListener('click', function() {
+          currentScale = Math.min(3.0, currentScale + 0.2);
+          img.style.transform = 'scale(' + currentScale + ')';
+          zoomText.textContent = Math.round(currentScale * 100) + '%';
+        });
+        zoomOutBtn.addEventListener('click', function() {
+          currentScale = Math.max(0.5, currentScale - 0.2);
+          img.style.transform = 'scale(' + currentScale + ')';
+          zoomText.textContent = Math.round(currentScale * 100) + '%';
+        });
+        zoomResetBtn.addEventListener('click', function() {
+          currentScale = 1.0;
+          img.style.transform = 'scale(1)';
+          zoomText.textContent = '100%';
+        });
+        fitWidthBtn.addEventListener('click', function() {
+          currentScale = 1.0;
+          img.style.transform = 'scale(1)';
+          img.style.maxWidth = '98vw';
+          zoomText.textContent = 'Fit';
+        });
+        printBtn.addEventListener('click', function() { window.print(); });
+        return;
+      }
+
+      // ----------------------------------------------------
+      // RENDER PDF CANVAS MODE (PURE JAVASCRIPT - ZERO DOWNLOADS)
+      // ----------------------------------------------------
+      badgeText.textContent = 'PDF DOCUMENT';
+
+      var pdfSource;
+      try {
+        if (targetDoc.startsWith('data:')) {
+          pdfSource = { data: base64ToUint8Array(targetDoc) };
+        } else {
+          pdfSource = targetDoc;
+        }
+      } catch(err) {
+        console.error('Failed to parse document data:', err);
+        pdfSource = targetDoc;
+      }
+
+      if (!window.pdfjsLib) {
+        stage.innerHTML = 
+          '<div class="error-card">' +
+            '<h3>⚠️ PDF Engine Loading...</h3>' +
+            '<p>Please reload this tab to initialize the document reader engine.</p>' +
+          '</div>';
+        return;
+      }
+
+      window.pdfjsLib.getDocument(pdfSource).promise.then(function(pdf) {
+        activePdf = pdf;
+        badgeText.textContent = 'PDF • ' + pdf.numPages + (pdf.numPages === 1 ? ' PAGE' : ' PAGES');
+        renderAllPages();
+      }).catch(function(err) {
+        console.error('PDF.js render error:', err);
+        // Fallback: If decoding raw failed, try embedded object
+        stage.innerHTML = 
+          '<div class="pdf-page-card" style="width:90vw;height:85vh;background:#000;">' +
+            '<iframe src="' + targetDoc + '" style="width:100%;height:100%;border:none;"></iframe>' +
+          '</div>';
+      });
+
+      function renderAllPages() {
+        if (!activePdf) return;
+        stage.innerHTML = '';
+
+        var containerWidth = Math.min(1000, stage.clientWidth - 40);
+        if (containerWidth < 300) containerWidth = 320;
+
+        for (var pageNum = 1; pageNum <= activePdf.numPages; pageNum++) {
+          (function(pNum) {
+            var card = document.createElement('div');
+            card.className = 'pdf-page-card';
+            card.id = 'page-wrap-' + pNum;
+
+            var badge = document.createElement('div');
+            badge.className = 'pdf-page-badge';
+            badge.textContent = 'Page ' + pNum + ' of ' + activePdf.numPages;
+            card.appendChild(badge);
+
+            var canvas = document.createElement('canvas');
+            canvas.id = 'page-canvas-' + pNum;
+            card.appendChild(canvas);
+            stage.appendChild(card);
+
+            activePdf.getPage(pNum).then(function(page) {
+              // Calculate responsive scale based on stage width
+              var unscaledViewport = page.getViewport({ scale: 1.0 });
+              var autoScale = (containerWidth / unscaledViewport.width) * currentScale;
+              var dpr = window.devicePixelRatio || 1;
+
+              var viewport = page.getViewport({ scale: autoScale });
+              var outputScale = dpr;
+
+              canvas.width = Math.floor(viewport.width * outputScale);
+              canvas.height = Math.floor(viewport.height * outputScale);
+              canvas.style.width = Math.floor(viewport.width) + 'px';
+              canvas.style.height = Math.floor(viewport.height) + 'px';
+
+              var ctx = canvas.getContext('2d');
+              var transform = outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null;
+
+              var renderContext = {
+                canvasContext: ctx,
+                transform: transform,
+                viewport: viewport
+              };
+              page.render(renderContext);
+            });
+          })(pageNum);
+        }
+      }
+
+      // Zoom Controls for PDF Canvas
+      zoomInBtn.addEventListener('click', function() {
+        currentScale = Math.min(2.5, currentScale + 0.15);
+        zoomText.textContent = Math.round(currentScale * 100) + '%';
+        renderAllPages();
+      });
+
+      zoomOutBtn.addEventListener('click', function() {
+        currentScale = Math.max(0.5, currentScale - 0.15);
+        zoomText.textContent = Math.round(currentScale * 100) + '%';
+        renderAllPages();
+      });
+
+      zoomResetBtn.addEventListener('click', function() {
+        currentScale = 1.0;
+        zoomText.textContent = '100%';
+        renderAllPages();
+      });
+
+      fitWidthBtn.addEventListener('click', function() {
+        currentScale = 1.15;
+        zoomText.textContent = 'Fit';
+        renderAllPages();
+      });
+
+      printBtn.addEventListener('click', function() {
+        window.print();
+      });
+
+      // Keyboard Shortcuts
+      window.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          window.close();
+        } else if ((e.ctrlKey || e.metaKey) && (e.key === '+' || e.key === '=')) {
+          e.preventDefault();
+          zoomInBtn.click();
+        } else if ((e.ctrlKey || e.metaKey) && e.key === '-') {
+          e.preventDefault();
+          zoomOutBtn.click();
+        } else if ((e.ctrlKey || e.metaKey) && e.key === '0') {
+          e.preventDefault();
+          zoomResetBtn.click();
+        } else if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+          e.preventDefault();
+          window.print();
+        }
+      });
+
+    })();
+  </script>
+</body>
+</html>
