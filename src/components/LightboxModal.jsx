@@ -1,68 +1,95 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ExternalLink, Tag } from 'lucide-react';
+import { X } from 'lucide-react';
 
 export default function LightboxModal({ isOpen, onClose, item }) {
+  useEffect(() => {
+    if (!isOpen) return;
+    const cleanup = () => onClose && onClose();
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') cleanup();
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('focus', cleanup);
+    window.addEventListener('blur', cleanup);
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) cleanup();
+    });
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('focus', cleanup);
+      window.removeEventListener('blur', cleanup);
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen || !item) return null;
 
-  const imageUrl = item.image || item.certImage || "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=80";
+  const imageUrl = item.image || item.certImage || item.photo || item.src || "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=80";
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        {/* Dark backdrop */}
+      <div
+        onClick={onClose}
+        className="fixed inset-0 z-[999999] bg-black/95 backdrop-blur-2xl flex flex-col items-center justify-center p-3 sm:p-6 cursor-pointer select-none animate-fadeIn"
+      >
+        {/* Backdrop for click detection */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          onClick={onClose}
-          className="absolute inset-0 bg-black/90 backdrop-blur-2xl"
+          className="absolute inset-0 pointer-events-none"
         />
 
-        {/* Modal Dialog */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.85 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.85 }}
-          className="relative max-w-4xl w-full glass-panel rounded-3xl overflow-hidden border border-white/20 shadow-2xl z-10 max-h-[90vh] flex flex-col md:flex-row"
+        {/* Top Action Bar */}
+        <div
+          onClick={(e) => e.stopPropagation()}
+          className="w-full max-w-5xl flex items-center justify-between pb-3 z-20 cursor-default"
         >
-          {/* Close button */}
+          <div className="flex items-center space-x-2">
+            <span className="px-3 py-1 rounded-full text-[10px] font-mono uppercase font-bold tracking-wider bg-cyan-500/20 text-cyan-300 border border-cyan-400/40">
+              {item.category || item.issuer || "HD Theater View"}
+            </span>
+            {item.date && (
+              <span className="text-xs text-slate-400 font-mono hidden sm:inline">
+                {item.date}
+              </span>
+            )}
+          </div>
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 z-20 p-2 rounded-full bg-black/60 text-white hover:bg-white/20 transition-colors"
+            className="px-4 py-1.5 rounded-full bg-cyan-500/20 hover:bg-cyan-500/40 text-cyan-300 border border-cyan-400/50 text-xs font-mono font-bold flex items-center space-x-1.5 shadow-xl transition-all cursor-pointer hover:scale-105 active:scale-95"
           >
-            <X className="w-6 h-6" />
+            <X className="w-4 h-4" />
+            <span>Close (Esc)</span>
           </button>
+        </div>
 
-          {/* Image preview section */}
-          <div className="w-full md:w-3/5 bg-black flex items-center justify-center min-h-[300px] overflow-hidden relative">
-            <img
-              src={imageUrl}
-              alt={item.title || item.name}
-              className="w-full h-full object-contain max-h-[70vh]"
-            />
-          </div>
+        {/* Main Edge-to-Edge Image */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.92 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.92 }}
+          onClick={onClose}
+          className="relative max-w-5xl w-full flex flex-col items-center justify-center cursor-pointer"
+        >
+          <img
+            src={imageUrl}
+            alt={item.title || item.name || "Preview"}
+            onClick={onClose}
+            className="max-h-[76vh] max-w-[94vw] object-contain rounded-3xl shadow-2xl border border-white/20 hover:opacity-95 transition-opacity"
+          />
 
-          {/* Details section */}
-          <div className="w-full md:w-2/5 p-6 md:p-8 flex flex-col justify-between space-y-4 bg-dark-900/90">
-            <div>
-              <div className="flex items-center space-x-2 mb-3">
-                <span className="px-3 py-1 rounded-full text-[10px] font-mono uppercase font-bold tracking-wider bg-cyan-500/20 text-cyan-400 border border-cyan-500/40">
-                  {item.category || item.issuer || 'Preview'}
-                </span>
-                {item.date && (
-                  <span className="text-xs text-slate-400 font-mono">{item.date}</span>
-                )}
-              </div>
-
-              <h2 className="text-2xl font-extrabold text-slate-100 mb-3 leading-tight">
+          <div className="mt-3 text-center space-y-1 pointer-events-none">
+            {(item.title || item.name) && (
+              <h3 className="text-sm sm:text-base font-bold text-slate-100">
                 {item.title || item.name}
-              </h2>
-
-              <p className="text-xs md:text-sm text-slate-300 leading-relaxed font-light">
-                {item.description || item.summary || "Full high-resolution visual capture and engineering metadata."}
-              </p>
-            </div>
+              </h3>
+            )}
+            <p className="text-[11px] font-mono text-slate-400">
+              Tap anywhere or press ESC to return to website
+            </p>
           </div>
         </motion.div>
       </div>

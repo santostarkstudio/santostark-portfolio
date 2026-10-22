@@ -1479,7 +1479,14 @@ export default function Admin() {
                   </div>
                   {certForm.image && (
                     <div className="mt-2 flex items-center space-x-2">
-                      <img src={certForm.image} alt="Preview" className="w-16 h-12 object-cover rounded-lg border border-cyan-400/40 shadow-md" />
+                      {(certForm.image.startsWith('data:application/pdf') || certForm.image.includes('.pdf')) ? (
+                        <div className="w-16 h-12 flex flex-col items-center justify-center bg-slate-800 rounded-lg border border-cyan-400/40 text-center shadow-md">
+                          <span className="text-xl select-none">📄</span>
+                          <span className="text-[8px] text-cyan-300 font-mono font-bold">PDF DOC</span>
+                        </div>
+                      ) : (
+                        <img src={certForm.image} alt="Preview" className="w-16 h-12 object-cover rounded-lg border border-cyan-400/40 shadow-md" />
+                      )}
                       <span className="text-[10px] text-emerald-400 font-mono">✓ Certificate File Attached</span>
                     </div>
                   )}
@@ -1498,21 +1505,32 @@ export default function Admin() {
               <div className="glass-panel p-6 rounded-3xl border border-white/10 space-y-4">
                 <h4 className="text-sm font-bold text-slate-200">Current Certificates List ({certsList.length})</h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {certsList.map((c) => (
-                    <div key={c.id || c.title} className="p-3.5 rounded-2xl bg-slate-900/80 border border-slate-800 flex items-center justify-between gap-3">
-                      <div className="flex items-center space-x-3 overflow-hidden">
-                        {c.image && <img src={c.image} alt={c.title} className="w-12 h-12 rounded-xl object-cover flex-shrink-0" />}
-                        <div className="truncate">
-                          <h5 className="font-bold text-slate-100 text-xs truncate">{c.title}</h5>
-                          <span className="text-[10px] text-cyan-400 font-mono block truncate">{c.issuer} • {c.date}</span>
+                  {certsList.map((c) => {
+                    const isPdf = c.image && (c.image.startsWith('data:application/pdf') || c.image.includes('.pdf'));
+                    return (
+                      <div key={c.id || c.title} className="p-3.5 rounded-2xl bg-slate-900/80 border border-slate-800 flex items-center justify-between gap-3">
+                        <div className="flex items-center space-x-3 overflow-hidden">
+                          {c.image && (
+                            isPdf ? (
+                              <div className="w-12 h-12 rounded-xl bg-slate-800 border border-cyan-400/30 flex items-center justify-center flex-shrink-0 text-xl">
+                                📄
+                              </div>
+                            ) : (
+                              <img src={c.image} alt={c.title} className="w-12 h-12 rounded-xl object-cover flex-shrink-0" />
+                            )
+                          )}
+                          <div className="truncate">
+                            <h5 className="font-bold text-slate-100 text-xs truncate">{c.title}</h5>
+                            <span className="text-[10px] text-cyan-400 font-mono block truncate">{c.issuer} • {c.date}</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-1.5 flex-shrink-0">
+                          <button onClick={() => { setEditingItem(c); setCertForm(c); }} className="p-1.5 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 text-xs"><Edit3 className="w-3.5 h-3.5" /></button>
+                          <button onClick={() => handleDeleteCert(c.id)} className="p-1.5 rounded-lg bg-rose-500/20 text-rose-300 border border-rose-500/40 text-xs"><Trash2 className="w-3.5 h-3.5" /></button>
                         </div>
                       </div>
-                      <div className="flex items-center space-x-1.5 flex-shrink-0">
-                        <button onClick={() => { setEditingItem(c); setCertForm(c); }} className="p-1.5 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 text-xs"><Edit3 className="w-3.5 h-3.5" /></button>
-                        <button onClick={() => handleDeleteCert(c.id)} className="p-1.5 rounded-lg bg-rose-500/20 text-rose-300 border border-rose-500/40 text-xs"><Trash2 className="w-3.5 h-3.5" /></button>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             </div>

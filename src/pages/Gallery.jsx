@@ -2,14 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Image as ImageIcon, Maximize2, Sparkles, Filter } from 'lucide-react';
 import PageWrapper from '../components/PageWrapper';
-import LightboxModal from '../components/LightboxModal';
 import { subscribeToCollection, initialGallery } from '../services/firebase';
 
 export default function Gallery() {
   const [images, setImages] = useState(initialGallery);
-  const [selectedImage, setSelectedImage] = useState(null);
   const [filter, setFilter] = useState('All');
   const [loading, setLoading] = useState(false);
+
+  const openInViewer = (url, title) => {
+    if (!url) return;
+    const viewerUrl = `/viewer.html?src=${encodeURIComponent(url)}&title=${encodeURIComponent(title || 'Gallery Image')}`;
+    window.open(viewerUrl, '_blank', 'noopener');
+  };
 
   useEffect(() => {
     const unsub = subscribeToCollection('gallery', (data) => {
@@ -32,11 +36,7 @@ export default function Gallery() {
       bgImage="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=2000&q=80"
     >
       <div className="space-y-8">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center space-x-2 text-xs font-mono text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/30">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Dynamic Firebase Image Sync</span>
-          </div>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-end gap-4">
 
           <div className="flex flex-wrap gap-1.5 p-1.5 rounded-2xl glass-panel border border-white/10">
             {categories.map((cat) => (
@@ -69,7 +69,7 @@ export default function Gallery() {
                   animate: { opacity: 1, scale: 1 }
                 }}
                 whileHover={{ y: -6, scale: 1.02 }}
-                onClick={() => setSelectedImage(item)}
+                onClick={() => openInViewer(item.image, item.title)}
                 className="glass-card rounded-3xl overflow-hidden border border-white/10 shadow-xl cursor-pointer group relative"
               >
                 <div className="relative h-64 w-full bg-slate-950 overflow-hidden">
@@ -83,7 +83,7 @@ export default function Gallery() {
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                     <span className="px-4 py-2 rounded-2xl bg-black/80 text-white font-semibold text-xs border border-white/20 flex items-center space-x-2 backdrop-blur-md shadow-xl">
                       <Maximize2 className="w-4 h-4 text-cyan-400" />
-                      <span>Expand Lightbox</span>
+                      <span>Open Full Screen ↗</span>
                     </span>
                   </div>
 
@@ -104,12 +104,6 @@ export default function Gallery() {
             ))}
           </div>
         )}
-
-        <LightboxModal
-          isOpen={!!selectedImage}
-          onClose={() => setSelectedImage(null)}
-          item={selectedImage}
-        />
       </div>
     </PageWrapper>
   );

@@ -36,12 +36,44 @@ export default function Navbar() {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [heroInfo, setHeroInfo] = useState(initialHeroInfo);
+  const [activeSection, setActiveSection] = useState('/');
+  const [hoveredSection, setHoveredSection] = useState(null);
 
   useEffect(() => {
     const unsub = subscribeToDoc('hero_info', 'main_hero', (data) => {
       if (data) setHeroInfo({ ...initialHeroInfo, ...data });
     }, initialHeroInfo);
     return () => unsub();
+  }, []);
+
+  useEffect(() => {
+    const sections = [
+      { id: 'home', path: '/' },
+      { id: 'about', path: '/about' },
+      { id: 'skills', path: '/skills' },
+      { id: 'education', path: '/education' },
+      { id: 'work', path: '/work' },
+      { id: 'projects', path: '/projects' },
+      { id: 'certificates', path: '/certificates' },
+      { id: 'interests', path: '/interests' },
+      { id: 'gallery', path: '/gallery' },
+      { id: 'contact', path: '/contact' }
+    ];
+
+    const handleScroll = () => {
+      const scrollY = window.pageYOffset + 180;
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sections[i].id);
+        if (el && el.offsetTop <= scrollY) {
+          setActiveSection(sections[i].path);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
@@ -97,26 +129,45 @@ export default function Navbar() {
         <nav className="hidden xl:flex items-center space-x-1">
           {navItems.map((item) => {
             const Icon = item.icon;
-            const isActive = location.pathname === item.path;
+            const isCurrent = (hoveredSection || activeSection) === item.path;
 
             return (
-              <Link key={item.path} to={item.path}>
+              <Link 
+                key={item.path} 
+                to={item.path}
+                onMouseEnter={() => setHoveredSection(item.path)}
+                onMouseLeave={() => setHoveredSection(null)}
+                onClick={(e) => {
+                  setActiveSection(item.path);
+                  const targetId = item.path === '/' ? 'home' : item.path.replace('/', '');
+                  if (window.starkScrollTo) {
+                    e.preventDefault();
+                    window.starkScrollTo(targetId);
+                  } else {
+                    const el = document.getElementById(targetId);
+                    if (el) {
+                      e.preventDefault();
+                      el.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }
+                }}
+              >
                 <motion.div
                   whileHover={{ scale: 1.08, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                   className={`relative px-3 py-2 rounded-xl text-xs font-semibold flex items-center space-x-1.5 transition-colors ${
-                    isActive 
+                    isCurrent 
                       ? 'text-cyan-400 font-bold z-10' 
                       : 'text-slate-300 hover:text-white hover:bg-white/5'
                   }`}
                 >
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-cyan-400' : 'text-slate-400'}`} />
+                  <Icon className={`w-4 h-4 ${isCurrent ? 'text-cyan-400' : 'text-slate-400'}`} />
                   <span>{item.label}</span>
-                  {isActive && (
+                  {isCurrent && (
                     <motion.div
                       layoutId="activeTabIndicator"
                       className="absolute inset-0 rounded-xl bg-gradient-to-r from-cyan-500/20 to-violet-500/20 border border-cyan-400/60 shadow-[0_0_15px_rgba(34,211,238,0.4)] pointer-events-none -z-10"
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      transition={{ type: "spring", stiffness: 450, damping: 32 }}
                     />
                   )}
                 </motion.div>

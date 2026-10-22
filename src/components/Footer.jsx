@@ -74,11 +74,10 @@ export default function Footer() {
             <span>Built with React &amp; Three.js</span>
             <Link 
               to="/admin" 
-              className="text-slate-500 hover:text-violet-400 transition-colors flex items-center space-x-1"
+              className="text-slate-500 hover:text-cyan-400 transition-all p-1 rounded-lg hover:bg-white/5 hover:scale-110 flex items-center justify-center"
               title="Admin CMS Login"
             >
-              <ShieldCheck className="w-3.5 h-3.5 inline" />
-              <span className="text-[10px]">Admin</span>
+              <ShieldCheck className="w-4 h-4 text-cyan-400" />
             </Link>
           </div>
         </div>

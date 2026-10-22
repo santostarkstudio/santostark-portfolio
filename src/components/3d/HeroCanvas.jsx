@@ -416,42 +416,92 @@ function EarthZoom({ earthRef, isZooming, onZoomComplete }) {
   return null;
 }
 
+// ─── Gyroscope / Device Tilt Controller (Mobile & Tablet) ──────────────────
+function GyroTiltController({ isZooming }) {
+  const { camera } = useThree();
+  const gyro = useRef({ x: 0, y: 0, active: false });
+
+  useEffect(() => {
+    const handleOrientation = (e) => {
+      if (e.gamma !== null && e.beta !== null) {
+        gyro.current.active = true;
+        const gX = Math.max(-45, Math.min(45, e.gamma));
+        const gY = Math.max(10, Math.min(80, e.beta));
+        gyro.current.x = (gX / 45) * 1.8;
+        gyro.current.y = ((gY - 45) / 35) * 1.2;
+      }
+    };
+    window.addEventListener('deviceorientation', handleOrientation, true);
+    return () => window.removeEventListener('deviceorientation', handleOrientation, true);
+  }, []);
+
+  useFrame((_, delta) => {
+    if (isZooming || !gyro.current.active) return;
+    const targetX = gyro.current.x;
+    const targetY = 5.5 + gyro.current.y;
+    const lerpSpeed = Math.min(1, delta * 3.5);
+    camera.position.x += (targetX - camera.position.x) * lerpSpeed;
+    camera.position.y += (targetY - camera.position.y) * lerpSpeed;
+    camera.lookAt(0, 0, 0);
+  });
+
+  return null;
+}
+
 // ─── Main Export ─────────────────────────────────────────────────────────────
 export default function HeroCanvas({ isZoomingToEarth = false, onEarthZoomComplete }) {
   const earthRef = useRef();
   const [paused, setPaused] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(() => {
+    return typeof window !== 'undefined' && ('ontouchstart' in window || (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) || window.innerWidth < 1024);
+  });
 
   useEffect(() => {
     const fn = () => setPaused(document.hidden);
+    const checkTouch = () => {
+      setIsTouchDevice(typeof window !== 'undefined' && ('ontouchstart' in window || (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) || window.innerWidth < 1024));
+    };
     document.addEventListener('visibilitychange', fn);
-    return () => document.removeEventListener('visibilitychange', fn);
+    window.addEventListener('resize', checkTouch);
+    return () => {
+      document.removeEventListener('visibilitychange', fn);
+      window.removeEventListener('resize', checkTouch);
+    };
   }, []);
 
   return (
-    <div className="absolute inset-0 w-full h-full pointer-events-auto">
+    <div
+      className={isTouchDevice ? "absolute inset-0 w-full h-full pointer-events-none touch-pan-y" : "absolute inset-0 w-full h-full pointer-events-auto"}
+      style={{ touchAction: isTouchDevice ? 'pan-y' : 'auto' }}
+    >
       <Canvas
         camera={{ position: [0, 5.5, 10.5], fov: 50 }}
-        dpr={Math.min(typeof devicePixelRatio !== 'undefined' ? devicePixelRatio : 1, 1.5)}
+        dpr={isTouchDevice ? [1, 1.2] : [1, 1.5]}
         frameloop={paused ? 'never' : 'always'}
-        gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+        gl={{ antialias: !isTouchDevice, alpha: true, powerPreference: 'high-performance' }}
       >
         <ambientLight intensity={0.5} />
         <directionalLight position={[10, 15, 10]} intensity={0.7} color="#38bdf8" />
         <directionalLight position={[-10, -10, -10]} intensity={0.35} color="#a855f7" />
-        <Stars radius={85} depth={80} count={8000} factor={5} saturation={0.95} fade speed={1.2} />
+        <Stars radius={85} depth={80} count={isTouchDevice ? 2200 : 6000} factor={5} saturation={0.95} fade speed={1.2} />
         <SolarSystem earthRef={earthRef} isZoomingToEarth={isZoomingToEarth} />
-        <CosmicDust count={2200} />
+        <CosmicDust count={isTouchDevice ? 800 : 2000} />
         {isZoomingToEarth && (
           <EarthZoom earthRef={earthRef} isZooming={isZoomingToEarth} onZoomComplete={onEarthZoomComplete} />
         )}
-        <OrbitControls
-          enabled={!isZoomingToEarth}
-          enableZoom={false}
-          enablePan={false}
-          rotateSpeed={0.35}
-          autoRotate={!isZoomingToEarth}
-          autoRotateSpeed={0.18}
-        />
+        {/* Mobile & Tablet: Gyroscope tilt with zero touch interception */}
+        {isTouchDevice && <GyroTiltController isZooming={isZoomingToEarth} />}
+        {/* Desktop / PC: Full interactive 3D OrbitControls */}
+        {!isTouchDevice && (
+          <OrbitControls
+            enabled={!isZoomingToEarth}
+            enableZoom={false}
+            enablePan={false}
+            rotateSpeed={0.35}
+            autoRotate={!isZoomingToEarth}
+            autoRotateSpeed={0.18}
+          />
+        )}
       </Canvas>
     </div>
   );

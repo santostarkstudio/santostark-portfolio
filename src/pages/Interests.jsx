@@ -20,6 +20,12 @@ export default function Interests() {
   const [interestsList, setInterestsList] = useState(initialInterestsData);
   const [loading, setLoading] = useState(false);
 
+  const openInViewer = (url, title) => {
+    if (!url) return;
+    const viewerUrl = `/viewer.html?src=${encodeURIComponent(url)}&title=${encodeURIComponent(title || 'Interest')}`;
+    window.open(viewerUrl, '_blank', 'noopener');
+  };
+
   useEffect(() => {
     const unsub = subscribeToCollection('interests', (data) => {
       if (data) setInterestsList(data);
@@ -70,14 +76,23 @@ export default function Interests() {
                 className="glass-card rounded-3xl overflow-hidden border border-white/10 flex flex-col justify-between shadow-2xl relative group"
               >
                 <div>
-                  <div className="relative h-56 w-full overflow-hidden bg-slate-900">
+                  <div
+                    className="relative h-56 w-full overflow-hidden bg-slate-900 cursor-pointer group/img"
+                    onClick={() => openInViewer(item.image, item.title)}
+                    title="Click to view full screen"
+                  >
                     <img
                       src={item.image}
                       alt={item.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/30 to-transparent" />
-                    
+                    {/* Hover overlay */}
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 bg-black/40 backdrop-blur-sm">
+                      <span className="px-3 py-1.5 rounded-xl bg-black/80 text-white font-semibold text-xs border border-white/20 flex items-center space-x-1.5">
+                        <span>↗</span><span>Open Full Screen</span>
+                      </span>
+                    </div>
                     <div className="absolute top-3 left-3 flex items-center space-x-1.5 px-3 py-1 rounded-full text-[10px] font-mono font-bold bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 backdrop-blur-md">
                       <Icon className="w-3.5 h-3.5" />
                       <span>{item.badge}</span>
