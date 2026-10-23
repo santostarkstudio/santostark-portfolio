@@ -17,21 +17,39 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="dns-prefetch" href="https://firestore.googleapis.com">
+    <link rel="dns-prefetch" href="https://identitytoolkit.googleapis.com">
+    <link rel="preconnect" href="https://firestore.googleapis.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"></noscript>
 
     <!-- Built CSS bundle -->
+    
+    <!-- Critical Path CSS: renders above-fold instantly, zero paint delay -->
+    <style id="critical-css">
+      *{box-sizing:border-box}
+      html{scroll-behavior:smooth}
+      body{margin:0;background:#090a0f;color:#f1f5f9;font-family:'Plus Jakarta Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+      #root{position:relative;z-index:10;background:transparent;min-height:100vh}
+      #orbital-video-container{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:0;overflow:hidden;opacity:.22;will-change:opacity,transform}
+      #orbital-bg-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;filter:contrast(1.2) brightness(0.75) saturate(1.1)}
+      nav,.navbar{position:sticky;top:0;z-index:50;background:rgba(9,10,15,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+      .min-h-screen{min-height:100vh}
+      .bg-dark{background:#090a0f}
+    </style>
     <link rel="stylesheet" crossorigin href="/assets/index-Co4QY8r_.css">
       <!-- Font-Display Swap Enforcement & Low-Latency Rendering -->
     <style>
       @font-face { font-family: 'Plus Jakarta Sans'; font-display: swap; }
       @font-face { font-family: 'Fira Code'; font-display: swap; }
     </style>
+      <link rel="preload" href="/assets/brand-logo.webp" as="image" type="image/webp">
   </head>
   <body class="bg-[#090a0f] text-slate-100 font-sans antialiased selection:bg-cyan-500 selection:text-black overflow-x-hidden touch-manipulation">
     
     <!-- 4K Space Video Backdrop -->
     <div id="orbital-video-container" style="position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; overflow: hidden; opacity: 0.22; will-change: opacity, transform;">
-      <video id="orbital-bg-video" autoplay loop muted playsinline preload="auto" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; filter: contrast(1.2) brightness(0.75) saturate(1.1);">
+      <video id="orbital-bg-video" poster="/assets/media__1786270383587-DqzdVWUU.webp" autoplay loop muted playsinline preload="none" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; filter: contrast(1.2) brightness(0.75) saturate(1.1);">
         <source src="/bg-video.mp4" type="video/mp4" />
       </video>
       
@@ -42,7 +60,27 @@
       <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, #090a0f 0%, transparent 15%, transparent 85%, #090a0f 100%);"></div>
     </div>
 
-    <div id="root" style="position: relative; z-index: 10; background: transparent;"></div>
+    <div id="root" style="position: relative; z-index: 10; background: transparent; min-height: 100vh;"></div>
+
+    <!-- Smart Video Loader: loads & plays after first frame (no blocking) -->
+    <script>
+      (function() {
+        function startVideo() {
+          var v = document.getElementById('orbital-bg-video');
+          if (!v) return;
+          v.load();
+          var p = v.play();
+          if (p && p.catch) p.catch(function() {});
+        }
+        if (document.readyState === 'complete') {
+          requestAnimationFrame(startVideo);
+        } else {
+          window.addEventListener('load', function() {
+            requestAnimationFrame(startVideo);
+          }, { once: true });
+        }
+      })();
+    </script>
 
     <!-- Built JS bundle (React app) -->
     <script type="module" crossorigin src="/assets/index-BMqPMOZ-.js"></script>
