@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en" class="dark scroll-smooth">
   <head>
     <meta charset="UTF-8" />
@@ -21,6 +21,11 @@
 
     <!-- Built CSS bundle -->
     <link rel="stylesheet" crossorigin href="/assets/index-Co4QY8r_.css">
+      <!-- Font-Display Swap Enforcement & Low-Latency Rendering -->
+    <style>
+      @font-face { font-family: 'Plus Jakarta Sans'; font-display: swap; }
+      @font-face { font-family: 'Fira Code'; font-display: swap; }
+    </style>
   </head>
   <body class="bg-[#090a0f] text-slate-100 font-sans antialiased selection:bg-cyan-500 selection:text-black overflow-x-hidden touch-manipulation">
     
@@ -100,7 +105,7 @@
 
     <script>
       (function() {
-        /* ===== CLEAN IMAGE VIEWER — for gallery, photos, logo, profile pics ===== */
+        /* ===== CLEAN IMAGE VIEWER â€” for gallery, photos, logo, profile pics ===== */
         function openImageInNewTab(url, title) {
           if (!url) return;
           title = title || 'Santo Stark Studio';
@@ -119,14 +124,19 @@
               'img{max-width:95vw;max-height:92vh;object-fit:contain;border-radius:16px;box-shadow:0 0 60px rgba(34,211,238,0.25),0 25px 60px rgba(0,0,0,0.85);cursor:zoom-in;transition:transform 0.3s ease;}' +
               'img.zoomed{cursor:zoom-out;transform:scale(1.45);}' +
             '</style>' +
-            '</head><body>' +
+            '    <!-- Font-Display Swap Enforcement & Low-Latency Rendering -->
+    <style>
+      @font-face { font-family: 'Plus Jakarta Sans'; font-display: swap; }
+      @font-face { font-family: 'Fira Code'; font-display: swap; }
+    </style>
+  </head><body>' +
             '<img src="' + url + '" alt="' + safeTitle + '" onclick="this.classList.toggle(\'zoomed\')" />' +
             '</body></html>'
           );
           win.document.close();
         }
 
-        /* ===== PDF / DOCUMENT VIEWER — for certificates, project reports ===== */
+        /* ===== PDF / DOCUMENT VIEWER â€” for certificates, project reports ===== */
         function openDocumentInNewTab(url, title) {
           if (!url) return;
           title = title || 'Verified Document';
@@ -171,22 +181,27 @@
               '.spinner{width:48px;height:48px;border:3px solid rgba(34,211,238,0.15);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;}' +
               '@keyframes spin{to{transform:rotate(360deg);}}' +
               '.loading-text{font-family:\'Fira Code\',monospace;font-size:12px;color:var(--accent);font-weight:600;}' +
-            '</style></head><body>' +
+            '</style>    <!-- Font-Display Swap Enforcement & Low-Latency Rendering -->
+    <style>
+      @font-face { font-family: 'Plus Jakarta Sans'; font-display: swap; }
+      @font-face { font-family: 'Fira Code'; font-display: swap; }
+    </style>
+  </head><body>' +
             '<header class="toolbar">' +
               '<div class="toolbar-left">' +
-                '<div class="badge"><span>📄</span><span id="badgeText">DOCUMENT</span></div>' +
+                '<div class="badge"><span>ðŸ“„</span><span id="badgeText">DOCUMENT</span></div>' +
                 '<h1 class="title">' + safeTitle + '</h1>' +
               '</div>' +
               '<div class="toolbar-center">' +
-                '<button class="btn btn-icon" id="zoomOut">−</button>' +
+                '<button class="btn btn-icon" id="zoomOut">âˆ’</button>' +
                 '<span class="zoom-text" id="zoomText">100%</span>' +
                 '<button class="btn btn-icon" id="zoomIn">+</button>' +
-                '<button class="btn" id="fitWidth">↔ Fit</button>' +
+                '<button class="btn" id="fitWidth">â†” Fit</button>' +
                 '<button class="btn" id="zoomReset">100%</button>' +
               '</div>' +
               '<div class="toolbar-right">' +
-                '<button class="btn" id="printBtn">🖨️ Print</button>' +
-                '<button class="btn btn-close" id="closeBtn">✕ Close</button>' +
+                '<button class="btn" id="printBtn">ðŸ–¨ï¸ Print</button>' +
+                '<button class="btn btn-close" id="closeBtn">âœ• Close</button>' +
               '</div>' +
             '</header>' +
             '<main class="stage" id="stage">' +
@@ -216,7 +231,7 @@
                 'var srcObj;try{if(rawDoc.startsWith("data:")||rawDoc.includes("JVBERi"))srcObj={data:toBytes(rawDoc)};else srcObj=rawDoc;}catch(e){srcObj=rawDoc;}' +
                 'window.pdfjsLib.getDocument(srcObj).promise.then(function(pdf){' +
                   'activePdf=pdf;' +
-                  'badgeText.textContent="PDF • "+pdf.numPages+(pdf.numPages===1?" PAGE":" PAGES");' +
+                  'badgeText.textContent="PDF â€¢ "+pdf.numPages+(pdf.numPages===1?" PAGE":" PAGES");' +
                   'render();' +
                 '}).catch(function(err){console.error("PDF error:",err);stage.innerHTML="<div style=\'margin:auto;text-align:center;color:#fb7185;font-size:13px;padding:20px;\'>Could not render PDF.</div>";});' +
                 'function render(){' +

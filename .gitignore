@@ -6,3 +6,7 @@ Thumbs.db
 .vercel
 .firebase/
 /bg-video.mp4
+.vercel
+.env*
+
+source-code/public/bg-video.mp4
