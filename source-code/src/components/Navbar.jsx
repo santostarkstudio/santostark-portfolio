@@ -125,7 +125,19 @@ export default function Navbar() {
             </div>
           </div>
 
-          <Link to="/" className="flex flex-col">
+          <Link 
+            to="/" 
+            className="flex flex-col cursor-pointer"
+            onClick={(e) => {
+              e.preventDefault();
+              setActiveSection('/');
+              if (window.starkScrollTo) {
+                window.starkScrollTo('home');
+              } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }
+            }}
+          >
             <span className="text-lg font-bold bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent tracking-wide">
               {heroInfo.brandName || "SANTO STARK STUDIO"}
             </span>
@@ -232,7 +244,24 @@ export default function Navbar() {
                   <Link
                     key={item.path}
                     to={item.path}
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={(e) => {
+                      setMobileMenuOpen(false);
+                      setActiveSection(item.path);
+                      const targetId = item.path === '/' ? 'home' : item.path.replace('/', '');
+                      if (window.starkScrollTo) {
+                        e.preventDefault();
+                        window.starkScrollTo(targetId);
+                      } else {
+                        const el = document.getElementById(targetId);
+                        if (el) {
+                          e.preventDefault();
+                          el.scrollIntoView({ behavior: 'smooth' });
+                        } else if (item.path === '/') {
+                          e.preventDefault();
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }
+                      }
+                    }}
                   >
                     <div
                       className={`p-3 rounded-xl text-xs font-semibold flex items-center space-x-2 transition-all ${

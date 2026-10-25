@@ -97,8 +97,18 @@
       (function() {
         // Bulletproof scroll-to-section
         window.starkScrollTo = function(targetId) {
+          if (!targetId || targetId === 'home' || targetId === '/' || targetId === 'top') {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (window.history && window.history.replaceState) {
+              window.history.replaceState(null, '', '/');
+            }
+            return;
+          }
           const el = document.getElementById(targetId);
-          if (!el) return;
+          if (!el) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+          }
           const navOffset = 75;
           const scrollNow = function() {
             const rect = el.getBoundingClientRect();
