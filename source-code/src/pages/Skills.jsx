@@ -16,11 +16,23 @@ export default function Skills() {
     return () => unsub();
   }, []);
 
+  const [sortBy, setSortBy] = useState('rating-desc');
+
   const categories = ['All', 'Languages', 'Web', 'Hardware'];
 
-  const filteredSkills = activeCategory === 'All' 
+  let filteredSkills = activeCategory === 'All' 
     ? skills 
     : skills.filter(s => s.category === activeCategory);
+
+  filteredSkills = [...filteredSkills].sort((a, b) => {
+    const ra = Number(a.rating || 0);
+    const rb = Number(b.rating || 0);
+    if (sortBy === 'rating-desc') return rb - ra || (a.name || '').localeCompare(b.name || '');
+    if (sortBy === 'rating-asc') return ra - rb || (a.name || '').localeCompare(b.name || '');
+    if (sortBy === 'name-asc') return (a.name || '').localeCompare(b.name || '');
+    if (sortBy === 'name-desc') return (b.name || '').localeCompare(a.name || '');
+    return 0;
+  });
 
   return (
     <PageWrapper
@@ -40,20 +52,36 @@ export default function Skills() {
             </p>
           </div>
 
-          <div className="flex items-center space-x-1.5 p-1.5 rounded-2xl glass-panel border border-white/10 self-start md:self-auto">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`px-4 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-                  activeCategory === cat
-                    ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20 font-bold'
-                    : 'text-slate-400 hover:text-white'
-                }`}
+          <div className="w-full md:w-auto flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-2 rounded-2xl glass-panel border border-white/10 overflow-hidden">
+            <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1 max-w-full touch-pan-x -mx-1 px-1">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all ${
+                    activeCategory === cat
+                      ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20 font-bold'
+                      : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-2 shrink-0 self-end sm:self-auto">
+              <span className="text-[11px] font-mono text-slate-400 shrink-0">Sort:</span>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="px-3 py-1.5 rounded-xl bg-slate-900/90 text-cyan-300 text-xs font-mono font-medium border border-cyan-500/30 shadow-md focus:outline-none focus:border-cyan-400 cursor-pointer"
               >
-                {cat}
-              </button>
-            ))}
+                <option value="rating-desc">⭐ Rating: High → Low</option>
+                <option value="rating-asc">📉 Rating: Low → High</option>
+                <option value="name-asc">🔤 Name: A → Z</option>
+                <option value="name-desc">🔤 Name: Z → A</option>
+              </select>
+            </div>
           </div>
         </div>
 

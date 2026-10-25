@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Code, Globe, Cpu, Terminal, User, FileText, X, Maximize2 } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Code, Globe, Cpu, Terminal, User, FileText } from 'lucide-react';
 import PageWrapper from '../components/PageWrapper';
 import { subscribeToDoc, initialAboutInfo, initialHeroInfo } from '../services/firebase';
 
 export default function About() {
-  const [showPhotoModal, setShowPhotoModal] = useState(false);
   const [aboutInfo, setAboutInfo] = useState(initialAboutInfo);
   const [heroInfo, setHeroInfo] = useState(initialHeroInfo);
 
@@ -28,10 +27,75 @@ export default function About() {
     e.preventDefault();
     if (!aboutInfo.photo) return;
 
-    if (aboutInfo.photo.startsWith('http')) {
+    // Open clean, high-resolution viewing window in new tab (works with CMS Base64 uploads & URLs)
+    const newTab = window.open('', '_blank');
+    if (!newTab) {
       window.open(aboutInfo.photo, '_blank');
-    } else {
-      setShowPhotoModal(true);
+      return;
+    }
+
+    newTab.document.open();
+    newTab.document.write(`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile Photo | Full Resolution</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, #0e172a 0%, #050811 100%);
+      color: #f8fafc;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      overflow: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+    }
+    .photo-stage {
+      max-width: 100%;
+      max-height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    img {
+      max-width: 94vw;
+      max-height: 92vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 35px 80px -20px rgba(0, 0, 0, 0.95), 0 0 50px rgba(0, 242, 254, 0.1);
+      pointer-events: none;
+      -webkit-user-drag: none;
+      user-drag: none;
+    }
+  </style>
+</head>
+<body oncontextmenu="return false;" onkeydown="if(event.ctrlKey&&(event.key==='s'||event.key==='p'||event.key==='u')){event.preventDefault();return false;}">
+  <div class="photo-stage">
+    <img id="fullPhoto" alt="Profile Photo" draggable="false" />
+  </div>
+  <script>
+    document.addEventListener('contextmenu', function(e) { e.preventDefault(); return false; });
+    document.addEventListener('dragstart', function(e) { e.preventDefault(); return false; });
+  <\/script>
+</body>
+</html>`);
+    newTab.document.close();
+
+    const imgEl = newTab.document.getElementById('fullPhoto');
+    if (imgEl) {
+      imgEl.src = aboutInfo.photo;
     }
   };
 
@@ -82,25 +146,30 @@ export default function About() {
               </div>
             </div>
 
-            <div className="w-full h-80 md:h-[400px] rounded-3xl bg-gradient-to-br from-cyan-500 via-violet-600 to-cyan-400 p-[3px] shadow-2xl shadow-cyan-500/20 group relative overflow-hidden">
-              <div className="w-full h-full bg-dark-900 rounded-[22px] overflow-hidden relative flex items-center justify-center">
+            {/* Option 2: Ultra-Clean Studio Bento Thumbnail Card */}
+            <div
+              onClick={handlePhotoClick}
+              title="Click to view full photo in a new tab"
+              className="w-full h-72 sm:h-80 md:h-[390px] lg:h-[430px] rounded-3xl p-[1px] bg-gradient-to-b from-white/20 via-white/5 to-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.6)] cursor-pointer group relative overflow-hidden transition-all duration-500 ease-out hover:-translate-y-1 hover:shadow-[0_30px_70px_rgba(0,242,254,0.15),0_20px_40px_rgba(0,0,0,0.8)]"
+            >
+              <div className="w-full h-full bg-slate-950/80 backdrop-blur-xl rounded-[23px] overflow-hidden relative flex items-center justify-center">
                 {aboutInfo.photo ? (
-                  <div
-                    onClick={handlePhotoClick}
-                    title="Click to view high quality photo"
-                    className="w-full h-full cursor-zoom-in relative"
-                  >
+                  <>
                     <img
                       src={aboutInfo.photo}
                       alt="Profile Photo"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      draggable="false"
+                      className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                     />
-                  </div>
+
+                    {/* Tactile soft glass reflection sweep on hover */}
+                    <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-gradient-to-tr from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out" />
+                  </>
                 ) : (
-                  <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-dark-800 text-slate-400 text-xs">
-                    <User className="w-16 h-16 text-cyan-400 mb-2" />
-                    <span className="text-sm font-bold text-slate-200">Upload Your About Photo</span>
-                    <span className="text-[11px] font-mono text-slate-400 mt-1">Use Admin CMS to upload your picture!</span>
+                  <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-slate-900/50 text-slate-400 text-xs">
+                    <User className="w-16 h-16 text-cyan-400 mb-2 opacity-80" />
+                    <span className="text-sm font-semibold text-slate-200">Upload Profile Photo</span>
+                    <span className="text-[11px] font-mono text-slate-500 mt-1">Use Admin CMS to upload your picture!</span>
                   </div>
                 )}
               </div>
@@ -128,40 +197,6 @@ export default function About() {
           </div>
         </motion.div>
       </div>
-
-      <AnimatePresence>
-        {showPhotoModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setShowPhotoModal(false)}
-              className="absolute inset-0 bg-black/90 backdrop-blur-2xl"
-            />
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              className="relative max-w-4xl w-full bg-slate-950 p-4 rounded-3xl border border-white/20 shadow-2xl z-10 flex flex-col items-center max-h-[90vh]"
-            >
-              <button
-                onClick={() => setShowPhotoModal(false)}
-                className="absolute top-4 right-4 p-2 rounded-full bg-black/70 text-white hover:bg-white/20 transition-colors"
-              >
-                <X className="w-6 h-6" />
-              </button>
-              <div className="w-full flex justify-center overflow-hidden rounded-2xl max-h-[80vh]">
-                <img
-                  src={aboutInfo.photo}
-                  alt="High Resolution Profile Photo"
-                  className="w-full h-full object-contain rounded-2xl shadow-2xl"
-                />
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
     </PageWrapper>
   );
 }

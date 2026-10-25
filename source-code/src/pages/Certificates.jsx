@@ -35,6 +35,25 @@ export default function Certificates() {
     }
   };
 
+  const [activeCategory, setActiveCategory] = useState('All');
+  const [sortBy, setSortBy] = useState('newest');
+
+  const categories = ['All', ...new Set(certsList.map((c) => c.category || c.issuer).filter(Boolean))];
+
+  let filteredCerts = activeCategory === 'All'
+    ? certsList
+    : certsList.filter((c) => (c.category || c.issuer) === activeCategory);
+
+  filteredCerts = [...filteredCerts].sort((a, b) => {
+    const ya = Number(a.year || (a.date ? a.date.match(/\d{4}/)?.[0] : 0) || 0);
+    const yb = Number(b.year || (b.date ? b.date.match(/\d{4}/)?.[0] : 0) || 0);
+    if (sortBy === 'newest') return yb - ya || (a.title || '').localeCompare(b.title || '');
+    if (sortBy === 'oldest') return ya - yb || (a.title || '').localeCompare(b.title || '');
+    if (sortBy === 'name-asc') return (a.title || '').localeCompare(b.title || '');
+    if (sortBy === 'name-desc') return (b.title || '').localeCompare(a.title || '');
+    return 0;
+  });
+
   return (
     <PageWrapper
       title="Certificates & Credentials"
@@ -42,8 +61,40 @@ export default function Certificates() {
       bgImage="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=2000&q=80"
     >
       <div className="space-y-8 max-w-7xl mx-auto">
+        <div className="w-full flex flex-col md:flex-row md:items-center justify-between gap-3 p-2 rounded-2xl glass-panel border border-white/10 overflow-hidden">
+          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1 max-w-full touch-pan-x -mx-1 px-1">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all ${
+                  activeCategory === cat
+                    ? 'bg-cyan-500 text-slate-950 font-bold shadow-md shadow-cyan-500/20'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0 self-end md:self-auto">
+            <span className="text-[11px] font-mono text-slate-400 shrink-0">Sort:</span>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="px-3 py-1.5 rounded-xl bg-slate-900/90 text-cyan-300 text-xs font-mono font-medium border border-cyan-500/30 shadow-md focus:outline-none focus:border-cyan-400 cursor-pointer"
+            >
+              <option value="newest">📅 Year: Newest First</option>
+              <option value="oldest">⏳ Year: Oldest First</option>
+              <option value="name-asc">🔤 Title: A → Z</option>
+              <option value="name-desc">🔤 Title: Z → A</option>
+            </select>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {certsList.map((cert) => {
+          {filteredCerts.map((cert) => {
             const isPdf = (v) => v && (v.startsWith('data:application/pdf') || v.includes('.pdf'));
             const docToOpen = cert.doc || cert.image;
             const hasPdf = isPdf(cert.doc) || isPdf(cert.image);

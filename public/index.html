@@ -36,6 +36,14 @@
       nav,.navbar{position:sticky;top:0;z-index:50;background:rgba(9,10,15,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
       .min-h-screen{min-height:100vh}
       .bg-dark{background:#090a0f}
+      /* Fix Certificate Summary Modal Overflow */
+      .fixed[class*="z-[999999]"]{overflow-y:auto!important;padding:16px!important;}
+      .fixed[class*="z-[999999]"]>div:last-child{max-height:88vh!important;overflow-y:auto!important;word-break:break-word!important;overflow-wrap:anywhere!important;margin:auto!important;}
+      /* Certificate Card Fallback Badge (replaces raw emoji with rich accreditation banner) */
+      .cursor-zoom-in>div.bg-gradient-to-br{background:linear-gradient(135deg,rgba(15,23,42,0.95),rgba(9,10,15,0.95))!important;border:1px solid rgba(34,211,238,0.25)!important;border-radius:16px!important;box-shadow:inset 0 0 30px rgba(34,211,238,0.05)!important;}
+      .cursor-zoom-in>div.bg-gradient-to-br>span.text-5xl{display:none!important;}
+      .cursor-zoom-in>div.bg-gradient-to-br::before{content:"🏆 OFFICIAL ACCREDITATION";display:inline-block;font-family:'Fira Code',monospace;font-size:11px;font-weight:700;color:#22d3ee;background:rgba(34,211,238,0.12);border:1px solid rgba(34,211,238,0.3);padding:4px 12px;border-radius:9999px;letter-spacing:0.05em;margin-bottom:4px;}
+      .cursor-zoom-in>div.bg-gradient-to-br::after{content:"Verified Document • Click to View ↗";display:block;font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;color:#94a3b8;margin-top:6px;}
     </style>
     <link rel="stylesheet" crossorigin href="/assets/index-Co4QY8r_.css">
       <!-- Font-Display Swap Enforcement & Low-Latency Rendering -->
@@ -83,7 +91,7 @@
     </script>
 
     <!-- Built JS bundle (React app) -->
-    <script type="module" crossorigin src="/assets/index-BMqPMOZ-.js"></script>
+    <script type="module" crossorigin src="/assets/index-BMqPMOZ-.js?v=filters-sort-v1"></script>
 
     <script>
       (function() {
@@ -123,9 +131,8 @@
           if (homeEl) {
             const canvasEl = homeEl.querySelector('canvas') || homeEl.querySelector('.pointer-events-auto');
             if (canvasEl) {
-              const canvasScale = 1 + smooth * 0.35;
               const canvasOpacity = Math.max(0, 1 - smooth * 1.1);
-              canvasEl.style.transform = 'scale(' + canvasScale.toFixed(3) + ')';
+              canvasEl.style.transform = 'none';
               canvasEl.style.opacity = canvasOpacity.toFixed(3);
             }
           }
@@ -168,137 +175,65 @@
           win.document.close();
         }
 
-        /* ===== PDF / DOCUMENT VIEWER â€” for certificates, project reports ===== */
+        /* ===== SMART PDF / DOCX / CERTIFICATE VIEWER ===== */
         function openDocumentInNewTab(url, title) {
           if (!url) return;
           title = title || 'Verified Document';
 
-          /* If it's actually an image, use the clean photo viewer instead */
+          /* 1. Image Certificates (.png, .jpg, .webp, or base64 image) */
           var isImage = /\.(png|jpe?g|webp|svg|gif)(\?|$)/i.test(url) ||
                         (url.startsWith('data:image/') && !url.startsWith('data:image/pdf'));
-          if (isImage) { openImageInNewTab(url, title); return; }
+          if (isImage) {
+            openImageInNewTab(url, title);
+            return;
+          }
 
-          var win = window.open('', '_blank');
-          if (!win) { alert('Please allow popups to open this document.'); return; }
+          /* 2. Base64 Uploaded PDFs (Blob URL -> opens Chrome/Edge native Google PDF viewer) */
+          var isBase64Pdf = url.startsWith('data:application/pdf') || 
+                            url.startsWith('data:application/octet-stream;base64,JVBERi') ||
+                            url.includes('JVBERi0') ||
+                            url.startsWith('%PDF');
+          if (isBase64Pdf) {
+            try {
+              var c = url;
+              if (c.indexOf(',') !== -1) c = c.split(',')[1];
+              c = c.replace(/\s/g, '');
+              var bin = atob(c);
+              var u = new Uint8Array(bin.length);
+              for (var i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+              var blob = new Blob([u], { type: 'application/pdf' });
+              var blobUrl = URL.createObjectURL(blob);
+              window.open(blobUrl, '_blank');
+              return;
+            } catch(e) {
+              console.warn('Blob PDF conversion fallback:', e);
+            }
+          }
 
-          var safeTitle = (title + '').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+          /* 3. Online PDFs or Word DOCX / DOC / PPTX -> Official Google Docs Viewer */
+          var isOfficeDoc = /\.(docx?|pptx?|xlsx?)(\?|$)/i.test(url);
+          var isOnlinePdf = /\.pdf(\?|$)/i.test(url) || url.includes('/pdf');
+          if (isOfficeDoc || isOnlinePdf) {
+            if (url.startsWith('http://') || url.startsWith('https://')) {
+              var gview = 'https://docs.google.com/viewer?url=' + encodeURIComponent(url) + '&embedded=false';
+              window.open(gview, '_blank', 'noopener');
+              return;
+            }
+          }
 
-          var html = '<!DOCTYPE html><html lang="en"><head>' +
-            '<meta charset="UTF-8">' +
-            '<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">' +
-            '<title>' + safeTitle + ' | Santo Stark Studio</title>' +
-            '<link rel="preconnect" href="https://fonts.googleapis.com">' +
-            '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' +
-            '<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">' +
-            '<script src="/pdf.min.js"><\/script>' +
-            '<style>' +
-              ':root{--bg:#090a0f;--accent:#22d3ee;--border:rgba(255,255,255,0.1);--text-main:#f8fafc;--text-sub:#94a3b8;}' +
-              '*{box-sizing:border-box;margin:0;padding:0;}' +
-              'html,body{width:100%;height:100%;background:var(--bg);color:var(--text-main);font-family:\'Plus Jakarta Sans\',system-ui,sans-serif;overflow:hidden;display:flex;flex-direction:column;}' +
-              '.toolbar{flex-shrink:0;height:56px;background:rgba(9,10,15,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 16px;z-index:100;}' +
-              '.toolbar-left,.toolbar-center,.toolbar-right{display:flex;align-items:center;gap:8px;}' +
-              '.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:10px;background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.3);font-family:\'Fira Code\',monospace;font-size:10px;color:var(--accent);font-weight:700;}' +
-              '.title{font-size:13px;font-weight:700;color:#fff;max-width:340px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}' +
-              '.btn{background:rgba(255,255,255,0.05);border:1px solid var(--border);color:#e2e8f0;padding:6px 12px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all 0.2s ease;font-family:inherit;}' +
-              '.btn:hover{background:rgba(255,255,255,0.12);color:#fff;border-color:rgba(34,211,238,0.4);}' +
-              '.btn-icon{padding:6px 10px;font-size:14px;}' +
-              '.btn-close{background:rgba(244,63,94,0.15);color:#fb7185;border:1px solid rgba(244,63,94,0.3);}' +
-              '.btn-close:hover{background:rgba(244,63,94,0.25);color:#fff;}' +
-              '.zoom-text{font-family:\'Fira Code\',monospace;font-size:11px;color:var(--text-sub);min-width:44px;text-align:center;}' +
-              '.stage{flex:1;width:100%;height:calc(100% - 56px);overflow-y:auto;overflow-x:auto;padding:24px 16px 80px;display:flex;flex-direction:column;align-items:center;gap:20px;background:radial-gradient(circle at 50% 20%, rgba(34,211,238,0.04) 0%, transparent 60%), #090a0f;}' +
-              '.page-card{position:relative;background:#ffffff;border-radius:8px;box-shadow:0 15px 45px rgba(0,0,0,0.7),0 0 0 1px rgba(255,255,255,0.08);overflow:hidden;display:flex;flex-direction:column;align-items:center;}' +
-              '.page-badge{position:absolute;top:10px;right:12px;background:rgba(9,10,15,0.85);backdrop-filter:blur(8px);color:#38bdf8;font-family:\'Fira Code\',monospace;font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:1px solid rgba(56,189,248,0.3);z-index:10;pointer-events:none;}' +
-              'canvas{display:block;width:100%;height:auto;}' +
-              '.loading-wrap{margin:auto;display:flex;flex-direction:column;align-items:center;gap:16px;padding:40px;text-align:center;}' +
-              '.spinner{width:48px;height:48px;border:3px solid rgba(34,211,238,0.15);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;}' +
-              '@keyframes spin{to{transform:rotate(360deg);}}' +
-              '.loading-text{font-family:\'Fira Code\',monospace;font-size:12px;color:var(--accent);font-weight:600;}' +
-            '</style></head><body>' +
-            '<header class="toolbar">' +
-              '<div class="toolbar-left">' +
-                '<div class="badge"><span>ðŸ“„</span><span id="badgeText">DOCUMENT</span></div>' +
-                '<h1 class="title">' + safeTitle + '</h1>' +
-              '</div>' +
-              '<div class="toolbar-center">' +
-                '<button class="btn btn-icon" id="zoomOut">âˆ’</button>' +
-                '<span class="zoom-text" id="zoomText">100%</span>' +
-                '<button class="btn btn-icon" id="zoomIn">+</button>' +
-                '<button class="btn" id="fitWidth">â†” Fit</button>' +
-                '<button class="btn" id="zoomReset">100%</button>' +
-              '</div>' +
-              '<div class="toolbar-right">' +
-                '<button class="btn" id="printBtn">ðŸ–¨ï¸ Print</button>' +
-                '<button class="btn btn-close" id="closeBtn">âœ• Close</button>' +
-              '</div>' +
-            '</header>' +
-            '<main class="stage" id="stage">' +
-              '<div class="loading-wrap" id="loading"><div class="spinner"></div><div class="loading-text">RENDERING DOCUMENT IN BROWSER...</div></div>' +
-            '</main>' +
-            '<script>' +
-              '(function(){' +
-                'if(window.pdfjsLib){window.pdfjsLib.GlobalWorkerOptions.workerSrc="/pdf.worker.min.js";}' +
-                'var stage=document.getElementById("stage");' +
-                'var badgeText=document.getElementById("badgeText");' +
-                'var zoomText=document.getElementById("zoomText");' +
-                'var zoomIn=document.getElementById("zoomIn");' +
-                'var zoomOut=document.getElementById("zoomOut");' +
-                'var fitWidth=document.getElementById("fitWidth");' +
-                'var zoomReset=document.getElementById("zoomReset");' +
-                'var printBtn=document.getElementById("printBtn");' +
-                'var closeBtn=document.getElementById("closeBtn");' +
-                'var currentScale=1.0;' +
-                'var activePdf=null;' +
-                'var rawDoc=window.opener&&window.opener.__starkPendingDoc?window.opener.__starkPendingDoc:null;' +
-                'if(!rawDoc){try{rawDoc=sessionStorage.getItem("stark_viewer_doc")||localStorage.getItem("stark_viewer_doc");}catch(e){}}' +
-                'closeBtn.onclick=function(){window.close();};' +
-                'printBtn.onclick=function(){window.print();};' +
-                'if(!rawDoc){stage.innerHTML="<div style=\'margin:auto;text-align:center;color:#94a3b8;font-size:13px;\'>No document data available.</div>";return;}' +
-                'badgeText.textContent="PDF DOCUMENT";' +
-                'function toBytes(b64){var c=b64;if(c.indexOf(",")!==-1)c=c.split(",")[1];c=c.replace(/\\s/g,"");var bin=atob(c);var u=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return u;}' +
-                'var srcObj;try{if(rawDoc.startsWith("data:")||rawDoc.includes("JVBERi"))srcObj={data:toBytes(rawDoc)};else srcObj=rawDoc;}catch(e){srcObj=rawDoc;}' +
-                'window.pdfjsLib.getDocument(srcObj).promise.then(function(pdf){' +
-                  'activePdf=pdf;' +
-                  'badgeText.textContent="PDF â€¢ "+pdf.numPages+(pdf.numPages===1?" PAGE":" PAGES");' +
-                  'render();' +
-                '}).catch(function(err){console.error("PDF error:",err);stage.innerHTML="<div style=\'margin:auto;text-align:center;color:#fb7185;font-size:13px;padding:20px;\'>Could not render PDF.</div>";});' +
-                'function render(){' +
-                  'if(!activePdf)return;' +
-                  'stage.innerHTML="";' +
-                  'var width=Math.min(950,stage.clientWidth-40);if(width<300)width=320;' +
-                  'for(var p=1;p<=activePdf.numPages;p++){' +
-                    '(function(pageIdx){' +
-                      'var wrap=document.createElement("div");wrap.className="page-card";' +
-                      'var pb=document.createElement("div");pb.className="page-badge";pb.textContent="Page "+pageIdx+" of "+activePdf.numPages;wrap.appendChild(pb);' +
-                      'var cv=document.createElement("canvas");wrap.appendChild(cv);stage.appendChild(wrap);' +
-                      'activePdf.getPage(pageIdx).then(function(page){' +
-                        'var uv=page.getViewport({scale:1});' +
-                        'var scale=(width/uv.width)*currentScale;' +
-                        'var dpr=window.devicePixelRatio||1;' +
-                        'var vp=page.getViewport({scale:scale});' +
-                        'cv.width=Math.floor(vp.width*dpr);cv.height=Math.floor(vp.height*dpr);' +
-                        'cv.style.width=Math.floor(vp.width)+"px";cv.style.height=Math.floor(vp.height)+"px";' +
-                        'var ctx=cv.getContext("2d");' +
-                        'var trans=dpr!==1?[dpr,0,0,dpr,0,0]:null;' +
-                        'page.render({canvasContext:ctx,transform:trans,viewport:vp});' +
-                      '});' +
-                    '})(p);' +
-                  '}' +
-                '}' +
-                'zoomIn.onclick=function(){currentScale=Math.min(2.5,currentScale+0.15);zoomText.textContent=Math.round(currentScale*100)+"%";render();};' +
-                'zoomOut.onclick=function(){currentScale=Math.max(0.5,currentScale-0.15);zoomText.textContent=Math.round(currentScale*100)+"%";render();};' +
-                'zoomReset.onclick=function(){currentScale=1;zoomText.textContent="100%";render();};' +
-                'fitWidth.onclick=function(){currentScale=1.15;zoomText.textContent="Fit";render();};' +
-              '})();' +
-            '<\/script>' +
-            '</body></html>';
+          /* 4. Any online verification webpage (Coursera, Credly, SkillFront, IEEE, etc.) */
+          window.open(url, '_blank', 'noopener');
+        }
 
-          window.__starkPendingDoc = url;
-          try { sessionStorage.setItem('stark_viewer_doc', url); sessionStorage.setItem('stark_viewer_title', title); } catch(e) {}
-          try { localStorage.setItem('stark_viewer_doc', url); localStorage.setItem('stark_viewer_title', title); } catch(e) {}
-
-          win.document.open();
-          win.document.write(html);
-          win.document.close();
+        /* ===== DEDICATED PROJECT OVERVIEW IN NEW TAB ===== */
+        function openProjectViewInNewTab(project) {
+          if (!project) return;
+          try {
+            sessionStorage.setItem('stark_current_project', JSON.stringify(project));
+            localStorage.setItem('stark_current_project', JSON.stringify(project));
+          } catch(e) {}
+          var id = (typeof project === 'object') ? (project.id || project.title) : project;
+          window.open('/project-view.html?id=' + encodeURIComponent(id), '_blank');
         }
 
         /* Expose globals */
@@ -306,6 +241,8 @@
         window.openInNewTab            = openImageInNewTab;    /* legacy alias */
         window.openCertificateInNewTab = openDocumentInNewTab; /* PDFs only */
         window.openDocumentInNewTab    = openDocumentInNewTab; /* PDFs only */
+        window.openProjectViewInNewTab = openProjectViewInNewTab; /* Dedicated Project Tab */
+        window.openProjectView         = openProjectViewInNewTab;
       })();
     </script>
   </body>

@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title id="page-title">Project Overview | Santo Stark Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090a0f;
+      --card-bg: rgba(15, 23, 42, 0.7);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --accent-cyan: #22d3ee;
+      --accent-blue: #2563eb;
+      --accent-violet: #a855f7;
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+    /* Subtle Cyber Ambient Backdrop */
+    body::before {
+      content: "";
+      position: fixed;
+      top: -200px;
+      right: -200px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(34, 211, 238, 0.12) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      bottom: -200px;
+      left: -200px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px 20px 80px 20px;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Header Nav */
+    .header-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: rgba(9, 10, 15, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      margin-bottom: 28px;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      color: #cbd5e1;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .brand-btn:hover {
+      background: rgba(34, 211, 238, 0.12);
+      border-color: rgba(34, 211, 238, 0.4);
+      color: var(--accent-cyan);
+    }
+    .cat-badge {
+      font-family: 'Fira Code', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      background: rgba(34, 211, 238, 0.15);
+      border: 1px solid rgba(34, 211, 238, 0.35);
+      color: var(--accent-cyan);
+    }
+
+    /* Hero Title */
+    .hero-title-area {
+      margin-bottom: 24px;
+    }
+    .project-title {
+      font-size: clamp(1.8rem, 4vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+    .project-subtitle {
+      font-size: 14px;
+      color: var(--text-sub);
+      font-weight: 400;
+    }
+
+    /* Media Image Banner */
+    .media-card {
+      width: 100%;
+      height: clamp(260px, 45vw, 480px);
+      border-radius: 28px;
+      overflow: hidden;
+      background: #0f172a;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      position: relative;
+      margin-bottom: 28px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+      cursor: zoom-in;
+    }
+    .media-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .media-card:hover img {
+      transform: scale(1.03);
+    }
+    .media-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(9, 10, 15, 0.75) 0%, transparent 40%);
+      pointer-events: none;
+    }
+    .zoom-hint {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      background: rgba(9, 10, 15, 0.85);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      padding: 6px 14px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      pointer-events: none;
+    }
+
+    /* Action Buttons Bar */
+    .actions-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 32px;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 28px;
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+      color: #020617;
+      font-weight: 800;
+      font-size: 13px;
+      border-radius: 16px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(34, 211, 238, 0.25);
+      text-decoration: none;
+      transition: all 0.2s ease;
+      min-height: 48px;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(34, 211, 238, 0.4);
+    }
+    .btn-violet {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 26px;
+      background: rgba(168, 85, 247, 0.18);
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      color: #d8b4fe;
+      font-weight: 700;
+      font-size: 13px;
+      border-radius: 16px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      min-height: 48px;
+    }
+    .btn-violet:hover {
+      background: rgba(168, 85, 247, 0.3);
+      border-color: rgba(168, 85, 247, 0.6);
+      transform: translateY(-2px);
+    }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 22px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #e2e8f0;
+      font-weight: 600;
+      font-size: 13px;
+      border-radius: 16px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      min-height: 48px;
+    }
+    .btn-secondary:hover {
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+      background: rgba(34, 211, 238, 0.05);
+    }
+
+    /* Content Cards */
+    .content-section {
+      background: rgba(15, 23, 42, 0.5);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 28px;
+      margin-bottom: 28px;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .section-icon {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(34, 211, 238, 0.12);
+      border: 1px solid rgba(34, 211, 238, 0.3);
+      border-radius: 10px;
+      color: var(--accent-cyan);
+    }
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #f1f5f9;
+    }
+    .overview-text {
+      color: #cbd5e1;
+      font-size: 0.975rem;
+      line-height: 1.85;
+      font-weight: 300;
+      white-space: pre-wrap;
+    }
+
+    /* Specs Grid */
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .spec-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 18px;
+      background: rgba(9, 10, 15, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      font-size: 12.5px;
+      color: #e2e8f0;
+    }
+    .spec-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      box-shadow: 0 0 8px var(--accent-cyan);
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+
+    /* Tech Stack Tags */
+    .tech-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .tech-pill {
+      font-family: 'Fira Code', monospace;
+      font-size: 11.5px;
+      padding: 6px 14px;
+      background: rgba(34, 211, 238, 0.08);
+      border: 1px solid rgba(34, 211, 238, 0.25);
+      border-radius: 10px;
+      color: #67e8f9;
+    }
+
+    /* Video Player */
+    .video-wrapper {
+      width: 100%;
+      height: clamp(240px, 40vw, 480px);
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+      background: #000;
+      margin-top: 14px;
+    }
+    .video-wrapper iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Modal Form for PCB Request */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      z-index: 99999;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-box {
+      width: 100%;
+      max-width: 520px;
+      background: #090a0f;
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(168, 85, 247, 0.2);
+      border-radius: 28px;
+      padding: 28px;
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #94a3b8;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.2s ease;
+    }
+    .modal-close:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.15);
+    }
+    .form-group {
+      margin-bottom: 14px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #cbd5e1;
+      margin-bottom: 6px;
+    }
+    .form-input {
+      width: 100%;
+      padding: 12px 14px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      color: #f8fafc;
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+      transition: border 0.2s;
+    }
+    .form-input:focus {
+      border-color: var(--accent-violet);
+    }
+    textarea.form-input {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+      .container {
+        padding: 16px 14px 60px 14px;
+      }
+      .actions-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .btn-primary, .btn-violet, .btn-secondary {
+        width: 100%;
+      }
+      .content-section {
+        padding: 20px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- Header Navigation -->
+    <header class="header-nav">
+      <div class="header-left">
+        <button type="button" class="brand-btn" onclick="if(history.length > 1) { history.back(); } else { window.close(); }">
+          <span>←</span>
+          <span>Back to Projects / Close</span>
+        </button>
+      </div>
+      <div>
+        <span id="proj-category" class="cat-badge">Engineering Project</span>
+      </div>
+    </header>
+
+    <!-- Hero Title -->
+    <section class="hero-title-area">
+      <h1 id="proj-title" class="project-title">Loading Project...</h1>
+      <p id="proj-subtitle" class="project-subtitle">Santo Stark Studio • Verified Engineering Work</p>
+    </section>
+
+    <!-- Media Image Banner -->
+    <div id="media-card" class="media-card" title="Click to zoom image ↗" onclick="openHighResImage()">
+      <img id="proj-image" src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80" alt="Project Media">
+      <div class="media-overlay"></div>
+      <div class="zoom-hint">
+        <span>🔍</span>
+        <span>Click to Zoom</span>
+      </div>
+    </div>
+
+    <!-- Action Buttons Bar -->
+    <div class="actions-bar">
+      <!-- 1. View / Read Project Report -->
+      <button id="btn-read-report" type="button" class="btn-primary" onclick="openProjectReport()">
+        <span>📖</span>
+        <span>View / Read Project Report ↗</span>
+      </button>
+
+      <!-- 2. Request Full PCB & Source Access -->
+      <button id="btn-request-access" type="button" class="btn-violet" onclick="openAccessModal()">
+        <span>🔒</span>
+        <span>Request Full PCB & Source Access</span>
+      </button>
+
+      <!-- 3. Launch Demo (conditional) -->
+      <a id="btn-live-demo" href="#" target="_blank" rel="noreferrer" class="btn-secondary" style="display: none;">
+        <span>🌐</span>
+        <span>Launch Live Demo ↗</span>
+      </a>
+
+      <!-- 4. GitHub Code (conditional) -->
+      <a id="btn-github" href="#" target="_blank" rel="noreferrer" class="btn-secondary" style="display: none;">
+        <span>💻</span>
+        <span>View GitHub Code ↗</span>
+      </a>
+    </div>
+
+    <!-- Overview Section (Renamed from Engineering Overview as requested!) -->
+    <section class="content-section">
+      <div class="section-header">
+        <div class="section-icon">⚙️</div>
+        <h2 class="section-title">Overview</h2>
+      </div>
+      <p id="proj-overview" class="overview-text">Loading comprehensive project documentation and technical summary...</p>
+    </section>
+
+    <!-- System Architecture Specifications (if specs exist) -->
+    <section id="specs-section" class="content-section" style="display: none;">
+      <div class="section-header">
+        <div class="section-icon">📐</div>
+        <h2 class="section-title">System Architecture Specifications</h2>
+      </div>
+      <div id="specs-list" class="specs-grid"></div>
+    </section>
+
+    <!-- Technologies & Frameworks Utilized -->
+    <section id="tech-section" class="content-section" style="display: none;">
+      <div class="section-header">
+        <div class="section-icon">⚡</div>
+        <h2 class="section-title">Technologies & Frameworks Utilized</h2>
+      </div>
+      <div id="tech-list" class="tech-tags"></div>
+    </section>
+
+    <!-- Demonstration Video Player (if video exists) -->
+    <section id="video-section" class="content-section" style="display: none;">
+      <div class="section-header">
+        <div class="section-icon">🎬</div>
+        <h2 class="section-title">Project Demonstration Video</h2>
+      </div>
+      <div class="video-wrapper">
+        <iframe id="video-frame" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Request Access Modal Dialog -->
+  <div id="access-modal" class="modal-backdrop" onclick="if(event.target === this) closeAccessModal()">
+    <div class="modal-box">
+      <button type="button" class="modal-close" onclick="closeAccessModal()">✕</button>
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+        <span style="font-size: 24px;">🔒</span>
+        <h3 style="font-size: 1.25rem; font-weight: 700; color: #fff;">Request PCB & Source Access</h3>
+      </div>
+      <p style="font-size: 12px; color: #94a3b8; margin-bottom: 20px;">
+        To review schematics, Gerbers, or firmware repo for <strong id="modal-project-title" style="color: #22d3ee;">this project</strong>, please submit your contact details below:
+      </p>
+
+      <form id="access-form" onsubmit="submitAccessRequest(event)">
+        <div class="form-group">
+          <label>Your Full Name *</label>
+          <input type="text" id="req-name" required class="form-input" placeholder="e.g. John Doe / Recruiter">
+        </div>
+        <div class="form-group">
+          <label>Email Address *</label>
+          <input type="email" id="req-email" required class="form-input" placeholder="recruiter@company.com">
+        </div>
+        <div class="form-group">
+          <label>Phone / WhatsApp *</label>
+          <input type="tel" id="req-phone" required class="form-input" placeholder="+91 8431069633">
+        </div>
+        <div class="form-group">
+          <label>Purpose / Reason for Request *</label>
+          <textarea id="req-reason" required class="form-input" placeholder="Candidate evaluation / Technical audit / Collaboration"></textarea>
+        </div>
+        <button type="submit" class="btn-primary" style="width: 100%; margin-top: 8px;">
+          <span>Dispatch Access Request 🚀</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Client-Side Project Loader & Smart Multi-Format Document Opener -->
+  <script>
+    var currentProject = null;
+
+    /* Smart Multi-Format Document Opener */
+    function openDocument(url, title) {
+      if (!url) {
+        alert('No formal report document file is linked for this project yet.');
+        return;
+      }
+      title = title || (currentProject ? currentProject.title : 'Project Report');
+
+      /* 1. Base64 PDF -> Blob URL in Chrome Native PDF Viewer */
+      var isBase64Pdf = url.startsWith('data:application/pdf') || 
+                        url.startsWith('data:application/octet-stream;base64,JVBERi') ||
+                        url.includes('JVBERi0') ||
+                        url.startsWith('%PDF');
+      if (isBase64Pdf) {
+        try {
+          var c = url;
+          if (c.indexOf(',') !== -1) c = c.split(',')[1];
+          c = c.replace(/\s/g, '');
+          var bin = atob(c);
+          var u = new Uint8Array(bin.length);
+          for (var i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+          var blob = new Blob([u], { type: 'application/pdf' });
+          var blobUrl = URL.createObjectURL(blob);
+          window.open(blobUrl, '_blank');
+          return;
+        } catch(e) {
+          console.warn('Blob PDF conversion fallback:', e);
+        }
+      }
+
+      /* 2. Online PDF or Word DOCX / DOC / PPTX -> Official Google Docs Viewer */
+      var isOfficeDoc = /\.(docx?|pptx?|xlsx?)(\?|$)/i.test(url);
+      var isOnlinePdf = /\.pdf(\?|$)/i.test(url) || url.includes('/pdf');
+      if (isOfficeDoc || isOnlinePdf) {
+        if (url.startsWith('http://') || url.startsWith('https://')) {
+          var gview = 'https://docs.google.com/viewer?url=' + encodeURIComponent(url) + '&embedded=false';
+          window.open(gview, '_blank', 'noopener');
+          return;
+        }
+      }
+
+      /* 3. Direct Online URL / Fallback */
+      window.open(url, '_blank', 'noopener');
+    }
+
+    function openProjectReport() {
+      if (!currentProject) return;
+      var docUrl = currentProject.doc || currentProject.reportDoc || currentProject.pdfUrl || currentProject.reportUrl;
+      if (!docUrl) {
+        alert('No document attached to this project yet. Please use "Request Full PCB & Source Access" for confidential deliverables.');
+        return;
+      }
+      openDocument(docUrl, currentProject.title + ' - Report');
+    }
+
+    function openHighResImage() {
+      if (!currentProject || !currentProject.image) return;
+      var img = currentProject.image;
+      var safeTitle = (currentProject.title + ' High-Res Image').replace(/"/g, '&quot;');
+      var win = window.open('', '_blank');
+      if (!win) { window.open(img, '_blank'); return; }
+      win.document.open();
+      win.document.write(
+        '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + safeTitle + '</title>' +
+        '<style>*{margin:0;box-sizing:border-box;}html,body{width:100%;height:100%;background:#090a0f;display:flex;align-items:center;justify-content:center;padding:20px;overflow:auto;}' +
+        'img{max-width:96vw;max-height:94vh;object-fit:contain;border-radius:18px;box-shadow:0 0 50px rgba(34,211,238,0.3);cursor:zoom-in;transition:transform 0.3s;}' +
+        'img.zoomed{cursor:zoom-out;transform:scale(1.45);}</style></head>' +
+        '<body><img src="' + img + '" onclick="this.classList.toggle(\'zoomed\')" alt="' + safeTitle + '" /></body></html>'
+      );
+      win.document.close();
+    }
+
+    function openAccessModal() {
+      var modal = document.getElementById('access-modal');
+      if (modal) modal.style.display = 'flex';
+      var titleEl = document.getElementById('modal-project-title');
+      if (titleEl && currentProject) titleEl.textContent = currentProject.title;
+    }
+
+    function closeAccessModal() {
+      var modal = document.getElementById('access-modal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function submitAccessRequest(e) {
+      e.preventDefault();
+      var name = document.getElementById('req-name').value;
+      var email = document.getElementById('req-email').value;
+      var phone = document.getElementById('req-phone').value;
+      var reason = document.getElementById('req-reason').value;
+      var projTitle = currentProject ? currentProject.title : 'Engineering Project';
+
+      var msg = 'Hi Santosh! Access Request for [' + projTitle + ']\n' +
+                'From: ' + name + '\n' +
+                'Email: ' + email + '\n' +
+                'Phone: ' + phone + '\n' +
+                'Reason: ' + reason;
+      
+      var waUrl = 'https://wa.me/918431069633?text=' + encodeURIComponent(msg);
+      window.open(waUrl, '_blank');
+      closeAccessModal();
+      alert('Thank you! Your access request has been formatted and opened via WhatsApp directly to Santosh Stark.');
+    }
+
+    /* Load Project Data */
+    (function init() {
+      var proj = null;
+      try {
+        var stored = sessionStorage.getItem('stark_current_project') || localStorage.getItem('stark_current_project');
+        if (stored) proj = JSON.parse(stored);
+      } catch(e) {}
+
+      var params = new URLSearchParams(window.location.search);
+      var paramId = params.get('id') || params.get('title');
+
+      if (!proj && paramId) {
+        try {
+          var allProjects = JSON.parse(localStorage.getItem('portfolio_projects') || '[]');
+          for (var i = 0; i < allProjects.length; i++) {
+            if (allProjects[i].id === paramId || allProjects[i].title === paramId) {
+              proj = allProjects[i];
+              break;
+            }
+          }
+        } catch(e) {}
+      }
+
+      /* Fallback Project if loaded directly */
+      if (!proj) {
+        proj = {
+          title: "3D Solar System & MIB Portfolio",
+          category: "Web3D & Systems",
+          description: "Interactive 3D Solar System with Men In Black camera lerp dive into India map outline with real-time celestial motion physics.",
+          longDescription: "An interactive, ultra-optimized Three.js 3D planetary system with physically grounded orbital mechanics, realistic atmospheric shaders, and a cinematic camera zoom down into Bengaluru, Karnataka, India.\n\nDesigned with WebGL performance profiling, zero bundle bloat, responsive touch controls, and high-DPI scaling support.",
+          image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80",
+          specs: [
+            "Physically based WebGL lighting & custom fragment shaders",
+            "Adaptive camera lerp with non-blocking 60 FPS animation loop",
+            "Multi-format document telemetry with Google Docs Viewer integration",
+            "Zero layout shift, 100% responsive across Mobile, Tablet, and PC"
+          ],
+          tech: ["Three.js", "React.js", "WebGL", "Tailwind CSS", "Vite", "Firebase"],
+          live: "http://localhost:3000",
+          github: "https://github.com"
+        };
+      }
+
+      currentProject = proj;
+
+      /* Populate UI */
+      document.title = (proj.title || "Project Overview") + " | Santo Stark Studio";
+      document.getElementById('page-title').textContent = document.title;
+      document.getElementById('proj-title').textContent = proj.title || "Engineering Project";
+      document.getElementById('proj-category').textContent = proj.category || "Engineering Project";
+      document.getElementById('proj-overview').textContent = proj.longDescription || proj.description || "Comprehensive technical overview.";
+
+      if (proj.image) {
+        document.getElementById('proj-image').src = proj.image;
+      }
+
+      /* Links */
+      if (proj.live) {
+        var liveBtn = document.getElementById('btn-live-demo');
+        liveBtn.href = proj.live;
+        liveBtn.style.display = 'inline-flex';
+      }
+      if (proj.github) {
+        var ghBtn = document.getElementById('btn-github');
+        ghBtn.href = proj.github;
+        ghBtn.style.display = 'inline-flex';
+      }
+
+      /* Specs */
+      var specs = Array.isArray(proj.specs) ? proj.specs : (typeof proj.specs === 'string' ? proj.specs.split('\n').filter(Boolean) : []);
+      if (specs.length > 0) {
+        var specsSec = document.getElementById('specs-section');
+        var specsList = document.getElementById('specs-list');
+        specsList.innerHTML = '';
+        specs.forEach(function(s) {
+          var div = document.createElement('div');
+          div.className = 'spec-item';
+          div.innerHTML = '<span class="spec-dot"></span><span>' + s + '</span>';
+          specsList.appendChild(div);
+        });
+        specsSec.style.display = 'block';
+      }
+
+      /* Tech Stack */
+      var tech = Array.isArray(proj.tech) ? proj.tech : (proj.category ? [proj.category] : ['React', 'Systems']);
+      if (tech.length > 0) {
+        var techSec = document.getElementById('tech-section');
+        var techList = document.getElementById('tech-list');
+        techList.innerHTML = '';
+        tech.forEach(function(t) {
+          var span = document.createElement('span');
+          span.className = 'tech-pill';
+          span.textContent = t;
+          techList.appendChild(span);
+        });
+        techSec.style.display = 'block';
+      }
+
+      /* Video */
+      var video = proj.video || proj.demoVideo || proj.videoUrl;
+      if (video) {
+        var vidSec = document.getElementById('video-section');
+        var frame = document.getElementById('video-frame');
+        var src = video.indexOf('youtube.com/watch?v=') !== -1 ? video.replace('watch?v=', 'embed/') : video;
+        frame.src = src;
+        vidSec.style.display = 'block';
+      }
+    })();
+  </script>
+</body>
+</html>

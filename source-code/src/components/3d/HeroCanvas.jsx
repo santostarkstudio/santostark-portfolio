@@ -389,8 +389,21 @@ function CosmicDust({ count = 2200 }) {
   );
 }
 
-// ─── Earth Zoom Controller ───────────────────────────────────────────────────
-function EarthZoom({ earthRef, isZooming, onZoomComplete }) {
+// ─── Responsive Camera Position Helper ───────────────────────────────────────
+function getResponsiveCameraPos() {
+  if (typeof window === 'undefined') return new THREE.Vector3(0, 5.5, 10.5);
+  const w = window.innerWidth;
+  if (w < 640) {
+    return new THREE.Vector3(0, 6.2, 13.5);
+  } else if (w < 1024) {
+    return new THREE.Vector3(0, 5.8, 11.8);
+  } else {
+    return new THREE.Vector3(0, 5.5, 10.5);
+  }
+}
+
+// ─── Earth Zoom & Auto-Return Controller ─────────────────────────────────────
+function CameraController({ earthRef, isZooming, onZoomComplete, controlsRef, defaultPos }) {
   const { camera } = useThree();
   const diving = useRef(false);
   const startPos = useRef(new THREE.Vector3());
@@ -398,26 +411,52 @@ function EarthZoom({ earthRef, isZooming, onZoomComplete }) {
   const tv = useMemo(() => new THREE.Vector3(), []);
 
   useFrame((_, delta) => {
-    if (!isZooming || !earthRef?.current) return;
-    if (!diving.current) {
-      diving.current = true;
-      prog.current = 0;
-      startPos.current.copy(camera.position);
+    // 1. Diving towards Earth
+    if (isZooming && earthRef?.current) {
+      if (!diving.current) {
+        diving.current = true;
+        prog.current = 0;
+        startPos.current.copy(camera.position);
+      }
+      prog.current += delta * 0.42;
+      const t = Math.min(prog.current, 1.0);
+      const ease = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      earthRef.current.getWorldPosition(tv);
+      const targetPos = new THREE.Vector3(tv.x - 0.1, tv.y + 0.1, tv.z + 0.39);
+      camera.position.lerpVectors(startPos.current, targetPos, ease);
+      camera.lookAt(tv.x - 0.1, tv.y + 0.1, tv.z);
+      if (t >= 1.0) onZoomComplete();
+      return;
     }
-    prog.current += delta * 0.42;
-    const t = Math.min(prog.current, 1.0);
-    const ease = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-    earthRef.current.getWorldPosition(tv);
-    camera.position.lerpVectors(startPos.current, new THREE.Vector3(tv.x - 0.1, tv.y + 0.1, tv.z + 0.39), ease);
-    camera.lookAt(tv.x - 0.1, tv.y + 0.1, tv.z);
-    if (t >= 1.0) onZoomComplete();
+
+    // 2. Returning smoothly back to default position after zoom
+    if (!isZooming && diving.current) {
+      const dist = camera.position.distanceTo(defaultPos);
+      if (dist > 0.08) {
+        const lerpFactor = Math.min(1, delta * 3.5);
+        camera.position.lerp(defaultPos, lerpFactor);
+        camera.lookAt(0, 0, 0);
+        if (controlsRef?.current) {
+          controlsRef.current.target.set(0, 0, 0);
+          controlsRef.current.update();
+        }
+      } else {
+        camera.position.copy(defaultPos);
+        camera.lookAt(0, 0, 0);
+        if (controlsRef?.current) {
+          controlsRef.current.target.set(0, 0, 0);
+          controlsRef.current.update();
+        }
+        diving.current = false;
+      }
+    }
   });
 
   return null;
 }
 
 // ─── Gyroscope / Device Tilt Controller (Mobile & Tablet) ──────────────────
-function GyroTiltController({ isZooming }) {
+function GyroTiltController({ isZooming, defaultPos }) {
   const { camera } = useThree();
   const gyro = useRef({ x: 0, y: 0, active: false });
 
@@ -438,10 +477,12 @@ function GyroTiltController({ isZooming }) {
   useFrame((_, delta) => {
     if (isZooming || !gyro.current.active) return;
     const targetX = gyro.current.x;
-    const targetY = 5.5 + gyro.current.y;
+    const targetY = defaultPos.y + gyro.current.y;
+    const targetZ = defaultPos.z;
     const lerpSpeed = Math.min(1, delta * 3.5);
     camera.position.x += (targetX - camera.position.x) * lerpSpeed;
     camera.position.y += (targetY - camera.position.y) * lerpSpeed;
+    camera.position.z += (targetZ - camera.position.z) * lerpSpeed;
     camera.lookAt(0, 0, 0);
   });
 
@@ -451,7 +492,9 @@ function GyroTiltController({ isZooming }) {
 // ─── Main Export ─────────────────────────────────────────────────────────────
 export default function HeroCanvas({ isZoomingToEarth = false, onEarthZoomComplete }) {
   const earthRef = useRef();
+  const controlsRef = useRef();
   const [paused, setPaused] = useState(false);
+  const [defaultPos, setDefaultPos] = useState(() => getResponsiveCameraPos());
   const [isTouchDevice, setIsTouchDevice] = useState(() => {
     return typeof window !== 'undefined' && ('ontouchstart' in window || (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) || window.innerWidth < 1024);
   });
@@ -460,6 +503,7 @@ export default function HeroCanvas({ isZoomingToEarth = false, onEarthZoomComple
     const fn = () => setPaused(document.hidden);
     const checkTouch = () => {
       setIsTouchDevice(typeof window !== 'undefined' && ('ontouchstart' in window || (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) || window.innerWidth < 1024));
+      setDefaultPos(getResponsiveCameraPos());
     };
     document.addEventListener('visibilitychange', fn);
     window.addEventListener('resize', checkTouch);
@@ -475,7 +519,7 @@ export default function HeroCanvas({ isZoomingToEarth = false, onEarthZoomComple
       style={{ touchAction: isTouchDevice ? 'pan-y' : 'auto' }}
     >
       <Canvas
-        camera={{ position: [0, 5.5, 10.5], fov: 50 }}
+        camera={{ position: [defaultPos.x, defaultPos.y, defaultPos.z], fov: 50 }}
         dpr={isTouchDevice ? [1, 1.2] : [1, 1.5]}
         frameloop={paused ? 'never' : 'always'}
         gl={{ antialias: !isTouchDevice, alpha: true, powerPreference: 'high-performance' }}
@@ -486,14 +530,19 @@ export default function HeroCanvas({ isZoomingToEarth = false, onEarthZoomComple
         <Stars radius={85} depth={80} count={isTouchDevice ? 2200 : 6000} factor={5} saturation={0.95} fade speed={1.2} />
         <SolarSystem earthRef={earthRef} isZoomingToEarth={isZoomingToEarth} />
         <CosmicDust count={isTouchDevice ? 800 : 2000} />
-        {isZoomingToEarth && (
-          <EarthZoom earthRef={earthRef} isZooming={isZoomingToEarth} onZoomComplete={onEarthZoomComplete} />
-        )}
+        <CameraController
+          earthRef={earthRef}
+          isZooming={isZoomingToEarth}
+          onZoomComplete={onEarthZoomComplete}
+          controlsRef={controlsRef}
+          defaultPos={defaultPos}
+        />
         {/* Mobile & Tablet: Gyroscope tilt with zero touch interception */}
-        {isTouchDevice && <GyroTiltController isZooming={isZoomingToEarth} />}
+        {isTouchDevice && <GyroTiltController isZooming={isZoomingToEarth} defaultPos={defaultPos} />}
         {/* Desktop / PC: Full interactive 3D OrbitControls */}
         {!isTouchDevice && (
           <OrbitControls
+            ref={controlsRef}
             enabled={!isZoomingToEarth}
             enableZoom={false}
             enablePan={false}

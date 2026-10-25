@@ -18,6 +18,24 @@ export default function Projects() {
 
   const [selectedAccessProject, setSelectedAccessProject] = useState(null);
   const [activeDetailsProject, setActiveDetailsProject] = useState(null);
+  const [activeCategory, setActiveCategory] = useState('All');
+  const [sortBy, setSortBy] = useState('newest');
+
+  const categories = ['All', ...new Set(projectsList.map((p) => p.category).filter(Boolean))];
+
+  let filteredProjects = activeCategory === 'All'
+    ? projectsList
+    : projectsList.filter((p) => p.category === activeCategory);
+
+  filteredProjects = [...filteredProjects].sort((a, b) => {
+    const ya = Number(a.year || (a.date ? a.date.match(/\d{4}/)?.[0] : 0) || 0);
+    const yb = Number(b.year || (b.date ? b.date.match(/\d{4}/)?.[0] : 0) || 0);
+    if (sortBy === 'newest') return yb - ya || (a.title || '').localeCompare(b.title || '');
+    if (sortBy === 'oldest') return ya - yb || (a.title || '').localeCompare(b.title || '');
+    if (sortBy === 'name-asc') return (a.title || '').localeCompare(b.title || '');
+    if (sortBy === 'name-desc') return (b.title || '').localeCompare(a.title || '');
+    return 0;
+  });
 
   return (
     <PageWrapper
@@ -26,8 +44,40 @@ export default function Projects() {
       bgImage="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=2000&q=80"
     >
       <div className="space-y-8 max-w-7xl mx-auto">
+        <div className="w-full flex flex-col md:flex-row md:items-center justify-between gap-3 p-2 rounded-2xl glass-panel border border-white/10 overflow-hidden">
+          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1 max-w-full touch-pan-x -mx-1 px-1">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all ${
+                  activeCategory === cat
+                    ? 'bg-cyan-500 text-slate-950 font-bold shadow-md shadow-cyan-500/20'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0 self-end md:self-auto">
+            <span className="text-[11px] font-mono text-slate-400 shrink-0">Sort:</span>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="px-3 py-1.5 rounded-xl bg-slate-900/90 text-cyan-300 text-xs font-mono font-medium border border-cyan-500/30 shadow-md focus:outline-none focus:border-cyan-400 cursor-pointer"
+            >
+              <option value="newest">📅 Year: Newest First</option>
+              <option value="oldest">⏳ Year: Oldest First</option>
+              <option value="name-asc">🔤 Title: A → Z</option>
+              <option value="name-desc">🔤 Title: Z → A</option>
+            </select>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {projectsList.map((project) => {
+          {filteredProjects.map((project) => {
             const specsArr = Array.isArray(project.specs) 
               ? project.specs 
               : typeof project.specs === 'string'
@@ -48,8 +98,13 @@ export default function Projects() {
                   animate: { opacity: 1, y: 0 }
                 }}
                 whileHover={{ y: -6 }}
-                className="glass-card rounded-3xl overflow-hidden border border-white/10 flex flex-col justify-between shadow-2xl relative group cursor-pointer"
-                onClick={() => setActiveDetailsProject(project)}
+                onClick={() => {
+                  try {
+                    sessionStorage.setItem('stark_current_project', JSON.stringify(project));
+                    localStorage.setItem('stark_current_project', JSON.stringify(project));
+                  } catch (err) {}
+                  window.open('/project-view.html?id=' + encodeURIComponent(project.id || project.title), '_blank');
+                }}
               >
                 <div>
                   <div
@@ -118,9 +173,13 @@ export default function Projects() {
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation();
-                      setActiveDetailsProject(project);
+                      try {
+                        sessionStorage.setItem('stark_current_project', JSON.stringify(project));
+                        localStorage.setItem('stark_current_project', JSON.stringify(project));
+                      } catch (err) {}
+                      window.open('/project-view.html?id=' + encodeURIComponent(project.id || project.title), '_blank');
                     }}
-                    className="w-full py-2.5 rounded-2xl bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 font-bold text-xs flex items-center justify-center space-x-2 hover:bg-cyan-500/30 transition-all shadow-md"
+                    className="w-full py-2.5 rounded-2xl bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 font-bold text-xs flex items-center justify-center space-x-2 hover:bg-cyan-500/30 transition-all shadow-md cursor-pointer"
                   >
                     <FileText className="w-4 h-4 text-cyan-400" />
                     <span>📖 Read Full Report &amp; View Media ↗</span>
