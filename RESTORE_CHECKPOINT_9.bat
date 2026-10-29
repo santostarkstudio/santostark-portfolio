@@ -7,3 +7,4 @@ git checkout checkpoint-9-studio-floating-black-pill
 echo.
 echo Checkpoint 9 restored successfully.
 pause
+

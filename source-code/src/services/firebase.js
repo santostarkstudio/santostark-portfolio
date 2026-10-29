@@ -71,22 +71,69 @@ export const initialWorkItems = [
 ];
 
 export const initialSkills = [
-  { id: "s1", name: "C++ / Systems Programming", category: "Languages", rating: 9, description: "Low-level memory management, pointers, STL, and socket programming." },
-  { id: "s2", name: "Python", category: "Languages", rating: 9, description: "Scripting, data analysis, automation, and REST backend development." },
-  { id: "s3", name: "Java", category: "Languages", rating: 8, description: "OOP architecture, JVM internals, and Enterprise Web Services." },
-  { id: "s4", name: "JavaScript / ES6+", category: "Languages", rating: 9, description: "Asynchronous patterns, DOM APIs, modern ES Next features." },
-  { id: "s5", name: "Rust", category: "Languages", rating: 7, description: "Memory safety without garbage collection, systems concurrency." },
-  
-  { id: "s6", name: "React.js & Vite", category: "Web", rating: 9, description: "Component-driven architecture, state management, custom hooks." },
-  { id: "s7", name: "Three.js & R3F", category: "Web", rating: 8, description: "3D WebGL scenes, particle systems, shader materials, 3D Canvas." },
-  { id: "s8", name: "Tailwind CSS", category: "Web", rating: 9, description: "Utility-first design systems, responsive glassmorphism themes." },
-  { id: "s9", name: "Firebase & Cloud Services", category: "Web", rating: 8, description: "Firestore DB, Authentication, App Hosting, Security Rules." },
-  { id: "s10", name: "Node.js & Express", category: "Web", rating: 8, description: "RESTful web services, middleware, authentication flows." },
-
-  { id: "s11", name: "ESP32 & STM32", category: "Hardware", rating: 9, description: "Dual-core microcontroller programming, FreeRTOS tasks." },
-  { id: "s12", name: "Arduino & Sensor Integration", category: "Hardware", rating: 9, description: "I2C, SPI, UART protocols, analog-to-digital sensor data." },
-  { id: "s13", name: "Raspberry Pi & Linux Systems", category: "Hardware", rating: 8, description: "Embedded Linux setup, GPIO control, system systemd daemons." },
-  { id: "s14", name: "PCB Design & Soldering", category: "Hardware", rating: 7, description: "EasyEDA schematics, component placement, prototype testing." }
+  {
+    "id": "9oMcfau6tB5m5EzVB2VN",
+    "name": "IT Audit & GRC",
+    "category": "Security",
+    "rating": 8,
+    "description": "Assessing IT risks and evaluating technical security controls."
+  },
+  {
+    "id": "OWHActw9aqbwlY7ZYdrm",
+    "name": "IT Operations & Support",
+    "category": "Software Testing & Data Analytics",
+    "rating": 9,
+    "description": "Managing databases, technical support, and operational workflows (3.4 Yrs Exp)."
+  },
+  {
+    "id": "TBW8f6kNajfSJdNLhzls",
+    "name": "AWS Cloud & Firebase",
+    "category": "Cloud & AWS",
+    "rating": 8,
+    "description": "Configuring secure cloud environments and infrastructure."
+  },
+  {
+    "id": "VDaLwpxfsOanHsCe7FYZ",
+    "name": "Python",
+    "category": "Languages",
+    "rating": 8,
+    "description": "Developing machine learning pipelines, data analytics, and automation scripts."
+  },
+  {
+    "id": "bVOJXeiyOsPn3cn95aBP",
+    "name": "ISO 27001 Compliance Mapping",
+    "category": "Security",
+    "rating": 8,
+    "description": "Mapping ISMS controls to infrastructure for ISO 27001 compliance."
+  },
+  {
+    "id": "jWIFdxfYoUinziEvHiC2",
+    "name": "SQL (Postgres) & Tableau",
+    "category": "Tools & Cloud",
+    "rating": 8,
+    "description": "Writing queries and utilizing Tableau to transform datasets into operational reports."
+  },
+  {
+    "id": "lC5PwhlUZp2SlZD2tHhp",
+    "name": "Software Testing & QA",
+    "category": "Frameworks",
+    "rating": 8,
+    "description": "Executing test cases and ensuring reliable software performance before deployment."
+  },
+  {
+    "id": "pParLgKw81DJmQnvGa7P",
+    "name": "Identity & Access Management (IAM)",
+    "category": "Security, Cloud & Governance",
+    "rating": 9,
+    "description": "Auditing access policies, enforcing least-privilege principles, and access control."
+  },
+  {
+    "id": "rWyMa6OzHG7BmsUeQrey",
+    "name": "Arduino & ESP8266",
+    "category": "Hardware / IoT",
+    "rating": 8,
+    "description": "Prototyping hardware solutions utilizing microcontrollers and Wi-Fi modules."
+  }
 ];
 
 export const initialGallery = [
@@ -99,9 +146,46 @@ export const initialGallery = [
 ];
 
 export const initialProjects = [
-  { id: "p1", title: "3D Solar System & MIB Portfolio", category: "Web3D", image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1000&q=80", description: "Interactive 3D Solar System with Men In Black camera lerp dive into India map outline.", github: "https://github.com", live: "http://localhost:5173", featured: true },
-  { id: "p2", title: "IoT Microcontroller Telemetry Hub", category: "Embedded", image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=80", description: "Real-time MQTT telemetry dashboard tracking sensor arrays with TLS 1.3 encryption.", github: "https://github.com", live: "#", featured: true },
-  { id: "p3", title: "Autonomous Drone Flight Controller", category: "Robotics", image: "https://images.unsplash.com/photo-1527977966376-1c8408f9f108?auto=format&fit=crop&w=1000&q=80", description: "C++ flight controller firmware implementing PID stabilization and optical flow.", github: "https://github.com", live: "#", featured: false }
+  {
+    "id": "8uLtiScsnwBfhjZT76lj",
+    "title": "auto fire extinguisher",
+    "category": "Embedded",
+    "image": "https://media.magnific.com/images/home/tools/reimagine-an-image.webp",
+    "description": "An automatic vehicle fire extinguisher is a self-activating safety device installed in high-risk areas like engine bays or battery compartments. It detects flames or extreme heat (around 120°C) and releases suppressing powder or gas within 3 to 5 seconds without manual operation or vehicle wiring. Prices range from ₹350 to ₹1,500 ($5–$20 USD) for compact units.",
+    "github": "https://github.com/santostarkstudio",
+    "live": "na",
+    "featured": true
+  },
+  {
+    "id": "SbizPRH5HmJ5EXjIB2zz",
+    "title": "game",
+    "category": "Web3D",
+    "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1000&q=80",
+    "description": "\"C:\\Users\\santo\\OneDrive\\Pictures\\9b2f66e7ae7fabd7ecb9fb642f46355e.jpg\"\"C:\\Users\\santo\\OneDrive\\Pictures\\9b2f66e7ae7fabd7ecb9fb642f46355e.jpg\"",
+    "github": "https://github.com/santostarkstudio",
+    "live": "na",
+    "featured": true
+  },
+  {
+    "id": "YUJtNhsr9F4rvn4wwL7v",
+    "title": "fake revies detection",
+    "category": "Embedded",
+    "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1000&q=80",
+    "description": "fake review",
+    "github": "https://github.com/santostarkstudio",
+    "live": "#",
+    "featured": true
+  },
+  {
+    "id": "iXpOh4YkID9Z03COYbY7",
+    "title": "demo",
+    "category": "AI",
+    "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1000&q=80",
+    "description": "demo aaa",
+    "github": "https://github.com/santostarkstudio",
+    "live": "#",
+    "featured": true
+  }
 ];
 
 export const initialEducationData = [
@@ -187,48 +271,37 @@ export const initialInterestsData = [
 
 export const initialCertificatesData = [
   {
-    id: "c1",
-    title: "Data Science & Machine Learning Professional",
-    issuer: "IBM / Coursera Certified",
-    date: "Aug 2025",
-    credentialId: "DS-892401-VTU",
-    category: "Data Science",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1000&q=80",
-    summary: "Comprehensive certification covering Python data analysis libraries (Pandas, NumPy, Scikit-learn), predictive statistical modeling, exploratory data visualization, and machine learning pipelines.",
-    verifyUrl: "https://coursera.org/verify/datascience-demo"
+    "id": "ApA4xENauvE8iTNb5dxT",
+    "title": "ISO/IEC 27001 Information Security Associate",
+    "issuer": "SkillFront",
+    "date": "Aug 2026",
+    "credentialId": "",
+    "category": "Cybersecurity",
+    "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1000&q=80",
+    "summary": "iam\n",
+    "verifyUrl": ""
   },
   {
-    id: "c2",
-    title: "Blockchain Systems & Smart Contract Security",
-    issuer: "Ethereum Foundation / IEEE Certified",
-    date: "Nov 2025",
-    credentialId: "ETH-BC-772109",
-    category: "Blockchain",
-    image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=1000&q=80",
-    summary: "Advanced specialization in Solidity smart contract development, consensus mechanisms (PoW, PoS), EVM bytecode execution, cryptographic hashing, and DeFi security audit patterns.",
-    verifyUrl: "https://ethereum.org/en/developers/"
+    "id": "c1",
+    "title": "Data Science & Machine Learning Professional",
+    "issuer": "IBM / Coursera Certified",
+    "date": "Aug 2025",
+    "credentialId": "DS-892401-VTU",
+    "category": "Data Science",
+    "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1000&q=80",
+    "summary": "Comprehensive certification covering Python data analysis libraries (Pandas, NumPy, Scikit-learn), predictive statistical modeling, exploratory data visualization, and machine learning pipelines.",
+    "verifyUrl": "https://coursera.org/verify/datascience-demo"
   },
   {
-    id: "c3",
-    title: "AWS Cloud Solutions Architect Associate",
-    issuer: "Amazon Web Services (AWS)",
-    date: "May 2025",
-    credentialId: "AWS-SAA-904128",
-    category: "Cloud",
-    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1000&q=80",
-    summary: "Validated expertise in designing resilient, fault-tolerant, high-availability VPC networks, EC2 auto-scaling groups, S3 storage tiers, and IAM cloud security architectures.",
-    verifyUrl: "https://aws.amazon.com/verification"
-  },
-  {
-    id: "c4",
-    title: "Full-Stack Web Development & Microservices",
-    issuer: "FreeCodeCamp & Meta",
-    date: "Jan 2025",
-    credentialId: "FCC-FS-441029",
-    category: "Web Development",
-    image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1000&q=80",
-    summary: "Professional certification in React.js, Node.js REST API architectures, MongoDB/PostgreSQL database modeling, Docker containerization, and OAuth2 security authentication flows.",
-    verifyUrl: "https://freecodecamp.org/certification/demo"
+    "id": "flGbkKP6LfKuxTzf8hne",
+    "title": "santo",
+    "issuer": "stark",
+    "date": "aug 2025",
+    "credentialId": "dsvsdvsdvds",
+    "category": "Cloud",
+    "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1000&q=80",
+    "summary": "aganetic ai\ndgfjdsgfhsdglfhsdkjlghklewhgufehskgjnsdkjghiuleshgkjsehlugihsdkmlhguisdbgvkjhsludignskjelghljdsbngkjhsdkjgvnsdliughlsekjhgluisdbhgkjshdkjghrsliughkjsdfnb;jsfh;bovjnsd;jbh;sjadfbn;jslfdhb;ljsdfhbousafdn;lbhs",
+    "verifyUrl": ""
   }
 ];
 
@@ -259,41 +332,41 @@ export const initialStudioProjects = [
 ];
 
 export const initialHeroInfo = {
-  id: "main_hero",
-  brandName: "SANTO STARK",
-  brandSubtitle: "Systems & Web Developer",
-  brandLogo: "",
-  greeting: "Hi, I'm Santo",
-  title: "Full-Stack Engineer & 3D Web Developer",
-  subtitle: "Crafting modern interactive web apps, 3D WebGL experiences, systems backend, and intelligent AI tools.",
-  badge: "Available for Hire ✦",
-  email: "santoshdabadiaiyyanna@gmail.com",
-  phone: "8431069633",
-  location: "India 🇮🇳",
-  github: "https://github.com",
-  linkedin: "https://linkedin.com",
-  twitter: "https://x.com",
-  instagram: "https://instagram.com",
-  youtube: "https://youtube.com",
-  leetcode: "https://leetcode.com",
-  resume: "https://drive.google.com/file/d/YOUR_RESUME_FILE_ID/view",
-  skillPill1: "<> C++ & Python",
-  skillPill2: "⚛ React & Three.js 3D",
-  skillPill3: ">_ Firebase & Cloud"
+  "id": "main_hero",
+  "brandName": "SANTO STARK STUDIO",
+  "brandSubtitle": "CSE Grad | Cyber Pro",
+  "brandLogo": "/assets/brand-logo.webp",
+  "greeting": "Hi, I'm SANTOSHA D",
+  "title": "Aspiring Cyber Pro & CSE Grad",
+  "subtitle": "Computer Science Engineering graduate and aspiring Cloud Security and GRC professional focused on IAM. I am passionate about bridging technical security with IT audit, software testing, and project management.",
+  "badge": "Seeking Cybersecurity Internships ✦",
+  "email": "santoshdabadiaiyyanna@gmail.com",
+  "phone": "8431069633",
+  "location": "India 🇮🇳",
+  "github": "https://github.com/santostarkstudio",
+  "linkedin": "http://www.linkedin.com/in/santosha-dabadi-aiyyanna-ba0069333",
+  "twitter": "https://x.com/SantoStark15",
+  "instagram": "https://www.instagram.com/santoshdabadiaiyyanna?dlrf=bHF2bjNsa2JjdzRx",
+  "youtube": "https://youtube.com/@sdacreations2017?si=xAbeLb-PBXmB0I1R",
+  "leetcode": "https://leetcode.com/u/SantoStark/",
+  "resume": "",
+  "skillPill1": "Python",
+  "skillPill2": " IAM, GRC, IT Audit",
+  "skillPill3": "Blender"
 };
 
 export const initialAboutInfo = {
-  id: "main_about",
-  title: "Systems Developer & CSE Undergraduate",
-  institution: "Visvesvaraya Technological University (VTU)",
-  bio: "I am a final-year Computer Science Engineering student passionate about building real-time embedded hardware, low-latency microservices, and modern WebGL interactive user interfaces. My academic background combines computer architecture, operating systems, data structures, and networking with hands-on hardware prototyping.",
-  photo: "",
-  card1Title: "Systems & C++",
-  card1Desc: "Memory optimization, socket communication, multi-threaded task management.",
-  card2Title: "Web & 3D Graphics",
-  card2Desc: "React, Vite, Three.js/R3F WebGL shaders, Tailwind CSS, and Firebase backends.",
-  card3Title: "IoT & Embedded",
-  card3Desc: "ESP32, FreeRTOS, MQTT, sensor bus protocols (I2C, SPI), and custom PCB design."
+  "id": "main_about",
+  "title": "Aspiring Cybersecurity Specialist & Computer Science Engineer",
+  "institution": "MVJ College of Engineering ,  Bengaluru, Karnataka, India, affiliated with Visvesvaraya Technological University (VTU)",
+  "bio": "I am Santosha D, a B.E. Computer Science Engineering graduate and aspiring cybersecurity professional. Bridging 3.4 years of IT operations experience with hands-on technical engineering, I specialize in Cloud Security, IAM, and GRC. From mapping ISO 27001 compliance controls to building secure IoT and AI systems, I am passionate about designing technology that is both highly functional and structurally secure.",
+  "photo": "",
+  "card1Title": "Cybersecurity & IAM, GRC, IT Audit",
+  "card1Desc": "Auditing access policies, securing cloud environments, and mapping infrastructure to global compliance standards.",
+  "card2Title": "IT Operations & QA",
+  "card2Desc": "Backed by 3.4 years of professional experience managing technical workflows, organizational databases, and client support",
+  "card3Title": "Software Testing",
+  "card3Desc": "Executing software testing methodologies to identify bugs, validate functionality, and ensure reliable system deployments."
 };
 
 // Fallback Local Storage Helper

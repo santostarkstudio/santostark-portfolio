@@ -75,7 +75,7 @@ export default function Home() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
             </span>
-            <span>{heroInfo.tagline || 'SYSTEMS ARCHITECT & DATA SCIENCE LEAD'}</span>
+            <span>{heroInfo.tagline || 'Seeking Cybersecurity Internships ✦'}</span>
           </motion.div>
 
           <motion.h1
@@ -84,9 +84,9 @@ export default function Home() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-4xl md:text-7xl font-extrabold tracking-tight text-white leading-tight"
           >
-            {heroInfo.name || 'SANTOSH D A'}
+            {heroInfo.name || 'Hi, I\'m SANTOSHA D'}
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-emerald-400 to-violet-500 mt-1">
-              {heroInfo.title || 'Engineering & AI Leader'}
+              {heroInfo.title || 'Aspiring Cyber Pro & CSE Grad'}
             </span>
           </motion.h1>
 
@@ -96,7 +96,7 @@ export default function Home() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-sm md:text-lg text-slate-300 max-w-2xl mx-auto font-light leading-relaxed drop-shadow-md"
           >
-            {heroInfo.subtitle || 'Building high-throughput full-stack architectures, machine learning models, and real-time distributed systems.'}
+            {heroInfo.subtitle || 'Computer Science Engineering graduate and aspiring Cloud Security and GRC professional focused on IAM. I am passionate about bridging technical security with IT audit, software testing, and project management.'}
           </motion.p>
 
           {/* Dynamic Skill Chips (Editable via Admin CMS) */}

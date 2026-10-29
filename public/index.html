@@ -66,37 +66,27 @@
   <body class="bg-[#090a0f] text-slate-100 font-sans antialiased selection:bg-cyan-500 selection:text-black overflow-x-hidden touch-manipulation">
     
     <!-- 4K Space Video Backdrop -->
-    <div id="orbital-video-container" style="position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; overflow: hidden; opacity: 0.22; will-change: opacity, transform;">
-      <video id="orbital-bg-video" autoplay loop muted playsinline preload="none" fetchpriority="low" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; filter: contrast(1.2) brightness(0.75) saturate(1.1);">
-        <source src="/bg-video.mp4" type="video/mp4" />
-      </video>
-      
-      <!-- Obsidian Shield -->
-      <div style="position: absolute; inset: 0; background: rgba(9, 10, 15, 0.65);"></div>
-      
-      <!-- Seamless Edge Feathering -->
+    <!-- Pure CSS Deep Obsidian Space Canvas (0 MB, 0 delay, 120 FPS) -->
+    <div id="orbital-video-container" style="position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; overflow: hidden; background: radial-gradient(circle at 50% 30%, rgba(13, 20, 36, 0.45) 0%, #090a0f 65%, #030508 100%);">
       <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, #090a0f 0%, transparent 15%, transparent 85%, #090a0f 100%);"></div>
     </div>
 
     <div id="root" style="position: relative; z-index: 10; background: transparent; min-height: 100vh;"></div>
 
-    <!-- Smart Video Loader: loads & plays after first frame (no blocking) -->
+    <!-- Instant cache upgrade to v2 (Real Cyber & MVJ Data) -->
     <script>
       (function() {
-        function startVideo() {
-          var v = document.getElementById('orbital-bg-video');
-          if (!v) return;
-          v.load();
-          var p = v.play();
-          if (p && p.catch) p.catch(function() {});
-        }
-        if (document.readyState === 'complete') {
-          requestAnimationFrame(startVideo);
-        } else {
-          window.addEventListener('load', function() {
-            requestAnimationFrame(startVideo);
-          }, { once: true });
-        }
+        try {
+          if (localStorage.getItem('stark_data_version') !== 'v2_cyber_mvj') {
+            var keys = ['hero_info', 'about_info', 'skills', 'projects', 'certificates'];
+            for (var i = 0; i < keys.length; i++) {
+              localStorage.removeItem('portfolio_' + keys[i]);
+              localStorage.removeItem('portfolio_' + keys[i] + '_initialized');
+            }
+            localStorage.removeItem('stark_visual_edits_v1');
+            localStorage.setItem('stark_data_version', 'v2_cyber_mvj');
+          }
+        } catch(e) {}
       })();
     </script>
 
@@ -107,11 +97,11 @@
     <script defer src="/assets/three-gltf-loader.js"></script>
     <script defer src="/assets/three-rgbe-loader.js"></script>
     <script defer src="/assets/three-orbit-controls.js"></script>
-    <script defer src="/assets/studio-ironman-3d.js?v=stark-model-v5"></script>
-    <script defer src="/assets/stark-content-engine.js?v=stark-model-v5"></script>
+    <script defer src="/assets/studio-ironman-3d.js?v=stark-data-v6"></script>
+    <script defer src="/assets/stark-content-engine.js?v=stark-data-v6"></script>
 
     <!-- Built JS bundle (React app) -->
-    <script type="module" crossorigin src="/assets/index-BMqPMOZ-.js?v=stark-model-v5"></script>
+    <script type="module" crossorigin src="/assets/index-BMqPMOZ-.js?v=stark-data-v6"></script>
 
     <script>
       (function() {
