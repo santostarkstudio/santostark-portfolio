@@ -37,6 +37,13 @@
       header{background:transparent!important}
       .min-h-screen{min-height:100vh}
       .bg-dark{background:#090a0f}
+      /* Checkpoint 7: High-FPS Content Visibility & Frame Pacing Engine */
+      @media (min-width: 640px) {
+        #skills, #projects, #experience, #contact {
+          content-visibility: auto;
+          contain-intrinsic-size: 1px 750px;
+        }
+      }
       /* Fix Certificate Summary Modal Overflow */
       .fixed[class*="z-[999999]"]{overflow-y:auto!important;padding:16px!important;}
       .fixed[class*="z-[999999]"]>div:last-child{max-height:88vh!important;overflow-y:auto!important;word-break:break-word!important;overflow-wrap:anywhere!important;margin:auto!important;}
@@ -58,7 +65,7 @@
     
     <!-- 4K Space Video Backdrop -->
     <div id="orbital-video-container" style="position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; overflow: hidden; opacity: 0.22; will-change: opacity, transform;">
-      <video id="orbital-bg-video" autoplay loop muted playsinline preload="none" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; filter: contrast(1.2) brightness(0.75) saturate(1.1);">
+      <video id="orbital-bg-video" autoplay loop muted playsinline preload="none" fetchpriority="low" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; filter: contrast(1.2) brightness(0.75) saturate(1.1);">
         <source src="/bg-video.mp4" type="video/mp4" />
       </video>
       
@@ -91,13 +98,15 @@
       })();
     </script>
 
-        <!-- Three.js 3D Engine & Loaders for Studio 3D Canvas -->
-    <script src="/assets/three.min.js"></script>
-    <script src="/assets/three-gltf-loader.js"></script>
-    <script src="/assets/three-rgbe-loader.js"></script>
-    <script src="/assets/three-orbit-controls.js"></script>
-    <script src="/assets/studio-ironman-3d.js"></script>
-    <script src="/assets/stark-content-engine.js"></script>
+        <!-- Three.js 3D Engine & Loaders — DEFERRED (non-blocking parse) -->
+    <!-- Preload Three.js core so it fetches early but doesn't block render -->
+    <link rel="preload" href="/assets/three.min.js" as="script">
+    <script defer src="/assets/three.min.js"></script>
+    <script defer src="/assets/three-gltf-loader.js"></script>
+    <script defer src="/assets/three-rgbe-loader.js"></script>
+    <script defer src="/assets/three-orbit-controls.js"></script>
+    <script defer src="/assets/studio-ironman-3d.js"></script>
+    <script defer src="/assets/stark-content-engine.js"></script>
 
     <!-- Built JS bundle (React app) -->
     <script type="module" crossorigin src="/assets/index-BMqPMOZ-.js?v=filters-sort-v1"></script>

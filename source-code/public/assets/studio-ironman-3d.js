@@ -69,7 +69,7 @@
       powerPreference: 'high-performance'
     });
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5)); // ⚡ DPR capped at 1.5 for GPU savings
     if (renderer.outputColorSpace !== undefined) {
       renderer.outputColorSpace = THREE.SRGBColorSpace;
     }
@@ -565,8 +565,13 @@
       window.addEventListener('deviceorientation', handleStudioGyro, true);
     }
 
+    // ⚡ Pre-allocated scratch objects (avoid GC pressure in hot loop)
+    const _scratchV3 = new THREE.Vector3();
+
     function animate() {
       animationFrameId = requestAnimationFrame(animate);
+      // ⚡ Reset WebGL draw-call counters each frame (prevents memory accumulation)
+      renderer.info.reset();
       const elapsedTime = clock.getElapsedTime();
 
       // 1. Forward Holographic Projection Cone Veil Breathing (#00e5ff haze)
@@ -646,6 +651,27 @@
     }
 
     animate();
+
+    // ⚡ IntersectionObserver RAF Pause Engine:
+    // When Iron Man canvas is off-screen, stop the animation loop entirely.
+    // Saves 100% GPU when user is scrolled away from Studio page.
+    (function() {
+      const obs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            // Canvas back on-screen → restart RAF
+            if (!animationFrameId) { animate(); }
+          } else {
+            // Canvas off-screen → pause RAF
+            if (animationFrameId) {
+              cancelAnimationFrame(animationFrameId);
+              animationFrameId = null;
+            }
+          }
+        });
+      }, { threshold: 0.01 });
+      obs.observe(container);
+    })();
 
     // Resize Handler
     function onResize() {
