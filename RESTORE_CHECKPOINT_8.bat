@@ -7,3 +7,4 @@ git checkout checkpoint-8-instant-model-and-welcome
 echo.
 echo Checkpoint 8 restored successfully.
 pause
+

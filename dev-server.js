@@ -108,9 +108,9 @@ function getCacheControl(urlPath, ext) {
   if (urlPath.startsWith('/assets/') && /[.-][a-zA-Z0-9_-]{6,16}\.(js|css|woff2?|webp|png|jpg|glb|hdr)$/.test(urlPath)) {
     return 'public, max-age=31536000, immutable';
   }
-  // Vendor & engine JS scripts in /assets/
+  // Vendor & engine JS/CSS scripts in /assets/ (revalidate immediately for live edits)
   if (urlPath.startsWith('/assets/') && (ext === '.js' || ext === '.css')) {
-    return 'public, max-age=86400'; // 1 day for non-hashed assets with ETag revalidation
+    return 'no-cache, must-revalidate';
   }
   // Font files → long cache
   if (['.woff', '.woff2', '.ttf', '.otf'].includes(ext)) {

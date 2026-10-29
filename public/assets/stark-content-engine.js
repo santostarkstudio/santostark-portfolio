@@ -669,7 +669,12 @@
 
   function playStudioWelcome(force) {
     if (!isStudioPage() && !force) return;
-    if (activeOverlay) return; // Already running
+    // Remove any existing overlay from DOM first to prevent ghosting
+    const existing = document.getElementById('stark-studio-welcome-overlay');
+    if (existing && existing.parentNode) {
+      existing.parentNode.removeChild(existing);
+    }
+    activeOverlay = null;
 
     // 1. Deep Obsidian Stage (#030712) with subtle radial cyan glow
     const overlay = document.createElement('div');
@@ -789,6 +794,16 @@
     // Auto-transition after exactly 3.0 seconds
     setTimeout(finishWelcome, 3000);
   }
+
+  // ⚡ Expose global API so React components and router can invoke welcome directly
+  window.playStudioWelcome = playStudioWelcome;
+  window.dismissStudioWelcome = function() {
+    const existing = document.getElementById('stark-studio-welcome-overlay');
+    if (existing && existing.parentNode) {
+      existing.parentNode.removeChild(existing);
+    }
+    activeOverlay = null;
+  };
 
   // Hook into navigation events (triggers every time entering Studio from portfolio)
   function checkNav() {

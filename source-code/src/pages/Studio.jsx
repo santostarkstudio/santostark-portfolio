@@ -286,8 +286,11 @@ export default function Studio() {
     return () => clearInterval(t);
   }, []);
 
-  // Initialize Interactive 3D Iron Man Model with Arc Reactor Zoom Transition
+  // Initialize Interactive 3D Iron Man Model & Welcome Animation
   useEffect(() => {
+    if (window.playStudioWelcome) {
+      window.playStudioWelcome(true);
+    }
     let cleanup3D = null;
     const timer = setTimeout(() => {
       if (window.initStarkIronMan) {
@@ -297,6 +300,7 @@ export default function Studio() {
     return () => {
       clearTimeout(timer);
       if (cleanup3D) cleanup3D();
+      if (window.dismissStudioWelcome) window.dismissStudioWelcome();
     };
   }, []);
 

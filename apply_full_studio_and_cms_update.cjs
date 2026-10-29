@@ -11,6 +11,9 @@ function DedicatedStudioPage() {
 
   q.useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
+    if (window.playStudioWelcome) {
+      window.playStudioWelcome(true);
+    }
     const t = setInterval(() => setPing(p => !p), 1200);
     const onKey = (e) => { if (e.key === "Escape") setSelected(null); };
     window.addEventListener("keydown", onKey);
@@ -31,6 +34,7 @@ function DedicatedStudioPage() {
       window.removeEventListener("keydown", onKey);
       clearTimeout(timer3D);
       if (cleanup3D) cleanup3D();
+      if (window.dismissStudioWelcome) window.dismissStudioWelcome();
     };
   }, []);
 
