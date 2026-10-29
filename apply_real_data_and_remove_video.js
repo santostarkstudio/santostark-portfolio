@@ -308,3 +308,4 @@ bundleTargets.forEach(target => {
 });
 
 console.log('\n🎉 ALL REAL FIRESTORE DATA SUCCESSFULLY BAKED INTO WEBSITE & 56.6MB VIDEO REMOVED!');
+

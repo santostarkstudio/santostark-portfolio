@@ -10,6 +10,14 @@ if (fs.existsSync(path.join(__dirname, 'index.html'))) {
   fs.copyFileSync(path.join(__dirname, 'index.html'), path.join(outDir, 'index.html'));
 }
 
+if (fs.existsSync(path.join(__dirname, '_redirects'))) {
+  fs.copyFileSync(path.join(__dirname, '_redirects'), path.join(outDir, '_redirects'));
+}
+
+if (fs.existsSync(path.join(__dirname, '_headers'))) {
+  fs.copyFileSync(path.join(__dirname, '_headers'), path.join(outDir, '_headers'));
+}
+
 // bg-video.mp4 removed for 56.6MB performance boost
 
 function copyRecursiveSync(src, dest) {
