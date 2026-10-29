@@ -104,7 +104,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.25 }}
-            className="flex flex-wrap items-center justify-center gap-2.5 pt-2 text-xs font-mono text-slate-300 pointer-events-auto"
+            className="flex flex-nowrap sm:flex-wrap items-center justify-center gap-2.5 pt-2 text-xs font-mono text-slate-300 pointer-events-auto overflow-x-auto no-scrollbar touch-pan-x px-2"
           >
             <span className="px-3.5 py-1.5 rounded-xl bg-white/5 border border-white/10 flex items-center space-x-1.5 hover:border-cyan-400/40 hover:bg-white/10 transition-all shadow-sm">
               <Code className="w-3.5 h-3.5 text-cyan-400" />
@@ -124,11 +124,11 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="flex flex-wrap justify-center gap-4 pt-2 pointer-events-auto"
+            className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4 pt-2 pointer-events-auto w-full sm:w-auto px-6 sm:px-0"
           >
             <button
               onClick={() => navigate('/projects')}
-              className="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-cyan-500 to-emerald-500 text-slate-950 font-bold text-sm shadow-xl shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:scale-105 transition-all flex items-center space-x-2"
+              className="w-full sm:w-auto justify-center px-8 py-3.5 rounded-2xl bg-gradient-to-r from-cyan-500 to-emerald-500 text-slate-950 font-bold text-sm shadow-xl shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:scale-105 transition-all flex items-center space-x-2"
             >
               <span>Explore Projects</span>
               <ArrowRight className="w-4 h-4" />
@@ -137,7 +137,7 @@ export default function Home() {
             <button
               onClick={handleGetInTouchClick}
               disabled={isZoomingToEarth}
-              className="px-8 py-3.5 rounded-2xl glass-panel border border-white/20 text-slate-100 font-semibold text-sm hover:border-cyan-400 hover:bg-white/10 hover:scale-105 transition-all flex items-center space-x-2 group"
+              className="w-full sm:w-auto justify-center px-8 py-3.5 rounded-2xl glass-panel border border-white/20 text-slate-100 font-semibold text-sm hover:border-cyan-400 hover:bg-white/10 hover:scale-105 transition-all flex items-center space-x-2 group"
             >
               <Globe className="w-4 h-4 text-cyan-400 group-hover:rotate-45 transition-transform" />
               <span>{isZoomingToEarth ? '🚀 Orbital Descent Initiated...' : 'Establish Contact'}</span>

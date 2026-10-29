@@ -197,16 +197,22 @@ function DedicatedStudioPage() {
           m.jsxs("section", {
             className: "space-y-8",
             children: [
-              /* Wing Buttons */
+              /* Wing Buttons (Touch-scrollable rail on mobile, centered on desktop) */
               m.jsx("div", {
-                className: "flex flex-wrap gap-2.5 sm:gap-3 justify-center",
+                className: "flex flex-nowrap sm:flex-wrap gap-2 sm:gap-3 justify-start sm:justify-center overflow-x-auto no-scrollbar pb-2 px-1 touch-pan-x",
                 children: wings.map((w) => {
                   const active = tab === w.id;
                   const c = CM[w.color];
                   return m.jsx("button", {
                     key: w.id,
-                    onClick: () => { setTab(w.id); setFilter("All"); },
-                    className: "px-4 sm:px-6 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all border flex items-center gap-2 " +
+                    onClick: () => {
+                      setTab(w.id);
+                      setFilter("All");
+                      if (typeof window !== "undefined" && window.starkTriggerWingReaction) {
+                        window.starkTriggerWingReaction(w.id);
+                      }
+                    },
+                    className: "shrink-0 px-4 sm:px-6 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all border flex items-center gap-2 cursor-pointer active:scale-95 " +
                       (active
                         ? (c.bg + " " + c.text + " " + c.border + " shadow-lg " + c.glow + " scale-105")
                         : "glass-card border-white/10 text-slate-400 hover:text-white hover:border-white/20"),
@@ -307,15 +313,15 @@ function DedicatedStudioPage() {
                 ]
               }),
 
-              /* Grid of Projects */
+              /* Grid of Projects (Responsive: 1-col mobile, 2-col tablet, 3-col desktop, 4-col ultrawide) */
               m.jsx("div", {
-                className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5",
+                className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-5",
                 children: filteredList.length > 0 ? filteredList.map((p) => {
                   const c = CM[p.color] || CM.cyan;
                   return m.jsxs("div", {
                     key: p.id || p.title,
                     onClick: () => setSelected(p),
-                    className: "glass-card rounded-3xl border " + c.border + " p-5 space-y-4 shadow-xl flex flex-col justify-between hover:-translate-y-1.5 hover:shadow-2xl transition-all cursor-pointer group",
+                    className: "glass-card rounded-3xl border " + c.border + " p-4 sm:p-5 space-y-4 shadow-xl flex flex-col justify-between hover:-translate-y-1.5 hover:shadow-2xl hover:border-cyan-400/40 active:scale-[0.98] transition-all cursor-pointer group",
                     children: [
                       m.jsxs("div", {
                         className: "space-y-3",
@@ -479,11 +485,11 @@ function DedicatedStudioPage() {
         ]
       }),
 
-      /* Lightbox Detail Modal */
+      /* Lightbox Detail Modal (Mobile-responsive max-height & touch scroll) */
       selected && m.jsx("div", {
-        className: "fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md",
+        className: "fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md",
         children: m.jsxs("div", {
-          className: "relative w-full max-w-2xl glass-panel rounded-3xl border border-cyan-500/40 p-6 sm:p-8 space-y-6 shadow-2xl bg-dark-900/95",
+          className: "relative w-full max-w-2xl max-h-[90vh] overflow-y-auto glass-panel rounded-3xl border border-cyan-500/40 p-5 sm:p-8 space-y-5 shadow-2xl bg-dark-900/95",
           children: [
             m.jsx("button", {
               onClick: () => setSelected(null),

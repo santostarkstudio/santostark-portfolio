@@ -39,10 +39,26 @@
 
     // 40mm cinematic camera with slight downward tilt aligned with pedestal
     const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
-    const camY = 0.05;
-    const camZ = 3.95;
-    camera.position.set(0, camY, camZ);
-    camera.lookAt(0, -0.25, 0);
+    
+    // Responsive Camera Auto-Framing (Adaptive FOV for Mobile & Tablet Portrait)
+    function updateResponsiveCamera(w, h) {
+      const aspect = w / h;
+      if (aspect < 1.0) {
+        // Vertical mobile/tablet screen: widen FOV from 40 to ~54 degrees
+        // so full pedestal and Iron Man fit vertically without side cutoffs
+        camera.fov = Math.min(56, 40 / Math.max(0.68, aspect));
+        camera.position.set(0, 0.05 + (1 - aspect) * 0.12, 3.95);
+        camera.lookAt(0, -0.22, 0);
+      } else {
+        // Desktop / Laptop widescreen:
+        camera.fov = 40;
+        camera.position.set(0, 0.05, 3.95);
+        camera.lookAt(0, -0.25, 0);
+      }
+      camera.aspect = aspect;
+      camera.updateProjectionMatrix();
+    }
+    updateResponsiveCamera(width, height);
 
     // ==========================================
     // 2. RENDERER (ACES Filmic & High Dynamic Range)
@@ -482,6 +498,9 @@
       const turns = Math.floor(current / twoPi);
       targetSnapRotationY = (turns * twoPi) + (nearest === twoPi ? 0 : nearest);
       isSnapping = true;
+      if (typeof navigator !== 'undefined' && navigator.vibrate) {
+        try { navigator.vibrate(12); } catch(e) {}
+      }
     }
 
     const dom = renderer.domElement;
@@ -597,8 +616,7 @@
       if (!container) return;
       const w = container.clientWidth  || window.innerWidth;
       const h = container.clientHeight || window.innerHeight || 720;
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
+      updateResponsiveCamera(w, h);
       renderer.setSize(w, h);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     }
@@ -606,6 +624,28 @@
     window.addEventListener('resize', onResize);
 
     // Cleanup function
+    
+    // Suit Reactivity Hook (reacts when visitor clicks Studio Wings)
+    window.starkTriggerWingReaction = function(wingId) {
+      if (!modelGroup) return;
+      autoRotate = false;
+      clearTimeout(idleTimer);
+      let targetAngle = 0;
+      if (wingId === 'technical')     targetAngle = -0.24; // subtle lean left
+      if (wingId === 'entertainment') targetAngle =  0.24; // subtle lean right
+      if (wingId === 'arts')          targetAngle = -0.12;
+      if (wingId === 'other')         targetAngle =  0.0;
+      targetSnapRotationY = targetAngle;
+      isSnapping = true;
+      if (pedestalRimLight) {
+        pedestalRimLight.intensity = 2.2;
+        setTimeout(() => { if (pedestalRimLight) pedestalRimLight.intensity = 1.2; }, 500);
+      }
+      if (typeof navigator !== 'undefined' && navigator.vibrate) {
+        try { navigator.vibrate([15, 20, 15]); } catch(e) {}
+      }
+    };
+
     return function destroy() {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize',     onResize);

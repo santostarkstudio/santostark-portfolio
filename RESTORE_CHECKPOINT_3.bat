@@ -12,3 +12,4 @@ echo Checkpoint 3 restored successfully!
 echo Launching server at http://localhost:3000 ...
 node dev-server.js
 pause
+

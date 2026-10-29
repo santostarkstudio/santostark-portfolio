@@ -409,15 +409,15 @@ export default function Studio() {
         <section className="space-y-8">
           
           {/* Wing Tab Buttons */}
-          <div className="flex flex-wrap gap-2.5 sm:gap-3 justify-center">
+          <div className="flex flex-nowrap sm:flex-wrap gap-2.5 sm:gap-3 justify-start sm:justify-center overflow-x-auto no-scrollbar touch-pan-x pb-1">
             {WINGS.map((w) => {
               const active = activeWing === w.id;
               const c = COLOR_MAP[w.color];
               return (
                 <button
                   key={w.id}
-                  onClick={() => { setActiveWing(w.id); setStatusFilter('All'); }}
-                  className={`px-4 sm:px-6 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all border flex items-center gap-2 ${
+                  onClick={() => { setActiveWing(w.id); setStatusFilter('All'); if (window.starkTriggerWingReaction) window.starkTriggerWingReaction(w.id); }}
+                  className={`shrink-0 px-4 sm:px-6 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all active:scale-95 border flex items-center gap-2 ${
                     active
                       ? `${c.bg} ${c.text} ${c.border} shadow-lg ${c.glow} scale-105`
                       : 'glass-card border-white/10 text-slate-400 hover:text-white hover:border-white/20'
@@ -515,7 +515,7 @@ export default function Studio() {
           </div>
 
           {/* Grid of Interactive Project Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">
             {filteredList.length > 0 ? (
               filteredList.map((p) => {
                 const c = COLOR_MAP[p.color] || COLOR_MAP.cyan;
@@ -523,7 +523,7 @@ export default function Studio() {
                   <div
                     key={p.id}
                     onClick={() => setSelectedProject(p)}
-                    className={`glass-card rounded-3xl border ${c.border} p-5 space-y-4 shadow-xl flex flex-col justify-between hover:-translate-y-1.5 hover:shadow-2xl transition-all cursor-pointer group`}
+                    className={`glass-card rounded-3xl border ${c.border} p-5 space-y-4 shadow-xl flex flex-col justify-between hover:-translate-y-1.5 hover:shadow-2xl hover:border-cyan-400/40 active:scale-[0.98] transition-all cursor-pointer group`}
                   >
                     <div className="space-y-3">
                       <div className="flex items-center justify-between gap-2">
@@ -655,7 +655,7 @@ export default function Studio() {
               initial={{ opacity: 0, scale: 0.95, y: 15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 15 }}
-              className="relative w-full max-w-2xl glass-panel rounded-3xl border border-cyan-500/40 p-6 sm:p-8 space-y-6 shadow-2xl bg-dark-900/95"
+              className="relative w-full max-w-2xl glass-panel rounded-3xl border border-cyan-500/40 p-5 sm:p-8 space-y-6 shadow-2xl bg-dark-900/95 max-h-[90vh] overflow-y-auto"
             >
               {/* Close Button */}
               <button

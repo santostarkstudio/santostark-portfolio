@@ -161,7 +161,7 @@ function AsteroidBelt({ count = 450, innerRadius = 5.0, outerRadius = 5.5 }) {
 }
 
 // ─── Solar System ────────────────────────────────────────────────────────────
-function SolarSystem({ earthRef, isZoomingToEarth }) {
+function SolarSystem({ earthRef, isZoomingToEarth, isMobile }) {
   const sunR = useRef(), coronaR = useRef(), mercR = useRef(), venR = useRef();
   const earthGR = useRef(), moonR = useRef(), marsR = useRef(), jupR = useRef();
   const satGR = useRef(), satR = useRef(), urR = useRef(), nepR = useRef();
@@ -249,7 +249,7 @@ function SolarSystem({ earthRef, isZoomingToEarth }) {
   });
 
   return (
-    <group rotation={[0.25, 0, 0]}>
+    <group rotation={[isMobile ? 0.45 : 0.25, 0, 0]}>
       {/* ── Sun ── */}
       <group>
         <mesh ref={sunR}>
@@ -519,7 +519,7 @@ export default function HeroCanvas({ isZoomingToEarth = false, onEarthZoomComple
       style={{ touchAction: isTouchDevice ? 'pan-y' : 'auto' }}
     >
       <Canvas
-        camera={{ position: [defaultPos.x, defaultPos.y, defaultPos.z], fov: 50 }}
+        camera={{ position: [defaultPos.x, defaultPos.y, defaultPos.z], fov: isTouchDevice ? 56 : 50 }}
         dpr={isTouchDevice ? [1, 1.2] : [1, 1.5]}
         frameloop={paused ? 'never' : 'always'}
         gl={{ antialias: !isTouchDevice, alpha: true, powerPreference: 'high-performance' }}
@@ -527,8 +527,8 @@ export default function HeroCanvas({ isZoomingToEarth = false, onEarthZoomComple
         <ambientLight intensity={0.5} />
         <directionalLight position={[10, 15, 10]} intensity={0.7} color="#38bdf8" />
         <directionalLight position={[-10, -10, -10]} intensity={0.35} color="#a855f7" />
-        <Stars radius={85} depth={80} count={isTouchDevice ? 2200 : 6000} factor={5} saturation={0.95} fade speed={1.2} />
-        <SolarSystem earthRef={earthRef} isZoomingToEarth={isZoomingToEarth} />
+        <Stars radius={85} depth={80} count={isTouchDevice ? 3000 : 6000} factor={5} saturation={0.95} fade speed={1.2} />
+        <SolarSystem earthRef={earthRef} isZoomingToEarth={isZoomingToEarth} isMobile={isTouchDevice} />
         <CosmicDust count={isTouchDevice ? 800 : 2000} />
         <CameraController
           earthRef={earthRef}

@@ -353,7 +353,167 @@
   }
 
   // 6. Public API
+  
+  // ─── TABBED ADMIN CMS MODAL (Option A) ────────────────────────────────────
+  function openAdminCMSModal() {
+    let existing = document.getElementById('stark-admin-cms-modal-root');
+    if (existing) existing.remove();
+
+    const currentEdits = Object.assign({}, savedEdits);
+
+    const modal = document.createElement('div');
+    modal.id = 'stark-admin-cms-modal-root';
+    modal.innerHTML = `
+      <div style="position:fixed;inset:0;background:rgba(9,10,15,0.85);backdrop-filter:blur(12px);z-index:9999999;display:flex;align-items:center;justify-content:center;padding:16px;">
+        <div style="max-width:850px;width:100%;max-height:90vh;background:#0d111a;border:1px solid rgba(34,211,238,0.3);border-radius:24px;box-shadow:0 25px 60px rgba(0,0,0,0.8), 0 0 30px rgba(34,211,238,0.15);display:flex;flex-direction:column;overflow:hidden;color:#e2e8f0;font-family:'Plus Jakarta Sans',sans-serif;">
+          
+          <!-- Header -->
+          <div style="padding:18px 24px;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:between;background:rgba(15,23,42,0.6);">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <span style="font-size:22px;">📝</span>
+              <div>
+                <h3 style="font-size:16px;font-weight:800;color:#22d3ee;margin:0;letter-spacing:0.02em;">Universal Site Text & Copy Manager</h3>
+                <p style="font-size:11px;color:#94a3b8;margin:2px 0 0 0;font-family:monospace;">Option A: Tabbed Content Editor — Syncs directly to Cloud & Live Site</p>
+              </div>
+            </div>
+            <button id="stark-cms-modal-close" style="background:transparent;border:none;color:#94a3b8;font-size:20px;cursor:pointer;padding:4px 8px;border-radius:8px;">✕</button>
+          </div>
+
+          <!-- Category Tabs -->
+          <div style="display:flex;gap:8px;padding:12px 24px;border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(10,14,23,0.8);overflow-x:auto;">
+            <button class="stark-tab-btn active" data-tab="home" style="padding:6px 14px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;background:rgba(34,211,238,0.15);border:1px solid #22d3ee;color:#22d3ee;">🏠 Hero & Home</button>
+            <button class="stark-tab-btn" data-tab="about" style="padding:6px 14px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:#94a3b8;">👤 About Bio</button>
+            <button class="stark-tab-btn" data-tab="studio" style="padding:6px 14px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:#94a3b8;">🎬 Studio Hub</button>
+            <button class="stark-tab-btn" data-tab="projects" style="padding:6px 14px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:#94a3b8;">💼 Projects & Work</button>
+            <button class="stark-tab-btn" data-tab="contact" style="padding:6px 14px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:#94a3b8;">✉️ Contact</button>
+          </div>
+
+          <!-- Body Form Fields -->
+          <div id="stark-cms-tab-content" style="flex:1;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:18px;">
+            <!-- Injected dynamically based on active tab -->
+          </div>
+
+          <!-- Footer Actions -->
+          <div style="padding:16px 24px;border-top:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:space-between;background:rgba(15,23,42,0.8);">
+            <div style="font-size:11px;color:#94a3b8;font-family:monospace;">Auto-syncs to LocalStorage & Cloud DB</div>
+            <div style="display:flex;gap:12px;">
+              <button id="stark-cms-modal-cancel" style="padding:8px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.15);background:transparent;color:#cbd5e1;font-size:12px;font-weight:600;cursor:pointer;">Cancel</button>
+              <button id="stark-cms-modal-save" style="padding:8px 22px;border-radius:10px;border:none;background:linear-gradient(to right,#06b6d4,#3b82f6);color:#090a0f;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 0 15px rgba(6,182,212,0.4);">💾 Save All Changes</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    const tabFields = {
+      home: [
+        { key: 'hero_tagline', label: 'Tagline Badge Text', default: 'SYSTEMS ARCHITECT & DATA SCIENCE LEAD' },
+        { key: 'hero_name', label: 'Hero Display Name', default: 'SANTOSH D A' },
+        { key: 'hero_title', label: 'Gradient Sub-Heading', default: 'Engineering & AI Leader' },
+        { key: 'hero_subtitle', label: 'Lead Bio Paragraph', default: 'Building high-throughput full-stack architectures, machine learning models, and real-time distributed systems.', isTextarea: true },
+        { key: 'hero_pill1', label: 'Skill Chip 1', default: '<> C++ & Python' },
+        { key: 'hero_pill2', label: 'Skill Chip 2', default: '⚛ React & Three.js 3D' },
+        { key: 'hero_pill3', label: 'Skill Chip 3', default: '>_ Firebase & Cloud' }
+      ],
+      about: [
+        { key: 'about_title', label: 'About Main Title', default: 'Systems Architect & Embedded Engineer' },
+        { key: 'about_subtitle', label: 'About Subtitle', default: 'Bridging low-level hardware microcontrollers and distributed cloud networks.', isTextarea: true },
+        { key: 'about_stat1', label: 'Stat 1 Value & Label', default: '15+ Verified Credentials' },
+        { key: 'about_stat2', label: 'Stat 2 Value & Label', default: '30+ Embedded Hardware Prototypes' },
+        { key: 'about_stat3', label: 'Stat 3 Value & Label', default: '99.9% Telemetry Uptime' }
+      ],
+      studio: [
+        { key: 'studio_title', label: 'Studio Brand Name', default: 'SANTO STARK STUDIO' },
+        { key: 'studio_subtitle', label: 'Studio Tagline', default: 'Creative Engineering, 3D Visuals & Digital Media Wing' },
+        { key: 'studio_wing1', label: 'Wing 1 Title', default: '⚡ Technical Wing' },
+        { key: 'studio_wing2', label: 'Wing 2 Title', default: '🎬 Entertainment Wing' },
+        { key: 'studio_wing3', label: 'Wing 3 Title', default: '🎨 Arts & Design Wing' },
+        { key: 'studio_wing4', label: 'Wing 4 Title', default: '🔧 Lab & Other Wing' }
+      ],
+      projects: [
+        { key: 'projects_title', label: 'Projects Main Header', default: 'Featured Engineering Systems' },
+        { key: 'projects_subtitle', label: 'Projects Subtitle', default: 'High-throughput microservices, IoT embedded nodes, and cloud backends.', isTextarea: true },
+        { key: 'work_title', label: 'Work Experience Header', default: 'Work Experience & Roles' },
+        { key: 'work_subtitle', label: 'Work Experience Subtitle', default: 'Technical internships, systems engineering roles, and open source contributions.', isTextarea: true }
+      ],
+      contact: [
+        { key: 'contact_title', label: 'Contact Header', default: 'Establish Direct Contact' },
+        { key: 'contact_subtitle', label: 'Contact Subtitle', default: 'Initiate telemetry link, project consultation, or engineering collaboration.', isTextarea: true },
+        { key: 'contact_email', label: 'Direct Email Address', default: 'santoshdabadiaiyyanna@gmail.com' }
+      ]
+    };
+
+    let activeTab = 'home';
+    const contentBox = document.getElementById('stark-cms-tab-content');
+
+    function renderTab(tabName) {
+      activeTab = tabName;
+      document.querySelectorAll('.stark-tab-btn').forEach(btn => {
+        const isActive = btn.dataset.tab === tabName;
+        btn.style.background = isActive ? 'rgba(34,211,238,0.15)' : 'rgba(255,255,255,0.04)';
+        btn.style.border = isActive ? '1px solid #22d3ee' : '1px solid rgba(255,255,255,0.1)';
+        btn.style.color = isActive ? '#22d3ee' : '#94a3b8';
+      });
+
+      const fields = tabFields[tabName] || [];
+      contentBox.innerHTML = fields.map(f => {
+        const val = currentEdits[f.key] !== undefined ? currentEdits[f.key] : f.default;
+        if (f.isTextarea) {
+          return `
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <label style="font-size:12px;font-weight:700;color:#94a3b8;">${f.label}</label>
+              <textarea data-key="${f.key}" rows="3" style="width:100%;padding:10px 14px;border-radius:12px;background:#06080e;border:1px solid rgba(255,255,255,0.12);color:#f8fafc;font-size:13px;outline:none;resize:vertical;">${val}</textarea>
+            </div>
+          `;
+        }
+        return `
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <label style="font-size:12px;font-weight:700;color:#94a3b8;">${f.label}</label>
+            <input type="text" data-key="${f.key}" value="${val}" style="width:100%;padding:10px 14px;border-radius:12px;background:#06080e;border:1px solid rgba(255,255,255,0.12);color:#f8fafc;font-size:13px;outline:none;" />
+          </div>
+        `;
+      }).join('');
+
+      contentBox.querySelectorAll('input, textarea').forEach(input => {
+        input.oninput = function() {
+          currentEdits[this.dataset.key] = this.value;
+        };
+      });
+    }
+
+    renderTab('home');
+
+    document.querySelectorAll('.stark-tab-btn').forEach(btn => {
+      btn.onclick = () => renderTab(btn.dataset.tab);
+    });
+
+    const closeModal = () => modal.remove();
+    document.getElementById('stark-cms-modal-close').onclick = closeModal;
+    document.getElementById('stark-cms-modal-cancel').onclick = closeModal;
+
+    document.getElementById('stark-cms-modal-save').onclick = function() {
+      // Collect latest values
+      contentBox.querySelectorAll('input, textarea').forEach(input => {
+        currentEdits[input.dataset.key] = input.value;
+      });
+
+      // Save to engine state & LocalStorage
+      savedEdits = Object.assign({}, currentEdits);
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(savedEdits));
+      } catch(e) {}
+
+      applySavedEdits();
+      closeModal();
+      showStarkToast('✓ All site copy successfully updated & saved!');
+    };
+  }
+
   window.StarkContentEngine = {
+    openAdminCMSModal: openAdminCMSModal,
     toggleLiveEdit: toggleLiveEdit,
     exitLiveEdit: exitLiveEdit,
     savePendingEdits: savePendingEdits,
