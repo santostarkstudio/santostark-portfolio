@@ -540,6 +540,31 @@
     let animationFrameId;
     let clock = new THREE.Clock();
 
+    
+    // ── Mobile & Tablet High-Sensitivity Gyroscope Controller ──
+    let gyroActive = false;
+    let gyroTargetRotX = 0;
+    let gyroTargetCamY = 0;
+    let currentGyroRotX = 0;
+    let currentGyroCamY = 0;
+    const baseCamY = camera.position.y;
+
+    function handleStudioGyro(e) {
+      if (e.gamma !== null && e.beta !== null && !isUserDragging) {
+        gyroActive = true;
+        const gX = Math.max(-45, Math.min(45, e.gamma));
+        const gY = Math.max(15, Math.min(75, e.beta));
+        // High sensitivity: tilting phone left/right rotates suit ±16°
+        gyroTargetRotX = (gX / 45) * 0.28;
+        // Tilting phone up/down shifts camera height slightly for 3D parallax
+        gyroTargetCamY = ((gY - 45) / 30) * 0.16;
+      }
+    }
+
+    if (typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0 || window.innerWidth < 1024)) {
+      window.addEventListener('deviceorientation', handleStudioGyro, true);
+    }
+
     function animate() {
       animationFrameId = requestAnimationFrame(animate);
       const elapsedTime = clock.getElapsedTime();
@@ -604,6 +629,17 @@
             modelGroup.rotation.y += 0.0035;
           }
         }
+      }
+
+      
+      // 4b. High-Sensitivity Gyroscope Tilt & Holographic Depth
+      if (gyroActive && !isUserDragging && modelGroup) {
+        currentGyroRotX += (gyroTargetRotX - currentGyroRotX) * 0.12;
+        currentGyroCamY += (gyroTargetCamY - currentGyroCamY) * 0.12;
+        modelGroup.rotation.z = -currentGyroRotX * 0.25; // Subtle suit lean
+        camera.position.x = currentGyroRotX * 0.35;
+        camera.position.y = baseCamY + currentGyroCamY;
+        camera.lookAt(0, -0.25, 0);
       }
 
       renderer.render(scene, camera);

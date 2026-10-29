@@ -433,7 +433,7 @@ function CameraController({ earthRef, isZooming, onZoomComplete, controlsRef, de
     if (!isZooming && diving.current) {
       const dist = camera.position.distanceTo(defaultPos);
       if (dist > 0.08) {
-        const lerpFactor = Math.min(1, delta * 3.5);
+        const lerpFactor = Math.min(1, delta * 5.8);
         camera.position.lerp(defaultPos, lerpFactor);
         camera.lookAt(0, 0, 0);
         if (controlsRef?.current) {
@@ -466,8 +466,8 @@ function GyroTiltController({ isZooming, defaultPos }) {
         gyro.current.active = true;
         const gX = Math.max(-45, Math.min(45, e.gamma));
         const gY = Math.max(10, Math.min(80, e.beta));
-        gyro.current.x = (gX / 45) * 1.8;
-        gyro.current.y = ((gY - 45) / 35) * 1.2;
+        gyro.current.x = (gX / 45) * 3.2;
+        gyro.current.y = ((gY - 45) / 35) * 2.2;
       }
     };
     window.addEventListener('deviceorientation', handleOrientation, true);

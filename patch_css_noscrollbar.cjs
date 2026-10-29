@@ -44,3 +44,4 @@ for (const dir of ASSET_DIRS) {
 }
 
 console.log('\nDone.');
+

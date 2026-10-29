@@ -39,7 +39,7 @@ export default function PageWrapper({ children, bgImage, title, subtitle, isHome
         }
       } catch (e) {}
     }
-    document.title = title ? `${title} | ${brand}` : brand;
+    document.title = 'SANTO STARK STUDIO';
   }, [title]);
 
   // If Home page, no image overlay background (Home uses full-screen 3D Canvas)
