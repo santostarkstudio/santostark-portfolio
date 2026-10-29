@@ -661,6 +661,7 @@
   if (typeof window === 'undefined') return;
 
   let activeOverlay = null;
+  let wasOnStudio = false;
 
   function isStudioPage() {
     return window.location.pathname.toLowerCase().includes('/studio');
@@ -669,13 +670,6 @@
   function playStudioWelcome(force) {
     if (!isStudioPage() && !force) return;
     if (activeOverlay) return; // Already running
-
-    // Check if seen in this session (unless forced via ?replay=1)
-    const urlParams = new URLSearchParams(window.location.search);
-    const shouldReplay = urlParams.get('replay') === '1' || force;
-    if (!shouldReplay && sessionStorage.getItem('stark_studio_intro_seen') === 'true') {
-      return;
-    }
 
     // 1. Deep Obsidian Stage (#030712) with subtle radial cyan glow
     const overlay = document.createElement('div');
@@ -796,10 +790,22 @@
     setTimeout(finishWelcome, 3000);
   }
 
-  // Hook into navigation events
+  // Hook into navigation events (triggers every time entering Studio from portfolio)
   function checkNav() {
-    if (isStudioPage()) {
-      playStudioWelcome(false);
+    const onStudio = isStudioPage();
+    if (onStudio) {
+      if (!wasOnStudio) {
+        // Entering Studio from portfolio or external page!
+        playStudioWelcome(true);
+      }
+      wasOnStudio = true;
+    } else {
+      // User is on portfolio/home!
+      wasOnStudio = false;
+      if (activeOverlay && activeOverlay.parentNode) {
+        activeOverlay.parentNode.removeChild(activeOverlay);
+        activeOverlay = null;
+      }
     }
   }
 
@@ -814,6 +820,15 @@
     setTimeout(checkNav, 50);
   };
   window.addEventListener('popstate', checkNav);
+
+  // Active URL watcher: catches any client-side router transition instantly
+  let lastObservedUrl = window.location.href;
+  setInterval(function() {
+    if (window.location.href !== lastObservedUrl) {
+      lastObservedUrl = window.location.href;
+      checkNav();
+    }
+  }, 100);
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', checkNav);

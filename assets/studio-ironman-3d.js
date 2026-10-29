@@ -11,6 +11,105 @@
  * 6. True Metallic Colors: Rich Crimson Red & Champagne Gold (natural studio key light, zero green distortion)
  */
 (function() {
+  // ── Global In-Memory Model Cache & Background Preloader ─────────────
+  window.__STARK_CACHED_IRONMAN_ROOT = null;
+  window.__STARK_IRONMAN_PRELOAD_PROMISE = null;
+
+  function processIronManModel(rawScene, floorY) {
+    floorY = floorY !== undefined ? floorY : -1.25;
+    const root = rawScene;
+
+    // Auto-center and normalize size
+    const box = new THREE.Box3().setFromObject(root);
+    const size = new THREE.Vector3();
+    box.getSize(size);
+    const center = new THREE.Vector3();
+    box.getCenter(center);
+
+    // Scale model to 2.05 units tall for commanding showcase posture
+    const maxDim = Math.max(size.x, size.y, size.z);
+    const scale = 2.05 / (maxDim || 1);
+    root.scale.setScalar(scale);
+
+    // Ground boots precisely on top surface of circular pedestal (floorY = -1.25)
+    root.position.x = -center.x * scale;
+    root.position.z = -center.z * scale;
+    root.position.y = -box.min.y * scale + floorY;
+
+    // Anodized metallic PBR with authentic Crimson Red & Champagne Gold
+    root.traverse(function(node) {
+      if (node.isMesh && node.material) {
+        node.material.metalness       = 0.55;  // Rich metallic luster
+        node.material.roughness       = 0.35;  // Smooth automotive clear-coat gloss
+        node.material.metalnessMap    = null;
+        node.material.roughnessMap    = null;
+        node.material.envMap          = null;  // Dynamic studio light rig drives reflections
+        node.material.envMapIntensity = 0.0;
+        
+        // Pure white glowing Arc Reactor core & eyes
+        if (node.material.emissive) {
+          const isEmissive = (node.material.emissive.r + node.material.emissive.g + node.material.emissive.b) > 0.05 || node.material.emissiveMap;
+          if (isEmissive) {
+            node.material.emissive.setHex(0xffffff);
+            node.material.emissiveIntensity = 2.8; // Piercing energy bloom
+          }
+        }
+        node.material.needsUpdate = true;
+      }
+    });
+
+    return root;
+  }
+
+  window.__starkPreloadIronMan = function() {
+    if (window.__STARK_CACHED_IRONMAN_ROOT) {
+      return Promise.resolve(window.__STARK_CACHED_IRONMAN_ROOT);
+    }
+    if (window.__STARK_IRONMAN_PRELOAD_PROMISE) {
+      return window.__STARK_IRONMAN_PRELOAD_PROMISE;
+    }
+    if (typeof THREE === 'undefined' || typeof THREE.GLTFLoader === 'undefined') {
+      return Promise.reject(new Error('THREE or GLTFLoader not ready'));
+    }
+
+    const loader = new THREE.GLTFLoader();
+    const modelUrl = '/assets/models/iron_man.glb';
+
+    window.__STARK_IRONMAN_PRELOAD_PROMISE = new Promise(function(resolve, reject) {
+      loader.load(
+        modelUrl,
+        function(gltf) {
+          const processed = processIronManModel(gltf.scene, -1.25);
+          window.__STARK_CACHED_IRONMAN_ROOT = processed;
+          resolve(processed);
+        },
+        undefined,
+        function(err) {
+          console.warn('Preload of iron_man.glb encountered an issue:', err);
+          reject(err);
+        }
+      );
+    });
+
+    return window.__STARK_IRONMAN_PRELOAD_PROMISE;
+  };
+
+  // Kick off background preload immediately if THREE is already loaded
+  function triggerAutoPreload() {
+    if (typeof THREE !== 'undefined' && typeof THREE.GLTFLoader !== 'undefined') {
+      window.__starkPreloadIronMan();
+    } else {
+      setTimeout(triggerAutoPreload, 150);
+    }
+  }
+  if (typeof window !== 'undefined') {
+    if (document.readyState === 'complete') {
+      triggerAutoPreload();
+    } else {
+      window.addEventListener('load', triggerAutoPreload, { once: true });
+    }
+  }
+
   window.initStarkIronMan = function(containerId) {
     const container = document.getElementById(containerId);
     if (!container) return null;
@@ -387,61 +486,46 @@
     let isSnapping          = false;
     let targetSnapRotationY = 0;
 
-    const loader   = new THREE.GLTFLoader();
-    const modelUrl = '/assets/models/iron_man.glb';
+    // ==========================================
+    // 10. MODEL MOUNTING (Instant 0ms from RAM Cache or Background Stream)
+    // ==========================================
+    function attachModelToScene(rootObj) {
+      if (!rootObj || !modelGroup) return;
+      rootObj.rotation.set(0, 0, 0);
+      modelGroup.add(rootObj);
+      isModelLoaded = true;
+      try {
+        renderer.compile(scene, camera);
+      } catch(e) {}
+    }
 
-    loader.load(
-      modelUrl,
-      function(gltf) {
-        const root = gltf.scene;
+    if (window.__STARK_CACHED_IRONMAN_ROOT) {
+      // ⚡ INSTANT MOUNT from memory cache (0.000 ms!)
+      attachModelToScene(window.__STARK_CACHED_IRONMAN_ROOT);
+    } else if (window.__STARK_IRONMAN_PRELOAD_PROMISE) {
+      window.__STARK_IRONMAN_PRELOAD_PROMISE.then(function(root) {
+        attachModelToScene(root);
+      }).catch(function() {
+        fallbackLoad();
+      });
+    } else {
+      window.__starkPreloadIronMan().then(function(root) {
+        attachModelToScene(root);
+      }).catch(function() {
+        fallbackLoad();
+      });
+    }
 
-        // Auto-center and normalize size
-        const box = new THREE.Box3().setFromObject(root);
-        const size = new THREE.Vector3();
-        box.getSize(size);
-        const center = new THREE.Vector3();
-        box.getCenter(center);
-
-        // Scale model to 2.05 units tall for commanding showcase posture
-        const maxDim = Math.max(size.x, size.y, size.z);
-        const scale = 2.05 / (maxDim || 1);
-        root.scale.setScalar(scale);
-
-        // Ground boots precisely on top surface of circular pedestal (floorY = -1.25)
-        root.position.x = -center.x * scale;
-        root.position.z = -center.z * scale;
-        root.position.y = -box.min.y * scale + floorY;
-
-        // Anodized metallic PBR with authentic Crimson Red & Champagne Gold
-        root.traverse(function(node) {
-          if (node.isMesh && node.material) {
-            node.material.metalness       = 0.55;  // Rich metallic luster
-            node.material.roughness       = 0.35;  // Smooth automotive clear-coat gloss
-            node.material.metalnessMap    = null;
-            node.material.roughnessMap    = null;
-            node.material.envMap          = null;  // Dynamic studio light rig drives reflections
-            node.material.envMapIntensity = 0.0;
-            
-            // Pure white glowing Arc Reactor core & eyes
-            if (node.material.emissive) {
-              const isEmissive = (node.material.emissive.r + node.material.emissive.g + node.material.emissive.b) > 0.05 || node.material.emissiveMap;
-              if (isEmissive) {
-                node.material.emissive.setHex(0xffffff);
-                node.material.emissiveIntensity = 2.8; // Piercing energy bloom
-              }
-            }
-            node.material.needsUpdate = true;
-          }
-        });
-
-        modelGroup.add(root);
-        isModelLoaded = true;
-      },
-      undefined,
-      function(error) {
-        console.error('Error loading iron_man.glb:', error);
-      }
-    );
+    function fallbackLoad() {
+      const loader = new THREE.GLTFLoader();
+      loader.load('/assets/models/iron_man.glb', function(gltf) {
+        const processed = processIronManModel(gltf.scene, floorY);
+        window.__STARK_CACHED_IRONMAN_ROOT = processed;
+        attachModelToScene(processed);
+      }, undefined, function(err) {
+        console.error('Fallback load error:', err);
+      });
+    }
 
     // ==========================================
     // 11. 360° MANUAL ORBIT — INERTIA & MAGNETIC SNAP
@@ -717,6 +801,10 @@
       window.removeEventListener('touchmove',  onPointerMove);
       window.removeEventListener('touchend',   onPointerUp);
       clearTimeout(idleTimer);
+      // ⚡ Preserve cached 3D model in RAM for instant re-mounting on next visit
+      if (window.__STARK_CACHED_IRONMAN_ROOT && modelGroup) {
+        modelGroup.remove(window.__STARK_CACHED_IRONMAN_ROOT);
+      }
       if (renderer.domElement && renderer.domElement.parentNode) {
         renderer.domElement.parentNode.removeChild(renderer.domElement);
       }

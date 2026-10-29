@@ -8,3 +8,4 @@ git checkout checkpoint-7-performance-mastery
 echo.
 echo Checkpoint 7 restored successfully.
 pause
+
