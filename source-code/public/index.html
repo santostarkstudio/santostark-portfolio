@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en" class="dark scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+    
+    <!-- Mobile & OS Theme Branding -->
+    <meta name="theme-color" content="#090a0f" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="mobile-web-app-capable" content="yes" />
+
+    <title>Santo Stark Studio | Systems Developer</title>
+    <meta name="description" content="Santo Stark Studio featuring 3D Real Space Solar System, IoT/Cloud projects, skills matrix, and interactive experiences." />
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://firestore.googleapis.com">
+    <link rel="dns-prefetch" href="https://identitytoolkit.googleapis.com">
+    <link rel="preconnect" href="https://firestore.googleapis.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"></noscript>
+
+    <!-- Built CSS bundle -->
+    
+    <!-- Critical Path CSS: renders above-fold instantly, zero paint delay -->
+    <style id="critical-css">
+      *{box-sizing:border-box}
+      html{scroll-behavior:smooth}
+      body{margin:0;background:#090a0f;color:#f1f5f9;font-family:'Plus Jakarta Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+      #root{position:relative;z-index:10;background:transparent;min-height:100vh}
+      #orbital-video-container{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:0;overflow:hidden;opacity:.22;will-change:opacity,transform}
+      #orbital-bg-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;filter:contrast(1.2) brightness(0.75) saturate(1.1)}
+      nav,.navbar{position:sticky;top:0;z-index:50}
+      header{background:transparent!important}
+      .min-h-screen{min-height:100vh}
+      .bg-dark{background:#090a0f}
+      /* Fix Certificate Summary Modal Overflow */
+      .fixed[class*="z-[999999]"]{overflow-y:auto!important;padding:16px!important;}
+      .fixed[class*="z-[999999]"]>div:last-child{max-height:88vh!important;overflow-y:auto!important;word-break:break-word!important;overflow-wrap:anywhere!important;margin:auto!important;}
+      /* Certificate Card Fallback Badge (replaces raw emoji with rich accreditation banner) */
+      .cursor-zoom-in>div.bg-gradient-to-br{background:linear-gradient(135deg,rgba(15,23,42,0.95),rgba(9,10,15,0.95))!important;border:1px solid rgba(34,211,238,0.25)!important;border-radius:16px!important;box-shadow:inset 0 0 30px rgba(34,211,238,0.05)!important;}
+      .cursor-zoom-in>div.bg-gradient-to-br>span.text-5xl{display:none!important;}
+      .cursor-zoom-in>div.bg-gradient-to-br::before{content:"🏆 OFFICIAL ACCREDITATION";display:inline-block;font-family:'Fira Code',monospace;font-size:11px;font-weight:700;color:#22d3ee;background:rgba(34,211,238,0.12);border:1px solid rgba(34,211,238,0.3);padding:4px 12px;border-radius:9999px;letter-spacing:0.05em;margin-bottom:4px;}
+      .cursor-zoom-in>div.bg-gradient-to-br::after{content:"Verified Document • Click to View ↗";display:block;font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;color:#94a3b8;margin-top:6px;}
+    </style>
+    <link rel="stylesheet" crossorigin href="/assets/index-Co4QY8r_.css">
+      <!-- Font-Display Swap Enforcement & Low-Latency Rendering -->
+    <style>
+      @font-face { font-family: 'Plus Jakarta Sans'; font-display: swap; }
+      @font-face { font-family: 'Fira Code'; font-display: swap; }
+    </style>
+      <link rel="preload" href="/assets/brand-logo.webp" as="image" type="image/webp">
+  </head>
+  <body class="bg-[#090a0f] text-slate-100 font-sans antialiased selection:bg-cyan-500 selection:text-black overflow-x-hidden touch-manipulation">
+    
+    <!-- 4K Space Video Backdrop -->
+    <div id="orbital-video-container" style="position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; overflow: hidden; opacity: 0.22; will-change: opacity, transform;">
+      <video id="orbital-bg-video" autoplay loop muted playsinline preload="none" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; filter: contrast(1.2) brightness(0.75) saturate(1.1);">
+        <source src="/bg-video.mp4" type="video/mp4" />
+      </video>
+      
+      <!-- Obsidian Shield -->
+      <div style="position: absolute; inset: 0; background: rgba(9, 10, 15, 0.65);"></div>
+      
+      <!-- Seamless Edge Feathering -->
+      <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, #090a0f 0%, transparent 15%, transparent 85%, #090a0f 100%);"></div>
+    </div>
+
+    <div id="root" style="position: relative; z-index: 10; background: transparent; min-height: 100vh;"></div>
+
+    <!-- Smart Video Loader: loads & plays after first frame (no blocking) -->
+    <script>
+      (function() {
+        function startVideo() {
+          var v = document.getElementById('orbital-bg-video');
+          if (!v) return;
+          v.load();
+          var p = v.play();
+          if (p && p.catch) p.catch(function() {});
+        }
+        if (document.readyState === 'complete') {
+          requestAnimationFrame(startVideo);
+        } else {
+          window.addEventListener('load', function() {
+            requestAnimationFrame(startVideo);
+          }, { once: true });
+        }
+      })();
+    </script>
+
+        <!-- Three.js 3D Engine & Loaders for Studio 3D Canvas -->
+    <script src="/assets/three.min.js"></script>
+    <script src="/assets/three-gltf-loader.js"></script>
+    <script src="/assets/three-rgbe-loader.js"></script>
+    <script src="/assets/three-orbit-controls.js"></script>
+    <script src="/assets/studio-ironman-3d.js"></script>
+    <script src="/assets/stark-content-engine.js"></script>
+
+    <!-- Built JS bundle (React app) -->
+    <script type="module" crossorigin src="/assets/index-BMqPMOZ-.js?v=filters-sort-v1"></script>
+
+    <script>
+      (function() {
+        // Bulletproof scroll-to-section
+        window.starkScrollTo = function(targetId) {
+          if (!targetId || targetId === 'home' || targetId === '/' || targetId === 'top') {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (window.history && window.history.replaceState) {
+              window.history.replaceState(null, '', '/');
+            }
+            return;
+          }
+          const el = document.getElementById(targetId);
+          if (!el) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+          }
+          const navOffset = 75;
+          const scrollNow = function() {
+            const rect = el.getBoundingClientRect();
+            const topY = rect.top + window.pageYOffset - navOffset;
+            window.scrollTo({ top: Math.max(0, topY), behavior: 'smooth' });
+          };
+          scrollNow();
+          setTimeout(scrollNow, 150);
+          setTimeout(scrollNow, 400);
+        };
+      })();
+    </script>
+
+    <script>
+      (function() {
+        // Scroll-driven crossfade
+        let ticking = false;
+        function updateVideoCrossfade() {
+          const videoContainer = document.getElementById('orbital-video-container');
+          if (!videoContainer) return;
+          const scrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+          const homeEl = document.getElementById('home');
+          const heroHeight = (homeEl && homeEl.offsetHeight) ? homeEl.offsetHeight : window.innerHeight;
+          const transitionDist = Math.max(300, heroHeight * 0.75);
+          const p = Math.min(1, Math.max(0, scrollY / transitionDist));
+          const smooth = p * p * (3 - 2 * p);
+          const currentOpacity = 0.22 + (smooth * 0.38);
+          videoContainer.style.opacity = currentOpacity.toFixed(3);
+          videoContainer.style.transform = 'scale(' + (1.03 - smooth * 0.03).toFixed(3) + ')';
+          if (homeEl) {
+            const canvasEl = homeEl.querySelector('canvas') || homeEl.querySelector('.pointer-events-auto');
+            if (canvasEl) {
+              const canvasOpacity = Math.max(0, 1 - smooth * 1.1);
+              canvasEl.style.transform = 'none';
+              canvasEl.style.opacity = canvasOpacity.toFixed(3);
+            }
+          }
+        }
+        window.addEventListener('scroll', function() {
+          if (!ticking) {
+            window.requestAnimationFrame(function() { updateVideoCrossfade(); ticking = false; });
+            ticking = true;
+          }
+        }, { passive: true });
+        window.addEventListener('resize', updateVideoCrossfade, { passive: true });
+        updateVideoCrossfade();
+      })();
+    </script>
+
+    <script>
+      (function() {
+        /* ===== CLEAN IMAGE VIEWER â€” for gallery, photos, logo, profile pics ===== */
+        function openImageInNewTab(url, title) {
+          if (!url) return;
+          title = title || 'Santo Stark Studio';
+          var safeTitle = (title + '').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+          var win = window.open('', '_blank');
+          if (!win) { alert('Please allow popups to view this image.'); return; }
+          win.document.open();
+          win.document.write(
+            '<!DOCTYPE html><html lang="en"><head>' +
+            '<meta charset="UTF-8">' +
+            '<meta name="viewport" content="width=device-width,initial-scale=1.0">' +
+            '<title>' + safeTitle + ' | Santo Stark Studio</title>' +
+            '<style>' +
+              '*{margin:0;padding:0;box-sizing:border-box;}' +
+              'html,body{width:100%;min-height:100vh;background:#090a0f;display:flex;align-items:center;justify-content:center;padding:24px;overflow:auto;}' +
+              'img{max-width:95vw;max-height:92vh;object-fit:contain;border-radius:16px;box-shadow:0 0 60px rgba(34,211,238,0.25),0 25px 60px rgba(0,0,0,0.85);cursor:zoom-in;transition:transform 0.3s ease;}' +
+              'img.zoomed{cursor:zoom-out;transform:scale(1.45);}' +
+            '</style></head><body>' +
+            '<img src="' + url + '" alt="' + safeTitle + '" onclick="this.classList.toggle(\'zoomed\')" />' +
+            '</body></html>'
+          );
+          win.document.close();
+        }
+
+        /* ===== SMART PDF / DOCX / CERTIFICATE VIEWER ===== */
+        function openDocumentInNewTab(url, title) {
+          if (!url) return;
+          title = title || 'Verified Document';
+
+          /* 1. Image Certificates (.png, .jpg, .webp, or base64 image) */
+          var isImage = /\.(png|jpe?g|webp|svg|gif)(\?|$)/i.test(url) ||
+                        (url.startsWith('data:image/') && !url.startsWith('data:image/pdf'));
+          if (isImage) {
+            openImageInNewTab(url, title);
+            return;
+          }
+
+          /* 2. Base64 Uploaded PDFs (Blob URL -> opens Chrome/Edge native Google PDF viewer) */
+          var isBase64Pdf = url.startsWith('data:application/pdf') || 
+                            url.startsWith('data:application/octet-stream;base64,JVBERi') ||
+                            url.includes('JVBERi0') ||
+                            url.startsWith('%PDF');
+          if (isBase64Pdf) {
+            try {
+              var c = url;
+              if (c.indexOf(',') !== -1) c = c.split(',')[1];
+              c = c.replace(/\s/g, '');
+              var bin = atob(c);
+              var u = new Uint8Array(bin.length);
+              for (var i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+              var blob = new Blob([u], { type: 'application/pdf' });
+              var blobUrl = URL.createObjectURL(blob);
+              window.open(blobUrl, '_blank');
+              return;
+            } catch(e) {
+              console.warn('Blob PDF conversion fallback:', e);
+            }
+          }
+
+          /* 3. Online PDFs or Word DOCX / DOC / PPTX -> Official Google Docs Viewer */
+          var isOfficeDoc = /\.(docx?|pptx?|xlsx?)(\?|$)/i.test(url);
+          var isOnlinePdf = /\.pdf(\?|$)/i.test(url) || url.includes('/pdf');
+          if (isOfficeDoc || isOnlinePdf) {
+            if (url.startsWith('http://') || url.startsWith('https://')) {
+              var gview = 'https://docs.google.com/viewer?url=' + encodeURIComponent(url) + '&embedded=false';
+              window.open(gview, '_blank', 'noopener');
+              return;
+            }
+          }
+
+          /* 4. Any online verification webpage (Coursera, Credly, SkillFront, IEEE, etc.) */
+          window.open(url, '_blank', 'noopener');
+        }
+
+        /* ===== DEDICATED PROJECT OVERVIEW IN NEW TAB ===== */
+        function openProjectViewInNewTab(project) {
+          if (!project) return;
+          try {
+            sessionStorage.setItem('stark_current_project', JSON.stringify(project));
+            localStorage.setItem('stark_current_project', JSON.stringify(project));
+          } catch(e) {}
+          var id = (typeof project === 'object') ? (project.id || project.title) : project;
+          window.open('/project-view.html?id=' + encodeURIComponent(id), '_blank');
+        }
+
+        /* Expose globals */
+        window.openImageInNewTab       = openImageInNewTab;    /* gallery, photos, logo */
+        window.openInNewTab            = openImageInNewTab;    /* legacy alias */
+        window.openCertificateInNewTab = openDocumentInNewTab; /* PDFs only */
+        window.openDocumentInNewTab    = openDocumentInNewTab; /* PDFs only */
+        window.openProjectViewInNewTab = openProjectViewInNewTab; /* Dedicated Project Tab */
+        window.openProjectView         = openProjectViewInNewTab;
+      })();
+    </script>
+  </body>
+</html>

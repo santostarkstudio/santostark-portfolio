@@ -27,7 +27,12 @@ import {
   Award,
   FileText,
   GraduationCap,
-  Sparkles
+  Sparkles,
+  Clapperboard,
+  Film,
+  Palette,
+  Wrench,
+  Mail
 } from 'lucide-react';
 import PageWrapper from '../components/PageWrapper';
 import { 
@@ -94,6 +99,7 @@ export default function Admin() {
   const [educationList, setEducationList] = useState([]);
   const [interestsList, setInterestsList] = useState([]);
   const [galleryList, setGalleryList] = useState([]);
+  const [studioProjectsList, setStudioProjectsList] = useState([]);
   const [contactMessages, setContactMessages] = useState([]);
   const [accessRequests, setAccessRequests] = useState([]);
   const [visitorLogs, setVisitorLogs] = useState([]);
@@ -107,6 +113,7 @@ export default function Admin() {
   const [projectForm, setProjectForm] = useState({ title: '', category: 'Web3D', image: '', description: '', github: '', live: '', featured: true });
   const [certForm, setCertForm] = useState({ title: '', issuer: '', date: '', credentialId: '', category: 'Cloud', image: '', summary: '', verifyUrl: '' });
   const [galleryForm, setGalleryForm] = useState({ title: '', category: 'Hardware', image: '', description: '' });
+  const [studioProjectForm, setStudioProjectForm] = useState({ title: '', wing: 'technical', summary: '', image: '', fileLink: '', demoUrl: '', tags: '', status: 'In Progress' });
   const [feedbackMsg, setFeedbackMsg] = useState('');
   const [firebaseStatus, setFirebaseStatus] = useState({ ok: false, status: 'checking' });
   const [isSeeding, setIsSeeding] = useState(false);
@@ -169,6 +176,9 @@ export default function Admin() {
       }, []),
       subscribeToCollection('visitor_logs', (docs) => {
         if (docs) setVisitorLogs(docs);
+      }, []),
+      subscribeToCollection('studio_projects', (docs) => {
+        if (docs) setStudioProjectsList(docs);
       }, [])
     ];
 
@@ -562,6 +572,39 @@ export default function Admin() {
     }
   };
 
+  // ────────────────────────────────────────────────
+  // STUDIO HUB CMS HANDLERS
+  // ────────────────────────────────────────────────
+  const handleSaveStudioProject = async (e) => {
+    e.preventDefault();
+    const tagsArr = Array.isArray(studioProjectForm.tags)
+      ? studioProjectForm.tags
+      : typeof studioProjectForm.tags === 'string'
+      ? studioProjectForm.tags.split(/[,\n]/).map(t => t.trim()).filter(Boolean)
+      : [];
+    const payload = { ...studioProjectForm, tags: tagsArr };
+    if (editingItem) {
+      await updateCollectionData('studio_projects', editingItem.id, payload);
+      setFeedbackMsg(Updated Studio project """" in Firebase!");
+      setEditingItem(null);
+    } else {
+      await addCollectionData('studio_projects', payload);
+      setFeedbackMsg(Published new Studio project """" to Firebase!");
+    }
+    setStudioProjectForm({ title: '', wing: 'technical', summary: '', image: '', fileLink: '', demoUrl: '', tags: '', status: 'In Progress' });
+    loadAllCMSData();
+    setTimeout(() => setFeedbackMsg(''), 4000);
+  };
+
+  const handleDeleteStudioProject = async (id) => {
+    if (window.confirm('Delete this Studio project from Firebase?')) {
+      await deleteCollectionData('studio_projects', id);
+      setFeedbackMsg('Studio project removed!');
+      loadAllCMSData();
+      setTimeout(() => setFeedbackMsg(''), 4000);
+    }
+  };
+
   return (
     <PageWrapper
       title="Admin CMS Dashboard"
@@ -827,6 +870,7 @@ export default function Admin() {
                 { id: 'gallery', label: 'Manage Gallery', icon: ImageIcon },
                 { id: 'requests', label: 'Access Requests', icon: Users },
                 { id: 'analytics', label: 'Visitor Telemetry', icon: Eye },
+                { id: 'studio', label: 'Studio Hub CMS 🎬', icon: Clapperboard },
                 { id: 'security', label: 'Change Password', icon: Key }
               ].map((tab) => {
                 const Icon = tab.icon;
@@ -2144,6 +2188,249 @@ export default function Admin() {
             </motion.div>
           )}
 
+
+          {/* TAB: STUDIO HUB CMS */}
+          {activeTab === 'studio' && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
+              <div className="glass-panel p-6 rounded-3xl border border-violet-500/30 space-y-5">
+                <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                  <h4 className="text-base font-bold text-violet-300 flex items-center gap-2">
+                    <Clapperboard className="w-5 h-5 text-violet-400" /> Studio Hub CMS
+                    <span className="text-xs font-mono text-slate-400 ml-2">— Add / Edit / Delete Projects in The Studio</span>
+                  </h4>
+                  <span className="text-[11px] text-emerald-400 font-mono">Live Firebase Sync</span>
+                </div>
+
+                {/* Wing Color Legend */}
+                <div className="flex flex-wrap gap-2 text-[11px] font-mono">
+                  <span className="px-2.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400">⚡ technical</span>
+                  <span className="px-2.5 py-1 rounded-full bg-violet-500/10 border border-violet-500/30 text-violet-400">🎬 entertainment</span>
+                  <span className="px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400">🎨 arts</span>
+                  <span className="px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">🔧 other</span>
+                </div>
+
+                {/* Studio Project Form */}
+                <form onSubmit={handleSaveStudioProject} className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs text-slate-300 mb-1">Project Title *</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. Gaming Montage Reel 2025"
+                        value={studioProjectForm.title}
+                        onChange={(e) => setStudioProjectForm({ ...studioProjectForm, title: e.target.value })}
+                        className="w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs text-slate-300 mb-1">Wing (Category) *</label>
+                      <select
+                        value={studioProjectForm.wing}
+                        onChange={(e) => setStudioProjectForm({ ...studioProjectForm, wing: e.target.value })}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 text-slate-100 text-xs border border-white/10 outline-none focus:border-violet-400"
+                      >
+                        <option value="technical">⚡ Technical Wing</option>
+                        <option value="entertainment">🎬 Entertainment Wing</option>
+                        <option value="arts">🎨 Arts & Design Wing</option>
+                        <option value="other">🔧 Lab & Other Wing</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-xs text-slate-300 mb-1">Status</label>
+                      <select
+                        value={studioProjectForm.status}
+                        onChange={(e) => setStudioProjectForm({ ...studioProjectForm, status: e.target.value })}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 text-slate-100 text-xs border border-white/10 outline-none focus:border-violet-400"
+                      >
+                        <option value="Live">🟢 Live</option>
+                        <option value="In Progress">🟡 In Progress</option>
+                        <option value="Completed">🔵 Completed</option>
+                        <option value="Concept">🟣 Concept</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-xs text-slate-300 mb-1">Tags (comma-separated)</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. React, Three.js, Firebase"
+                        value={studioProjectForm.tags}
+                        onChange={(e) => setStudioProjectForm({ ...studioProjectForm, tags: e.target.value })}
+                        className="w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs text-slate-300 mb-1">Summary / Description *</label>
+                    <textarea
+                      rows={3}
+                      required
+                      placeholder="Brief description of the project..."
+                      value={studioProjectForm.summary}
+                      onChange={(e) => setStudioProjectForm({ ...studioProjectForm, summary: e.target.value })}
+                      className="w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-300 mb-1 flex items-center justify-between">
+                        <span>Thumbnail Image (Upload or URL)</span>
+                        <ImageIcon className="w-3.5 h-3.5 text-violet-400" />
+                      </label>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => handleFileUpload(e, (base64) => setStudioProjectForm({ ...studioProjectForm, image: base64 }))}
+                        className="w-full text-xs text-slate-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-violet-500/20 file:text-violet-300 hover:file:bg-violet-500/30 cursor-pointer glass-card mb-2"
+                      />
+                      <input
+                        type="text"
+                        placeholder="OR paste image URL https://..."
+                        value={studioProjectForm.image && !studioProjectForm.image.startsWith('data:') ? studioProjectForm.image : ''}
+                        onChange={(e) => setStudioProjectForm({ ...studioProjectForm, image: e.target.value })}
+                        className="w-full px-3 py-2 rounded-xl glass-input text-xs"
+                      />
+                      {studioProjectForm.image && (
+                        <div className="mt-2 flex items-center space-x-2">
+                          <img src={studioProjectForm.image} alt="Preview" className="w-12 h-12 object-cover rounded-xl border border-violet-400/40" />
+                          <span className="text-[10px] text-emerald-400 font-mono">✓ Thumbnail set</span>
+                        </div>
+                      )}
+                    </div>
+                    <div className="space-y-3">
+                      <div>
+                        <label className="block text-xs text-slate-300 mb-1">Demo / Live Link</label>
+                        <input
+                          type="text"
+                          placeholder="https://..."
+                          value={studioProjectForm.demoUrl}
+                          onChange={(e) => setStudioProjectForm({ ...studioProjectForm, demoUrl: e.target.value })}
+                          className="w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-slate-300 mb-1">File / Download Link</label>
+                        <input
+                          type="text"
+                          placeholder="https://drive.google.com/..."
+                          value={studioProjectForm.fileLink}
+                          onChange={(e) => setStudioProjectForm({ ...studioProjectForm, fileLink: e.target.value })}
+                          className="w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3 pt-2">
+                    <button
+                      type="submit"
+                      className="px-6 py-2.5 bg-gradient-to-r from-violet-500 to-cyan-500 text-slate-950 font-extrabold rounded-xl text-xs shadow-xl hover:scale-105 transition-all flex items-center gap-2"
+                    >
+                      <Save className="w-4 h-4" />
+                      {editingItem ? 'Update Studio Project' : '➕ Publish Studio Project'}
+                    </button>
+                    {editingItem && (
+                      <button
+                        type="button"
+                        onClick={() => { setEditingItem(null); setStudioProjectForm({ title: '', wing: 'technical', summary: '', image: '', fileLink: '', demoUrl: '', tags: '', status: 'In Progress' }); }}
+                        className="px-5 py-2.5 glass-card border border-white/15 text-slate-300 rounded-xl text-xs font-bold hover:text-white transition-all"
+                      >
+                        Cancel Edit
+                      </button>
+                    )}
+                  </div>
+                </form>
+              </div>
+
+              {/* Studio Projects Live List */}
+              <div className="glass-panel p-6 rounded-3xl border border-white/10 space-y-4">
+                <h4 className="text-sm font-bold text-slate-200 flex items-center gap-2">
+                  <Film className="w-4 h-4 text-violet-400" />
+                  Studio Projects in Firebase ({studioProjectsList.length})
+                </h4>
+                {studioProjectsList.length === 0 ? (
+                  <div className="text-center py-10 text-slate-500 text-xs">
+                    <Clapperboard className="w-8 h-8 mx-auto mb-2 opacity-30" />
+                    No Studio projects added yet. Use the form above to publish your first one.
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {studioProjectsList.map((proj) => {
+                      const wingColors = { technical: 'cyan', entertainment: 'violet', arts: 'amber', other: 'emerald' };
+                      const wc = wingColors[proj.wing] || 'cyan';
+                      const colorMap = {
+                        cyan: 'border-cyan-500/30 bg-cyan-500/10 text-cyan-400',
+                        violet: 'border-violet-500/30 bg-violet-500/10 text-violet-400',
+                        amber: 'border-amber-500/30 bg-amber-500/10 text-amber-400',
+                        emerald: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-400',
+                      };
+                      const tagsArr = Array.isArray(proj.tags) ? proj.tags : typeof proj.tags === 'string' ? proj.tags.split(',').map(t => t.trim()).filter(Boolean) : [];
+                      return (
+                        <div key={proj.id} className={`glass-card rounded-2xl border ${colorMap[wc].split(' ')[0]} p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4`}>
+                          <div className="flex items-start gap-3 min-w-0">
+                            {proj.image && (
+                              <img src={proj.image} alt={proj.title} className="w-12 h-12 rounded-xl object-cover border border-white/10 flex-shrink-0" />
+                            )}
+                            <div className="min-w-0">
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <span className={`text-xs font-bold px-2 py-0.5 rounded-full border ${colorMap[wc]}`}>{proj.wing}</span>
+                                <span className="text-[10px] font-mono text-slate-400">{proj.status}</span>
+                              </div>
+                              <p className="text-sm font-bold text-slate-100 mt-0.5 truncate">{proj.title}</p>
+                              <p className="text-[11px] text-slate-400 line-clamp-1 mt-0.5">{proj.summary}</p>
+                              <div className="flex flex-wrap gap-1 mt-1">
+                                {tagsArr.slice(0, 4).map((t, i) => (
+                                  <span key={i} className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-white/5 text-slate-300 border border-white/10">{t}</span>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2 shrink-0">
+                            <button
+                              onClick={() => {
+                                setEditingItem(proj);
+                                setStudioProjectForm({
+                                  title: proj.title || '',
+                                  wing: proj.wing || 'technical',
+                                  summary: proj.summary || '',
+                                  image: proj.image || '',
+                                  fileLink: proj.fileLink || '',
+                                  demoUrl: proj.demoUrl || '',
+                                  tags: Array.isArray(proj.tags) ? proj.tags.join(', ') : (proj.tags || ''),
+                                  status: proj.status || 'In Progress',
+                                });
+                                setActiveTab('studio');
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                              }}
+                              className="px-3 py-1.5 rounded-xl bg-violet-500/20 border border-violet-500/40 text-violet-300 text-[11px] font-bold hover:bg-violet-500/30 transition-all flex items-center gap-1"
+                            >
+                              <Edit3 className="w-3.5 h-3.5" /> Edit
+                            </button>
+                            <button
+                              onClick={() => handleDeleteStudioProject(proj.id)}
+                              className="px-3 py-1.5 rounded-xl bg-rose-500/20 border border-rose-500/40 text-rose-300 text-[11px] font-bold hover:bg-rose-500/30 transition-all flex items-center gap-1"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" /> Delete
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* Studio Info Card */}
+              <div className="p-4 rounded-2xl bg-violet-500/5 border border-violet-500/20 text-violet-200 text-xs space-y-1.5">
+                <p className="font-bold text-violet-300 flex items-center gap-1.5"><Sparkles className="w-3.5 h-3.5" /> How Studio CMS works:</p>
+                <p>Projects added here appear in the <span className="text-cyan-300 font-mono">/studio</span> page under their respective Wing tabs in real-time.</p>
+                <p>Use the <span className="font-bold text-violet-300">Wing</span> dropdown to assign to Technical ⚡, Entertainment 🎬, Arts 🎨, or Lab 🔧.</p>
+                <p>Set <span className="font-bold text-violet-300">Status</span> to control the badge shown: Live, In Progress, Completed, or Concept.</p>
+              </div>
+            </motion.div>
+          )}
           {/* TAB 8: CHANGE PASSWORD SETTINGS */}
           {activeTab === 'security' && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="glass-panel p-6 rounded-3xl border border-white/10 space-y-6">

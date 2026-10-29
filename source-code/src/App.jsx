@@ -5,7 +5,7 @@ import { AnimatePresence } from 'framer-motion';
 // Global Layout Components
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import AIAssistant from './components/AIAssistant';
+// import AIAssistant removed
 
 // Security and Telemetry
 import { initSecurityListeners } from './utils/security';
@@ -21,6 +21,7 @@ import Projects from './pages/Projects';
 import Certificates from './pages/Certificates';
 import Interests from './pages/Interests';
 import Gallery from './pages/Gallery';
+import Studio from './pages/Studio';
 import Contact from './pages/Contact';
 import Admin from './pages/Admin';
 
@@ -55,6 +56,7 @@ export default function App() {
             <Route path="/certificates" element={<Certificates />} />
             <Route path="/interests" element={<Interests />} />
             <Route path="/gallery" element={<Gallery />} />
+            <Route path="/studio" element={<Studio />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/admin" element={<Admin />} />
             {/* Fallback wildcard route */}
@@ -64,7 +66,7 @@ export default function App() {
       </div>
 
       {/* Interactive AI Assistant Widget (Bottom-Left Corner) */}
-      <AIAssistant />
+      {/* AIAssistant removed */}
 
       {/* Global Footer */}
       <Footer />

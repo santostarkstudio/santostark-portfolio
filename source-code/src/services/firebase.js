@@ -232,6 +232,32 @@ export const initialCertificatesData = [
   }
 ];
 
+
+export const initialStudioProjects = [
+  {
+    id: "sp1",
+    title: "Gaming Content & Montage Reel",
+    wing: "entertainment",
+    summary: "High-octane gaming recordings, competitive gameplay highlights, and fast-paced montages.",
+    image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1000&q=80",
+    fileLink: "",
+    demoUrl: "",
+    tags: ["Gaming", "Editing", "Montage", "Streaming"],
+    status: "In Progress"
+  },
+  {
+    id: "sp2",
+    title: "UI/UX Design Systems & Prototypes",
+    wing: "arts",
+    summary: "Figma design systems, scalable design tokens, micro-interactions, and mobile/desktop wireframes.",
+    image: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&w=1000&q=80",
+    fileLink: "",
+    demoUrl: "",
+    tags: ["Figma", "UI/UX", "Design Systems"],
+    status: "In Progress"
+  }
+];
+
 export const initialHeroInfo = {
   id: "main_hero",
   brandName: "SANTO STARK",
@@ -535,6 +561,9 @@ export const seedAllCollectionsToFirebase = async () => {
 
   // 9. Certificates
   await pushList('certificates', initialCertificatesData);
+
+  // 10. Studio Projects
+  await pushList('studio_projects', initialStudioProjects);
 
   return results;
 };

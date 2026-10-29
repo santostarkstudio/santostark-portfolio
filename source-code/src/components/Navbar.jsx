@@ -15,7 +15,8 @@ import {
   ShieldCheck, 
   Menu, 
   X,
-  Terminal
+  Terminal,
+  Clapperboard
 } from 'lucide-react';
 import { subscribeToDoc, initialHeroInfo } from '../services/firebase';
 
@@ -29,6 +30,7 @@ const navItems = [
   { path: '/certificates', label: 'Certificates', icon: Award },
   { path: '/interests', label: 'Interests', icon: Sparkles },
   { path: '/gallery', label: 'Gallery', icon: Image },
+  { path: '/studio', label: 'Studio', icon: Clapperboard },
   { path: '/contact', label: 'Contact', icon: Mail },
 ];
 
@@ -86,9 +88,45 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // If on /studio, render the dedicated Studio Header (single clean header, no overlay)
+  if (location.pathname === '/studio') {
+    return (
+      <header className="fixed top-0 left-0 right-0 z-50 px-2 sm:px-4 pt-0 pb-2.5 transition-all duration-300">
+        <div className="max-w-[1550px] w-full mx-auto glass-panel rounded-2xl px-4 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between border border-white/10 shadow-2xl backdrop-blur-xl">
+          <Link
+            to="/"
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = '/';
+            }}
+            className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500/20 to-violet-500/20 border border-cyan-400/50 text-cyan-300 hover:text-white hover:border-cyan-400 font-bold text-xs sm:text-sm shadow-lg shadow-cyan-500/10 hover:scale-105 transition-all cursor-pointer"
+          >
+            <span className="text-base font-bold">←</span>
+            <span>Back to Portfolio</span>
+          </Link>
+
+          <div className="flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)]" />
+            <span className="text-xs sm:text-sm md:text-base font-extrabold bg-gradient-to-r from-cyan-400 via-violet-400 to-amber-400 bg-clip-text text-transparent uppercase tracking-wider">
+              {heroInfo.brandName || "SANTO STARK STUDIO"}
+            </span>
+            <span className="hidden md:inline-block px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-white/10 text-slate-300 border border-white/15">
+              HUB
+            </span>
+          </div>
+
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[11px] font-mono font-bold">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="hidden sm:inline">System Online</span>
+          </div>
+        </div>
+      </header>
+    );
+  }
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 px-4 py-3 transition-all duration-300">
-      <div className="max-w-7xl mx-auto glass-panel rounded-2xl px-5 py-3 flex items-center justify-between border border-white/10 shadow-2xl backdrop-blur-xl">
+    <header className="fixed top-0 left-0 right-0 z-50 px-2 sm:px-4 py-2.5 transition-all duration-300">
+      <div className="max-w-[1550px] w-full mx-auto glass-panel rounded-2xl px-3 sm:px-5 py-2.5 sm:py-3 flex items-center justify-between border border-white/10 shadow-2xl backdrop-blur-xl">
         
         {/* Brand Logo / Display Picture (DP) */}
         <div className="flex items-center space-x-3 group">
@@ -148,10 +186,10 @@ export default function Navbar() {
         </div>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden xl:flex items-center space-x-1">
+        <nav className="hidden xl:flex items-center space-x-0.5 2xl:space-x-1">
           {navItems.map((item) => {
             const Icon = item.icon;
-            const isCurrent = (hoveredSection || activeSection) === item.path;
+            const isCurrent = (hoveredSection || activeSection) === item.path || (location.pathname === item.path);
 
             return (
               <Link 
@@ -160,6 +198,16 @@ export default function Navbar() {
                 onMouseEnter={() => setHoveredSection(item.path)}
                 onMouseLeave={() => setHoveredSection(null)}
                 onClick={(e) => {
+                  if (item.path === '/studio') {
+                    setActiveSection('/studio');
+                    return;
+                  }
+                  if (location.pathname === '/studio') {
+                    e.preventDefault();
+                    const targetId = item.path === '/' ? 'home' : item.path.replace('/', '');
+                    window.location.href = '/#' + targetId;
+                    return;
+                  }
                   setActiveSection(item.path);
                   const targetId = item.path === '/' ? 'home' : item.path.replace('/', '');
                   if (window.starkScrollTo) {
@@ -175,15 +223,15 @@ export default function Navbar() {
                 }}
               >
                 <motion.div
-                  whileHover={{ scale: 1.08, y: -2 }}
+                  whileHover={{ scale: 1.05, y: -1 }}
                   whileTap={{ scale: 0.95 }}
-                  className={`relative px-3 py-2 rounded-xl text-xs font-semibold flex items-center space-x-1.5 transition-colors ${
+                  className={`relative px-2 2xl:px-2.5 py-1.5 rounded-xl text-[11px] 2xl:text-xs font-semibold flex items-center space-x-1 transition-colors ${
                     isCurrent 
                       ? 'text-cyan-400 font-bold z-10' 
                       : 'text-slate-300 hover:text-white hover:bg-white/5'
                   }`}
                 >
-                  <Icon className={`w-4 h-4 ${isCurrent ? 'text-cyan-400' : 'text-slate-400'}`} />
+                  <Icon className={`w-3.5 h-3.5 ${isCurrent ? 'text-cyan-400' : 'text-slate-400'}`} />
                   <span>{item.label}</span>
                   {isCurrent && (
                     <motion.div
@@ -246,6 +294,16 @@ export default function Navbar() {
                     to={item.path}
                     onClick={(e) => {
                       setMobileMenuOpen(false);
+                      if (item.path === '/studio') {
+                        setActiveSection('/studio');
+                        return;
+                      }
+                      if (location.pathname === '/studio') {
+                        e.preventDefault();
+                        const targetId = item.path === '/' ? 'home' : item.path.replace('/', '');
+                        window.location.href = '/#' + targetId;
+                        return;
+                      }
                       setActiveSection(item.path);
                       const targetId = item.path === '/' ? 'home' : item.path.replace('/', '');
                       if (window.starkScrollTo) {

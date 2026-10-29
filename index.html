@@ -33,7 +33,8 @@
       #root{position:relative;z-index:10;background:transparent;min-height:100vh}
       #orbital-video-container{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:0;overflow:hidden;opacity:.22;will-change:opacity,transform}
       #orbital-bg-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;filter:contrast(1.2) brightness(0.75) saturate(1.1)}
-      nav,.navbar{position:sticky;top:0;z-index:50;background:rgba(9,10,15,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+      nav,.navbar{position:sticky;top:0;z-index:50}
+      header{background:transparent!important}
       .min-h-screen{min-height:100vh}
       .bg-dark{background:#090a0f}
       /* Fix Certificate Summary Modal Overflow */
@@ -57,7 +58,7 @@
     
     <!-- 4K Space Video Backdrop -->
     <div id="orbital-video-container" style="position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; overflow: hidden; opacity: 0.22; will-change: opacity, transform;">
-      <video id="orbital-bg-video" poster="/assets/media__1786270383587-DqzdVWUU.webp" autoplay loop muted playsinline preload="none" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; filter: contrast(1.2) brightness(0.75) saturate(1.1);">
+      <video id="orbital-bg-video" autoplay loop muted playsinline preload="none" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; filter: contrast(1.2) brightness(0.75) saturate(1.1);">
         <source src="/bg-video.mp4" type="video/mp4" />
       </video>
       
@@ -89,6 +90,14 @@
         }
       })();
     </script>
+
+        <!-- Three.js 3D Engine & Loaders for Studio 3D Canvas -->
+    <script src="/assets/three.min.js"></script>
+    <script src="/assets/three-gltf-loader.js"></script>
+    <script src="/assets/three-rgbe-loader.js"></script>
+    <script src="/assets/three-orbit-controls.js"></script>
+    <script src="/assets/studio-ironman-3d.js"></script>
+    <script src="/assets/stark-content-engine.js"></script>
 
     <!-- Built JS bundle (React app) -->
     <script type="module" crossorigin src="/assets/index-BMqPMOZ-.js?v=filters-sort-v1"></script>
