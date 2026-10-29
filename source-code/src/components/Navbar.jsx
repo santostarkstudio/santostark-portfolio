@@ -88,36 +88,77 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // If on /studio, render the dedicated Studio Header (single clean header, no overlay)
+  // Floating Black Pill Header for /studio
   if (location.pathname === '/studio') {
     return (
-      <header className="fixed top-0 left-0 right-0 z-50 px-2 sm:px-4 pt-0 pb-2.5 transition-all duration-300">
-        <div className="max-w-[1550px] w-full mx-auto glass-panel rounded-2xl px-4 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between border border-white/10 shadow-2xl backdrop-blur-xl">
-          <Link
-            to="/"
-            onClick={(e) => {
-              e.preventDefault();
-              window.location.href = '/';
+      <header className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-3 pointer-events-none">
+        <div
+          className="pointer-events-auto w-full mx-4 sm:mx-8 md:mx-12"
+          style={{ maxWidth: '1100px' }}
+        >
+          <div
+            className="flex items-center justify-between px-4 sm:px-6 py-2.5 sm:py-3 relative"
+            style={{
+              background: 'rgba(5, 7, 17, 0.82)',
+              backdropFilter: 'blur(28px) saturate(1.3)',
+              WebkitBackdropFilter: 'blur(28px) saturate(1.3)',
+              borderRadius: '999px',
+              border: '1px solid rgba(255,255,255,0.09)',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.70), 0 0 0 1px rgba(255,255,255,0.04), inset 0 1px 0 rgba(255,255,255,0.07)',
             }}
-            className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500/20 to-violet-500/20 border border-cyan-400/50 text-cyan-300 hover:text-white hover:border-cyan-400 font-bold text-xs sm:text-sm shadow-lg shadow-cyan-500/10 hover:scale-105 transition-all cursor-pointer"
           >
-            <span className="text-base font-bold">←</span>
-            <span>Back to Portfolio</span>
-          </Link>
+            {/* Back Button */}
+            <Link
+              to="/"
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.href = '/';
+              }}
+              className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 text-cyan-300 hover:text-white font-bold text-xs sm:text-sm transition-all cursor-pointer shrink-0 z-10"
+              style={{
+                background: 'rgba(34,211,238,0.08)',
+                border: '1px solid rgba(34,211,238,0.25)',
+                borderRadius: '999px',
+              }}
+            >
+              <span className="text-sm font-bold">←</span>
+              <span>Portfolio</span>
+            </Link>
 
-          <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)]" />
-            <span className="text-xs sm:text-sm md:text-base font-extrabold bg-gradient-to-r from-cyan-400 via-violet-400 to-amber-400 bg-clip-text text-transparent uppercase tracking-wider">
-              {heroInfo.brandName || "SANTO STARK STUDIO"}
-            </span>
-            <span className="hidden md:inline-block px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-white/10 text-slate-300 border border-white/15">
-              HUB
-            </span>
-          </div>
+            {/* Brand - Absolute Centre */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div className="flex items-center gap-2">
+                <span
+                  className="w-2 h-2 rounded-full bg-cyan-400"
+                  style={{ boxShadow: '0 0 8px rgba(34,211,238,0.9)', flexShrink: 0 }}
+                />
+                <span
+                  className="text-xs sm:text-sm font-extrabold uppercase"
+                  style={{
+                    background: 'linear-gradient(90deg, #22d3ee 0%, #a78bfa 50%, #fbbf24 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    letterSpacing: '0.18em',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {heroInfo.brandName || 'SANTO STARK STUDIO'}
+                </span>
+              </div>
+            </div>
 
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[11px] font-mono font-bold">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="hidden sm:inline">System Online</span>
+            {/* Status - Right */}
+            <div
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-emerald-400 text-[10px] sm:text-[11px] font-mono font-bold shrink-0 z-10"
+              style={{
+                background: 'rgba(52,211,153,0.07)',
+                border: '1px solid rgba(52,211,153,0.22)',
+                borderRadius: '999px',
+              }}
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="hidden sm:inline">Online</span>
+            </div>
           </div>
         </div>
       </header>
