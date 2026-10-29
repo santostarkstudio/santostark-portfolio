@@ -360,44 +360,28 @@ export default function Studio() {
         id="studio-hero-wrapper"
         className="relative w-full min-h-screen flex flex-col justify-end items-center pb-2 z-10 pointer-events-none"
       >
-        {/* Hero Action Buttons: Explore Wings + Replay Intro */}
-        <div className="flex items-center gap-2 mb-1 pointer-events-auto">
-          <button
-            type="button"
-            onClick={() => {
-              const wings = document.getElementById("studio-wings-section");
-              if (wings) {
-                wings.scrollIntoView({ behavior: "smooth" });
-              } else {
-                window.scrollTo({ top: window.innerHeight * 0.98, behavior: "smooth" });
-              }
-            }}
-            className="relative z-30 group flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/60 hover:bg-cyan-500/15 border border-cyan-400/30 hover:border-cyan-400/80 shadow-md shadow-cyan-500/10 hover:shadow-cyan-500/25 transition-all cursor-pointer backdrop-blur-md"
-            title="Scroll Down to Explore"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-            <span className="text-[10px] font-mono tracking-wider text-cyan-300 font-semibold uppercase">
-              Explore Wings
-            </span>
-            <span className="text-cyan-400 text-xs font-bold group-hover:translate-y-0.5 transition-transform">
-              ↓
-            </span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => {
-              if (window.starkPlayStudioIntro) window.starkPlayStudioIntro();
-            }}
-            className="relative z-30 group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-950/60 hover:bg-violet-500/15 border border-violet-400/30 hover:border-violet-400/80 shadow-md shadow-violet-500/10 hover:shadow-violet-500/25 transition-all cursor-pointer backdrop-blur-md"
-            title="Replay Cinematic Welcome Video"
-          >
-            <span className="text-violet-400 text-xs">🎬</span>
-            <span className="text-[10px] font-mono tracking-wider text-violet-300 font-semibold uppercase">
-              Replay Intro
-            </span>
-          </button>
-        </div>
+        {/* Simple, Small & Sleek Scroll Indicator Button */}
+        <button
+          type="button"
+          onClick={() => {
+            const wings = document.getElementById("studio-wings-section");
+            if (wings) {
+              wings.scrollIntoView({ behavior: "smooth" });
+            } else {
+              window.scrollTo({ top: window.innerHeight * 0.98, behavior: "smooth" });
+            }
+          }}
+          className="relative z-30 group flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/60 hover:bg-cyan-500/15 border border-cyan-400/30 hover:border-cyan-400/80 shadow-md shadow-cyan-500/10 hover:shadow-cyan-500/25 transition-all cursor-pointer backdrop-blur-md mb-1 pointer-events-auto"
+          title="Scroll Down to Explore"
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+          <span className="text-[10px] font-mono tracking-wider text-cyan-300 font-semibold uppercase">
+            Explore Wings
+          </span>
+          <span className="text-cyan-400 text-xs font-bold group-hover:translate-y-0.5 transition-transform">
+            ↓
+          </span>
+        </button>
       </section>
 
       {/* 4. Main Page Content (Wings, Stats, Projects, Lab) */}
