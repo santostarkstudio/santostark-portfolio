@@ -1,5 +1,4 @@
 {
-  "cleanUrls": true,
   "headers": [
     {
       "source": "/bg-video.mp4",
@@ -15,15 +14,16 @@
       ]
     },
     {
+      "source": "/assets/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
           "value": "public, max-age=31536000, immutable"
         }
-      ],
-      "source": "/assets/(.*)"
+      ]
     },
     {
+      "source": "/(.*)",
       "headers": [
         {
           "key": "X-Content-Type-Options",
@@ -37,42 +37,14 @@
           "key": "X-XSS-Protection",
           "value": "1; mode=block"
         }
-      ],
-      "source": "/(.*)"
-    },
-    {
-      "source": "/(.*)\\.js",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        },
-        {
-          "key": "Vary",
-          "value": "Accept-Encoding"
-        }
-      ]
-    },
-    {
-      "source": "/(.*)\\.css",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        },
-        {
-          "key": "Vary",
-          "value": "Accept-Encoding"
-        }
       ]
     }
   ],
   "outputDirectory": "public",
   "rewrites": [
     {
-      "destination": "/index.html",
-      "source": "/((?!assets/).*)"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
-  ],
-  "trailingSlash": false
+  ]
 }

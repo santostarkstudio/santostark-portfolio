@@ -14,20 +14,19 @@ if (fs.existsSync(path.join(__dirname, 'bg-video.mp4'))) {
   fs.copyFileSync(path.join(__dirname, 'bg-video.mp4'), path.join(outDir, 'bg-video.mp4'));
 }
 
-const srcAssets = path.join(__dirname, 'assets');
-const destAssets = path.join(outDir, 'assets');
-if (fs.existsSync(srcAssets)) {
-  if (!fs.existsSync(destAssets)) {
-    fs.mkdirSync(destAssets, { recursive: true });
-  }
-  for (const file of fs.readdirSync(srcAssets)) {
-    if (file.includes('.bak')) continue;
-    const srcFile = path.join(srcAssets, file);
-    const destFile = path.join(destAssets, file);
-    if (fs.statSync(srcFile).isFile()) {
-      fs.copyFileSync(srcFile, destFile);
-    }
+function copyRecursiveSync(src, dest) {
+  if (!fs.existsSync(src)) return;
+  const stats = fs.statSync(src);
+  if (stats.isDirectory()) {
+    if (!fs.existsSync(dest)) fs.mkdirSync(dest, { recursive: true });
+    fs.readdirSync(src).forEach(childItemName => {
+      if (childItemName.includes('.bak')) return;
+      copyRecursiveSync(path.join(src, childItemName), path.join(dest, childItemName));
+    });
+  } else {
+    fs.copyFileSync(src, dest);
   }
 }
 
+copyRecursiveSync(path.join(__dirname, 'assets'), path.join(outDir, 'assets'));
 console.log('Build complete! Output in public/');
