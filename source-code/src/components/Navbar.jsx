@@ -111,28 +111,28 @@ export default function Navbar() {
                 e.preventDefault();
                 window.location.href = '/';
               }}
-              className="inline-flex items-center gap-1.5 px-2.5 sm:px-4 py-1.5 text-cyan-300 hover:text-white font-bold text-xs sm:text-sm transition-all cursor-pointer shrink-0 z-10"
+              className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-4 py-1 sm:py-1.5 text-cyan-300 hover:text-white font-bold text-[11px] sm:text-sm transition-all cursor-pointer shrink-0 z-10"
               style={{
                 background: 'rgba(34,211,238,0.08)',
                 border: '1px solid rgba(34,211,238,0.25)',
                 borderRadius: '999px',
               }}
             >
-              <span className="text-sm font-bold">←</span>
-              <span className="hidden sm:inline">Portfolio</span>
+              <span className="text-xs sm:text-sm font-bold">←</span>
+              <span className="inline font-semibold">Portfolio</span>
             </Link>
 
-            {/* Brand - Flexible Center (no absolute overlay, pure white text) */}
+            {/* Brand - Flexible Center (pure white text, zero overflow) */}
             <div className="flex-1 flex items-center justify-center gap-1 sm:gap-2 min-w-0 px-1 pointer-events-none overflow-hidden">
               <span
-                className="w-2 h-2 rounded-full bg-cyan-400 shrink-0"
+                className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-cyan-400 shrink-0"
                 style={{ boxShadow: '0 0 8px rgba(34,211,238,0.9)' }}
               />
               <span
-                className="text-[9px] sm:text-xs md:text-sm font-extrabold uppercase tracking-wider sm:tracking-widest truncate text-white"
+                className="text-[9.5px] sm:text-xs md:text-sm font-extrabold uppercase tracking-wider sm:tracking-widest truncate text-white"
                 style={{
                   color: '#ffffff',
-                  textShadow: '0 0 16px rgba(255,255,255,0.4), 0 0 30px rgba(34,211,238,0.3)',
+                  textShadow: '0 0 10px rgba(255,255,255,0.7), 0 0 20px rgba(34,211,238,0.35)',
                 }}
               >
                 {heroInfo.brandName || 'SANTO STARK STUDIO'}

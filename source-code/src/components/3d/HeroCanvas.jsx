@@ -458,16 +458,14 @@ function CameraController({ earthRef, isZooming, onZoomComplete, controlsRef, de
 // ─── Gyroscope / Device Tilt Controller (Mobile & Tablet) ──────────────────
 function GyroTiltController({ isZooming, defaultPos }) {
   const { camera } = useThree();
-  const gyro = useRef({ x: 0, y: 0, active: false });
+  const gyro = useRef({ beta: 45, gamma: 0, active: false });
 
   useEffect(() => {
     const handleOrientation = (e) => {
-      if (e.gamma !== null && e.beta !== null) {
+      if (e.beta !== null && e.gamma !== null) {
         gyro.current.active = true;
-        const gX = Math.max(-45, Math.min(45, e.gamma));
-        const gY = Math.max(10, Math.min(80, e.beta));
-        gyro.current.x = (gX / 45) * 3.2;
-        gyro.current.y = ((gY - 45) / 35) * 2.2;
+        gyro.current.beta = e.beta;
+        gyro.current.gamma = e.gamma;
       }
     };
     window.addEventListener('deviceorientation', handleOrientation, true);
@@ -476,13 +474,20 @@ function GyroTiltController({ isZooming, defaultPos }) {
 
   useFrame((_, delta) => {
     if (isZooming || !gyro.current.active) return;
-    const targetX = gyro.current.x;
-    const targetY = defaultPos.y + gyro.current.y;
-    const targetZ = defaultPos.z;
-    const lerpSpeed = Math.min(1, delta * 3.5);
-    camera.position.x += (targetX - camera.position.x) * lerpSpeed;
-    camera.position.y += (targetY - camera.position.y) * lerpSpeed;
-    camera.position.z += (targetZ - camera.position.z) * lerpSpeed;
+    const R = Math.sqrt(defaultPos.x * defaultPos.x + defaultPos.y * defaultPos.y + defaultPos.z * defaultPos.z) || 14.85;
+    const phi0 = Math.acos(Math.max(-1, Math.min(1, defaultPos.y / R)));
+    const dB = (gyro.current.beta - 45) * (Math.PI / 180);
+    const dG = gyro.current.gamma * (Math.PI / 180);
+    const phi = Math.max(0.15, Math.min(1.7, phi0 + dB * 1.75));
+    const theta = dG * 2.2;
+    const horiz = R * Math.sin(phi);
+    const tx = horiz * Math.sin(theta);
+    const ty = R * Math.cos(phi);
+    const tz = horiz * Math.cos(theta);
+    const c = Math.min(1, delta * 8.5);
+    camera.position.x += (tx - camera.position.x) * c;
+    camera.position.y += (ty - camera.position.y) * c;
+    camera.position.z += (tz - camera.position.z) * c;
     camera.lookAt(0, 0, 0);
   });
 
