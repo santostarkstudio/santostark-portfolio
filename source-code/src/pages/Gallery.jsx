@@ -133,7 +133,7 @@ export default function Gallery() {
                 </div>
 
                 <div className="p-5">
-                  <h4 className="text-base font-bold text-slate-100 group-hover:text-cyan-400 transition-colors">
+                  <h3 className="text-base font-bold text-slate-100 group-hover:text-cyan-400 transition-colors">
                     {item.title}
                   </h4>
                   <p className="text-xs text-slate-400 mt-1 line-clamp-2">

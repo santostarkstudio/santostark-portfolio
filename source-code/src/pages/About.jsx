@@ -179,19 +179,19 @@ export default function About() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6 border-t border-white/10">
             <div className="p-4 rounded-2xl bg-white/5 border border-white/5 space-y-2 hover:border-cyan-400/30 transition-all">
               <Code className="w-5 h-5 text-cyan-400" />
-              <h4 className="font-bold text-sm text-slate-100">{aboutInfo.card1Title || 'Systems & C++'}</h4>
+              <h3 className="font-bold text-sm text-slate-100">{aboutInfo.card1Title || 'Systems & C++'}</h3>
               <p className="text-xs text-slate-400 leading-relaxed">{aboutInfo.card1Desc || 'Memory optimization, socket communication, multi-threaded task management.'}</p>
             </div>
 
             <div className="p-4 rounded-2xl bg-white/5 border border-white/5 space-y-2 hover:border-violet-400/30 transition-all">
               <Globe className="w-5 h-5 text-violet-400" />
-              <h4 className="font-bold text-sm text-slate-100">{aboutInfo.card2Title || 'Web & 3D Graphics'}</h4>
+              <h3 className="font-bold text-sm text-slate-100">{aboutInfo.card2Title || 'Web & 3D Graphics'}</h3>
               <p className="text-xs text-slate-400 leading-relaxed">{aboutInfo.card2Desc || 'React, Vite, Three.js/R3F WebGL shaders, Tailwind CSS, and Firebase backends.'}</p>
             </div>
 
             <div className="p-4 rounded-2xl bg-white/5 border border-white/5 space-y-2 hover:border-emerald-400/30 transition-all">
               <Cpu className="w-5 h-5 text-emerald-400" />
-              <h4 className="font-bold text-sm text-slate-100">{aboutInfo.card3Title || 'IoT & Embedded'}</h4>
+              <h3 className="font-bold text-sm text-slate-100">{aboutInfo.card3Title || 'IoT & Embedded'}</h3>
               <p className="text-xs text-slate-400 leading-relaxed">{aboutInfo.card3Desc || 'ESP32, FreeRTOS, MQTT, sensor bus protocols (I2C, SPI), and custom PCB design.'}</p>
             </div>
           </div>
