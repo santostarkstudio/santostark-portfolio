@@ -493,6 +493,7 @@ function GyroTiltController({ isZooming, defaultPos }) {
 export default function HeroCanvas({ isZoomingToEarth = false, onEarthZoomComplete }) {
   const earthRef = useRef();
   const controlsRef = useRef();
+  const containerRef = useRef(null);
   const [paused, setPaused] = useState(false);
   const [defaultPos, setDefaultPos] = useState(() => getResponsiveCameraPos());
   const [isTouchDevice, setIsTouchDevice] = useState(() => {
@@ -507,14 +508,27 @@ export default function HeroCanvas({ isZoomingToEarth = false, onEarthZoomComple
     };
     document.addEventListener('visibilitychange', fn);
     window.addEventListener('resize', checkTouch);
+
+    // ⚡ High-FPS GPU & Battery Optimizer: Pause 3D canvas when scrolled off-screen
+    let observer = null;
+    if (typeof window !== 'undefined' && 'IntersectionObserver' in window && containerRef.current) {
+      observer = new IntersectionObserver(([entry]) => {
+        // When hero container is scrolled out of view, sleep WebGL render loop (0% GPU/CPU)
+        setPaused(!entry.isIntersecting);
+      }, { threshold: [0, 0.05] });
+      observer.observe(containerRef.current);
+    }
+
     return () => {
       document.removeEventListener('visibilitychange', fn);
       window.removeEventListener('resize', checkTouch);
+      if (observer) observer.disconnect();
     };
   }, []);
 
   return (
     <div
+      ref={containerRef}
       className={isTouchDevice ? "absolute inset-0 w-full h-full pointer-events-none touch-pan-y" : "absolute inset-0 w-full h-full pointer-events-auto"}
       style={{ touchAction: isTouchDevice ? 'pan-y' : 'auto' }}
     >

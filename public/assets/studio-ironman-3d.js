@@ -652,8 +652,19 @@
     // ⚡ Pre-allocated scratch objects (avoid GC pressure in hot loop)
     const _scratchV3 = new THREE.Vector3();
 
+    // ⚡ 60-120 FPS GPU & Battery Optimizer: Pause when container is scrolled offscreen
+    let isStudioVisible = true;
+    let studioObserver = null;
+    if (typeof window !== 'undefined' && 'IntersectionObserver' in window && container) {
+      studioObserver = new IntersectionObserver(([entry]) => {
+        isStudioVisible = entry.isIntersecting;
+      }, { threshold: [0, 0.05] });
+      studioObserver.observe(container);
+    }
+
     function animate() {
       animationFrameId = requestAnimationFrame(animate);
+      if (!isStudioVisible || document.hidden) return; // ⚡ 0% GPU when offscreen!
       // ⚡ Reset WebGL draw-call counters each frame (prevents memory accumulation)
       renderer.info.reset();
       const elapsedTime = clock.getElapsedTime();
