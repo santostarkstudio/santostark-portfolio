@@ -13,6 +13,32 @@ import {
 } from 'lucide-react';
 import { subscribeToDoc, initialHeroInfo } from '../services/firebase';
 
+// View-only resume opener — Google Drive Preview or Google Docs Viewer (no download)
+const openResumeViewer = (e, url) => {
+  e.preventDefault();
+  if (!url || url === '#' || url === '') {
+    alert('Resume URL not configured. Please add your Google Drive PDF link in the Admin panel.');
+    return;
+  }
+  // Google Drive file link → /preview (view-only embedded, no download button)
+  if (url.includes('drive.google.com/file/d/')) {
+    const previewUrl = url.replace(/\/view(\?.*)?$/, '/preview').replace(/\/edit(\?.*)?$/, '/preview');
+    window.open(previewUrl, '_blank', 'noopener,noreferrer');
+    return;
+  }
+  // Google Drive open/uc share link → extract file ID → preview
+  if (url.includes('drive.google.com/open') || url.includes('drive.google.com/uc')) {
+    const match = url.match(/id=([a-zA-Z0-9_-]+)/);
+    if (match) {
+      window.open('https://drive.google.com/file/d/' + match[1] + '/preview', '_blank', 'noopener,noreferrer');
+      return;
+    }
+  }
+  // Any other PDF / hosted URL → wrap in Google Docs Viewer (view-only in new tab)
+  const viewerUrl = 'https://docs.google.com/viewer?url=' + encodeURIComponent(url) + '&embedded=false';
+  window.open(viewerUrl, '_blank', 'noopener,noreferrer');
+};
+
 export default function Footer() {
   const [heroInfo, setHeroInfo] = useState(initialHeroInfo);
 
@@ -30,7 +56,7 @@ export default function Footer() {
     { name: 'Instagram', href: heroInfo.instagram || 'https://instagram.com', icon: Instagram, color: 'hover:text-pink-400' },
     { name: 'YouTube', href: heroInfo.youtube || 'https://youtube.com', icon: Youtube, color: 'hover:text-rose-400' },
     { name: 'LeetCode / Coding', href: heroInfo.leetcode || 'https://leetcode.com', icon: Code2, color: 'hover:text-amber-400' },
-    { name: 'Resume / CV', href: heroInfo.resume || '#', icon: FileText, color: 'hover:text-emerald-400' },
+    { name: 'Resume / CV', href: heroInfo.resume || '#', icon: FileText, color: 'hover:text-emerald-400', isResume: true },
   ];
 
   return (
@@ -45,6 +71,7 @@ export default function Footer() {
               <a
                 key={item.name}
                 href={item.href}
+                onClick={item.isResume ? (e) => openResumeViewer(e, heroInfo.resume) : undefined}
                 target="_blank"
                 rel="noreferrer"
                 className={`p-2 rounded-xl glass-card text-slate-300 ${item.color} hover:border-cyan-500/40 transition-all hover:scale-110`}
