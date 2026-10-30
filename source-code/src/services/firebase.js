@@ -391,15 +391,27 @@ const saveLocalItem = (key, item) => {
 let app, db, auth;
 let isRealFirebase = false;
 
+// NOTE: auth (getAuth) is intentionally NOT initialized here at module load time.
+// Doing so would cause Firebase to inject an auth iframe (santostark15.firebaseapp.com/__/auth/iframe)
+// on every page visit, loading 13 third-party cookies and tanking Best Practices score.
+// Instead, auth is initialized lazily on first Admin use via getLazyAuth().
 try {
   if (firebaseConfig.apiKey && firebaseConfig.projectId) {
     app = initializeApp(firebaseConfig);
     db = getFirestore(app);
-    auth = getAuth(app);
+    // auth = getAuth(app);  // <- lazy, see getLazyAuth() below
     isRealFirebase = true;
   }
 } catch (error) {
   console.warn("Firebase initialization skipped, using fallback local storage mode:", error);
+}
+
+// Lazy auth initializer - only runs when Admin login is attempted
+function getLazyAuth() {
+  if (!auth && app) {
+    try { auth = getAuth(app); } catch (e) { console.warn('Auth init failed:', e); }
+  }
+  return auth;
 }
 
 // Export Firebase API Wrapper

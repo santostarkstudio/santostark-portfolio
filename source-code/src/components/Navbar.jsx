@@ -119,17 +119,17 @@ export default function Navbar() {
               }}
             >
               <span className="text-sm font-bold">←</span>
-              <span className="hidden xs:inline sm:inline">Portfolio</span>
+              <span className="hidden sm:inline">Portfolio</span>
             </Link>
 
             {/* Brand - Flexible Center (no absolute overlay, pure white text) */}
-            <div className="flex-1 flex items-center justify-center gap-1.5 sm:gap-2 min-w-0 px-1 pointer-events-none">
+            <div className="flex-1 flex items-center justify-center gap-1 sm:gap-2 min-w-0 px-1 pointer-events-none overflow-hidden">
               <span
                 className="w-2 h-2 rounded-full bg-cyan-400 shrink-0"
                 style={{ boxShadow: '0 0 8px rgba(34,211,238,0.9)' }}
               />
               <span
-                className="text-[11px] sm:text-xs md:text-sm font-extrabold uppercase tracking-wider sm:tracking-widest truncate text-white"
+                className="text-[9px] sm:text-xs md:text-sm font-extrabold uppercase tracking-wider sm:tracking-widest truncate text-white"
                 style={{
                   color: '#ffffff',
                   textShadow: '0 0 16px rgba(255,255,255,0.4), 0 0 30px rgba(34,211,238,0.3)',
