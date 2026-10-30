@@ -17,3 +17,4 @@ for t in targets:
     print(f'Synced -> {t}')
 
 print('All 3 bundles synced.')
+

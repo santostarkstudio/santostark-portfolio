@@ -7608,12 +7608,51 @@ Please approve my request via ${o.channel}!`,b=`https://wa.me/918431069633?text=
     })
   });
 }
-const Ale="Santo@2017";function Cle(){const[n,e]=q.useState(!1),[t,i]=q.useState(""),[r,s]=q.useState(""),[o,a]=q.useState(""),[l,c]=q.useState("hero"),[h,f]=q.useState(()=>localStorage.getItem("santo_admin_password")||Ale),[p,g]=q.useState(""),[x,E]=q.useState(Bn),[w,v]=q.useState($c),[S,b]=q.useState([]),[A,U]=q.useState([]),[O,N]=q.useState([]),[R,P]=q.useState([]),[M,D]=q.useState([]),[z,F]=q.useState([]),[oe,me]=q.useState([]),[ae,fe]=q.useState([]),[W,Z]=q.useState(null),[J,ce]=q.useState({role:"",company:"",period:"",location:"",type:"Internship",description:"",skills:""}),[Me,Ue]=q.useState({name:"",category:"Languages",rating:8,description:""}),[skillCategories,setSkillCategories]=q.useState(()=>{try{const _sc=localStorage.getItem("portfolio_skill_categories");if(_sc){const _p=JSON.parse(_sc);if(Array.isArray(_p)&&_p.length>0)return _p;}return["Languages","Frameworks","Tools & Cloud","Hardware / IoT","DevOps / CI-CD","Cloud & AWS","AI & ML","Mobile & Flutter","Databases","Security","Web3D / Three.js","Other"];}catch{return["Languages","Frameworks","Tools & Cloud","Hardware / IoT","DevOps / CI-CD","Cloud & AWS","AI & ML","Mobile & Flutter","Databases","Security","Web3D / Three.js","Other"];}}),[newCategoryInput,setNewCategoryInput]=q.useState(""),[sectionTitles,setSectionTitles]=q.useState(()=>{try{const _st=localStorage.getItem("portfolio_section_titles");if(_st){const _p=JSON.parse(_st);if(_p&&typeof _p==="object")return _p;}return{skillsTitle:"Technical Skills Matrix",skillsSubtitle:"Interactive 10-star rating visualizer for core engineering domains, programming languages, and hardware stacks.",educationTitle:"Academic Education",educationSubtitle:"Degree milestones, VTU Computer Science curriculum, and academic achievements.",workTitle:"Work Experience & Roles",workSubtitle:"Technical internships, systems engineering roles, and open source contributions.",projectsTitle:"Engineering & Project Portfolio",projectsSubtitle:"Interactive Web3D applications, distributed backend microservices, and embedded hardware architectures.",interestsTitle:"Interests & Personal Pursuits",interestsSubtitle:"Interactive showcase of hardware prototyping, AI graphic novel art, and sports analytics."};}catch{return{skillsTitle:"Technical Skills Matrix",skillsSubtitle:"Interactive 10-star rating visualizer for core engineering domains, programming languages, and hardware stacks.",educationTitle:"Academic Education",educationSubtitle:"Degree milestones, VTU Computer Science curriculum, and academic achievements.",workTitle:"Work Experience & Roles",workSubtitle:"Technical internships, systems engineering roles, and open source contributions.",projectsTitle:"Engineering & Project Portfolio",projectsSubtitle:"Interactive Web3D applications, distributed backend microservices, and embedded hardware architectures.",interestsTitle:"Interests & Personal Pursuits",interestsSubtitle:"Interactive showcase of hardware prototyping, AI graphic novel art, and sports analytics."};}}),[se,xe]=q.useState({title:"",category:"Web3D",image:"",description:"",github:"",live:"",featured:!0}),[Pe,Ne]=q.useState({title:"",issuer:"",date:"",credentialId:"",category:"Cloud",image:"",summary:"",verifyUrl:""}),[it,vt]=q.useState({title:"",category:"Hardware",image:"",description:""}),[eduList,setEduList]=q.useState([]),[eduForm,setEduForm]=q.useState({degree:"",institution:"",period:"",location:"",grade:"",badge:"",highlights:""}),[intList,setIntList]=q.useState([]),[intForm,setIntForm]=q.useState({title:"",badge:"",category:"Hardware",image:"",description:"",tags:""}),[ft,We]=q.useState(""),[authMode,setAuthMode]=q.useState("password"),[totpCode,setTotpCode]=q.useState(""),[otpInput,setOtpInput]=q.useState(""),[recoveryCode,setRecoveryCode]=q.useState(""),[activeOtp,setActiveOtp]=q.useState(null);q.useEffect(()=>{localStorage.setItem("santo_admin_password",h)},[h]),q.useEffect(()=>{sessionStorage.getItem("admin_authenticated")==="true"&&e(!0)},[]);const G=async()=>{const B=await ni("hero_info",[Bn]);B&&B.length>0&&E({...Bn,...B[0]});const Ce=await ni("about_info",[$c]);Ce&&Ce.length>0&&v({...$c,...Ce[0]});const ht=await ni("messages",[]);F(ht);const st=await ni("projects",Vb);b(st);const Qe=await ni("certificates",sT);U(Qe);const gt=await ni("skills",Ub);N(gt);const Q=await ni("work_experience",Ob);P(Q);const Re=await ni("gallery",Fb);D(Re);const Y=await ni("access_requests",[]),Se=await ni("visitor_logs",[]);me(Y),fe(Se);const _ed=await ni("education",yle);setEduList(_ed);const _it=await ni("interests",Ele);setIntList(_it);const _sp=await ni("studio_projects",[]);setStudioList(_sp)};q.useEffect(()=>{n&&G()},[n]);const Ie=B=>B.trim().toLowerCase(),ke=async B=>{B.preventDefault(),a("");const Ce=Ie(t),ht=r.trim();if(!Ce||!ht){a("Please enter your Username/Email and Password.");return}if(!["santostark","santo","santosh","santoshdabadiaiyyanna@gmail.com","8431069633","+918431069633"].some(gt=>Ie(gt)===Ce)){a("⛔ ACCESS DENIED: Invalid Username, Email, or Phone Number.");return}if(Su&&Sp&&Ce.includes("@"))try{await CQ(Sp,Ce,ht),e(!0),sessionStorage.setItem("admin_authenticated","true");return}catch{}ht===h||ht==="Santo@2017"||ht==="santo"||ht==="santo123"?(e(!0),sessionStorage.setItem("admin_authenticated","true")):a("Incorrect Password. Please enter your valid admin password.")},Ge=()=>{Su&&Sp&&RQ(Sp),e(!1),i(""),s(""),sessionStorage.removeItem("admin_authenticated")},
+const defaultStudioProjects = [
+  { id: "tech-1", wing: "technical", title: "Santo Stark Portfolio System", desc: "Interactive 3D Solar System hero, Firebase Realtime CMS, glassmorphic UI, Three.js & React.", details: "Built with React 18, Three.js / React Three Fiber for WebGL canvas rendering, Tailwind CSS for glassmorphic styling, and Google Firebase for live headless CMS database feeds.", tags: ["React", "Three.js", "Firebase", "Tailwind", "Vite"], status: "Live", color: "cyan", featured: true, demoUrl: "https://santostark.vercel.app", fileLink: "" },
+  { id: "tech-2", wing: "technical", title: "IoT Smart Hardware Dashboard", desc: "ESP32 micro-controller sensor data streamed in real-time via MQTT protocol to a live reactive web interface.", details: "Features ESP32 micro-controller programmed in C++, MQTT broker pub/sub pipeline, low-latency WebSocket connection, and interactive Chart.js gauges for telemetry.", tags: ["ESP32", "MQTT", "Node.js", "C++", "Chart.js"], status: "Completed", color: "cyan", featured: false, demoUrl: "", fileLink: "" },
+  { id: "tech-3", wing: "technical", title: "React Cloud Web Application", desc: "Full-stack single page web application with Firebase Firestore backend, user authentication, and responsive views.", details: "Complete end-to-end cloud web app implementing secure Firebase Auth, Firestore real-time listeners, state management, and optimized touch-first responsive layouts.", tags: ["React", "Firebase", "Tailwind", "Auth"], status: "Completed", color: "cyan", featured: false, demoUrl: "", fileLink: "" },
+  { id: "tech-4", wing: "technical", title: "Embedded Firmware & Robotics", desc: "STM32/ESP32 firmware architecture with FreeRTOS multitasking, interrupt routines, and custom sensor PCB layout.", details: "Low-level bare-metal and RTOS firmware written in C/C++, featuring task scheduling, sensor polling queues, and hardware schematics drafted in KiCad.", tags: ["STM32", "FreeRTOS", "C++", "PCB", "KiCad"], status: "In Progress", color: "cyan", featured: false, demoUrl: "", fileLink: "" },
+  { id: "tech-5", wing: "technical", title: "C++ Socket Server & Networking", desc: "Multi-threaded TCP/UDP server handling concurrent client packets, custom network protocol, and low-latency data feeds.", details: "POSIX sockets server written in modern C++ with thread pooling, packet serialization, mutex synchronization, and high throughput under simulated connection load.", tags: ["C++", "Sockets", "Threading", "Linux", "TCP/IP"], status: "Completed", color: "cyan", featured: false, demoUrl: "", fileLink: "" },
+  { id: "tech-6", wing: "technical", title: "Python Automation & ML Tooling", desc: "Data processing pipelines, automated web scraping scripts, and neural experiments for predictive classification.", details: "Python suite leveraging Pandas, Scikit-learn, and BeautifulSoup for automated task scheduling, data sanitization, and machine learning model training.", tags: ["Python", "Pandas", "Scikit-Learn", "Automation"], status: "In Progress", color: "cyan", featured: false, demoUrl: "", fileLink: "" },
+  { id: "ent-1", wing: "entertainment", title: "Gaming Content & Montage Reel", desc: "High-octane gaming recordings, competitive gameplay highlights, sound design synchronization, and fast-paced montages.", details: "Produced high-framerate gameplay captures, synced beat transitions in Premiere Pro, dynamic speed ramping, and personalized audio mixing.", tags: ["Gaming", "Recording", "Editing", "Montage", "Streaming"], status: "In Progress", color: "violet", featured: true, demoUrl: "", fileLink: "" },
+  { id: "ent-2", wing: "entertainment", title: "VFX & Motion Graphics Experiments", desc: "Visual effects compositing, 3D particle systems, screen tracking, dynamic title design, and motion identity.", details: "After Effects compositions utilizing Boris FX, planar motion tracking, particle simulations, and seamless green-screen compositing.", tags: ["VFX", "After Effects", "Motion", "Compositing"], status: "In Progress", color: "violet", featured: false, demoUrl: "", fileLink: "" },
+  { id: "ent-3", wing: "entertainment", title: "Cinematic Video Editing Showcase", desc: "Narrative pacing, audio soundscapes, color grading in DaVinci Resolve, and cinematic cuts for multimedia clips.", details: "Full post-production workflow: timeline pacing, color wheel grade balances, LUT mastering, and multi-track Foley sound effects layering.", tags: ["Premiere Pro", "DaVinci", "Color Grade", "SFX"], status: "Completed", color: "violet", featured: false, demoUrl: "", fileLink: "" },
+  { id: "ent-4", wing: "entertainment", title: "Short Film & Screenplay Concepts", desc: "Scriptwriting, storyboard layouts, cinematography test shoots, lighting setups, and narrative direction.", details: "Pre-production script development, two-column audio/video storyboards, lens choice experimentation, and cinematic framing principles.", tags: ["Film", "Direction", "Story", "Cinematography"], status: "Concept", color: "violet", featured: false, demoUrl: "", fileLink: "" },
+  { id: "ent-5", wing: "entertainment", title: "3D Animation & Rigging Studies", desc: "Procedural keyframing, character motion studies, lighting aesthetics, and camera animation in Blender.", details: "Blender 3D scene creation, inverse kinematics character rigging, procedural shader nodes, and Cycles render optimization.", tags: ["Blender", "3D", "Rigging", "Keyframes", "Cycles"], status: "Concept", color: "violet", featured: false, demoUrl: "", fileLink: "" },
+  { id: "ent-6", wing: "entertainment", title: "Live Streaming & Broadcast Production", desc: "Custom OBS scene switchers, animated overlays, audio gate mixing, and multi-stream relay configurations.", details: "Broadcast studio setup with OBS Studio, custom HTML/CSS alert overlays, VST audio filters for noise reduction, and dual-monitor workflow.", tags: ["OBS", "Broadcast", "Audio Mix", "Twitch", "Streaming"], status: "Live", color: "violet", featured: false, demoUrl: "", fileLink: "" },
+  { id: "art-1", wing: "arts", title: "UI/UX Design Systems & Prototypes", desc: "Figma design systems, scalable design tokens, micro-interactions, and mobile/desktop high-fidelity wireframes.", details: "Component libraries with auto-layout, interactive variants, responsive grid constraints, and design token hierarchies ready for developer handoff.", tags: ["Figma", "UI/UX", "Design Systems", "Prototyping"], status: "In Progress", color: "amber", featured: true, demoUrl: "", fileLink: "" },
+  { id: "art-2", wing: "arts", title: "AI-Generated Digital Art Collection", desc: "Generative aesthetics, prompt engineering, diffusion models, and high-resolution digital remastering.", details: "Curated gallery exploring prompt synthesis, latent space upscaling, negative prompt balancing, and digital retouching in Adobe Photoshop.", tags: ["AI Art", "Midjourney", "Diffusion", "Digital Art"], status: "In Progress", color: "amber", featured: false, demoUrl: "", fileLink: "" },
+  { id: "art-3", wing: "arts", title: "Graphic Design & Visual Identity", desc: "Brand identities, typography exploration, posters, social assets, and vector illustrations.", details: "Vector typography, brand style guides, color palettes, and print/digital asset templates created in Adobe Illustrator.", tags: ["Illustrator", "Photoshop", "Branding", "Vector"], status: "Completed", color: "amber", featured: false, demoUrl: "", fileLink: "" },
+  { id: "art-4", wing: "arts", title: "Abstract 3D Visualizations", desc: "Procedural geometry, glass shaders, emissive materials, and real-time lighting studies in WebGL.", details: "Custom Three.js shaders, lighting passes, refractive glass physical materials, and procedural particle vortex simulations.", tags: ["Three.js", "WebGL", "Blender", "Shaders"], status: "Concept", color: "amber", featured: false, demoUrl: "", fileLink: "" },
+  { id: "oth-1", wing: "other", title: "Technical Certifications Portfolio", desc: "15+ verified certifications in Cloud, Cybersecurity, Embedded Computing, and Web Development.", details: "Rigorous coursework and proctored examinations across NPTEL, Coursera, Cisco, and industry institutions verifying technical mastery.", tags: ["Cybersecurity", "Cloud", "NPTEL", "DevOps"], status: "Completed", color: "emerald", featured: true, demoUrl: "", fileLink: "" },
+  { id: "oth-2", wing: "other", title: "Peer Workshops & Tech Mentorship", desc: "Hands-on student bootcamps on ESP32 microcontroller coding and modern React frontend workflows.", details: "Conducted interactive workshops for fellow engineering students, covering hardware breadboarding, sensor interfacing, and building full-stack web dashboards.", tags: ["Mentorship", "ESP32", "React", "Community"], status: "Completed", color: "emerald", featured: false, demoUrl: "", fileLink: "" },
+  { id: "oth-3", wing: "other", title: "Research & Technical Documentation", desc: "Detailed engineering journals, IEEE format project reports, and system architecture schematics.", details: "Comprehensive project papers typeset in LaTeX, containing circuit schematics, timing diagrams, code documentation, and performance benchmarks.", tags: ["Research", "IEEE", "Documentation", "LaTeX"], status: "In Progress", color: "emerald", featured: false, demoUrl: "", fileLink: "" },
+  { id: "oth-4", wing: "other", title: "Open-Source Code Contributions", desc: "Active GitHub contributions, utility toolkits, and shared developer snippets for the community.", details: "Open-source repositories hosting re-usable Arduino libraries, React hooks, and automation CLI scripts with full README guides.", tags: ["GitHub", "Open Source", "Git", "Community"], status: "In Progress", color: "emerald", featured: false, demoUrl: "", fileLink: "" }
+];
+const defaultStudioInfo = {
+  heroBadge: "STARK INDUSTRIES CREATIVE LAB",
+  heroTitle: "SANTO STARK CREATIVE STUDIO",
+  heroSubtitle: "Bridging High-Performance Code, Cinematic Media & Interactive 3D Worlds",
+  metricProjects: "20+",
+  metricProjectsLabel: "Projects Shipped",
+  metricCerts: "15+",
+  metricCertsLabel: "Certifications",
+  metricExp: "3+",
+  metricExpLabel: "Years Experience",
+  metricTools: "30+",
+  metricToolsLabel: "Tech & Toolsets",
+  collabBadge: "Open for Collaborative Projects & Engineering",
+  collabTitle: "Let's Build Something Remarkable",
+  collabDesc: "Whether you need an IoT embedded system, a high-performance web platform, or creative collaboration across video editing, film, VFX, or gaming — drop a message.",
+  collabBtnText: "Initiate Transmission ⚡"
+};
+const Ale="Santo@2017";function Cle(){const[n,e]=q.useState(!1),[t,i]=q.useState(""),[r,s]=q.useState(""),[o,a]=q.useState(""),[l,c]=q.useState("hero"),[h,f]=q.useState(()=>localStorage.getItem("santo_admin_password")||Ale),[p,g]=q.useState(""),[x,E]=q.useState(Bn),[w,v]=q.useState($c),[S,b]=q.useState([]),[A,U]=q.useState([]),[O,N]=q.useState([]),[R,P]=q.useState([]),[M,D]=q.useState([]),[z,F]=q.useState([]),[oe,me]=q.useState([]),[ae,fe]=q.useState([]),[W,Z]=q.useState(null),[studioList,setStudioList]=q.useState(defaultStudioProjects),[studioInfo,setStudioInfo]=q.useState(defaultStudioInfo),[studioWingFilter,setStudioWingFilter]=q.useState("all"),[studioSubTab,setStudioSubTab]=q.useState("projects"),[studioForm,setStudioForm]=q.useState({title:"",wing:"technical",desc:"",details:"",image:"",fileLink:"",demoUrl:"",tags:"",status:"In Progress",featured:!1}),[J,ce]=q.useState({role:"",company:"",period:"",location:"",type:"Internship",description:"",skills:""}),[Me,Ue]=q.useState({name:"",category:"Languages",rating:8,description:""}),[skillCategories,setSkillCategories]=q.useState(()=>{try{const _sc=localStorage.getItem("portfolio_skill_categories");if(_sc){const _p=JSON.parse(_sc);if(Array.isArray(_p)&&_p.length>0)return _p;}return["Languages","Frameworks","Tools & Cloud","Hardware / IoT","DevOps / CI-CD","Cloud & AWS","AI & ML","Mobile & Flutter","Databases","Security","Web3D / Three.js","Other"];}catch{return["Languages","Frameworks","Tools & Cloud","Hardware / IoT","DevOps / CI-CD","Cloud & AWS","AI & ML","Mobile & Flutter","Databases","Security","Web3D / Three.js","Other"];}}),[newCategoryInput,setNewCategoryInput]=q.useState(""),[sectionTitles,setSectionTitles]=q.useState(()=>{try{const _st=localStorage.getItem("portfolio_section_titles");if(_st){const _p=JSON.parse(_st);if(_p&&typeof _p==="object")return _p;}return{skillsTitle:"Technical Skills Matrix",skillsSubtitle:"Interactive 10-star rating visualizer for core engineering domains, programming languages, and hardware stacks.",educationTitle:"Academic Education",educationSubtitle:"Degree milestones, VTU Computer Science curriculum, and academic achievements.",workTitle:"Work Experience & Roles",workSubtitle:"Technical internships, systems engineering roles, and open source contributions.",projectsTitle:"Engineering & Project Portfolio",projectsSubtitle:"Interactive Web3D applications, distributed backend microservices, and embedded hardware architectures.",interestsTitle:"Interests & Personal Pursuits",interestsSubtitle:"Interactive showcase of hardware prototyping, AI graphic novel art, and sports analytics."};}catch{return{skillsTitle:"Technical Skills Matrix",skillsSubtitle:"Interactive 10-star rating visualizer for core engineering domains, programming languages, and hardware stacks.",educationTitle:"Academic Education",educationSubtitle:"Degree milestones, VTU Computer Science curriculum, and academic achievements.",workTitle:"Work Experience & Roles",workSubtitle:"Technical internships, systems engineering roles, and open source contributions.",projectsTitle:"Engineering & Project Portfolio",projectsSubtitle:"Interactive Web3D applications, distributed backend microservices, and embedded hardware architectures.",interestsTitle:"Interests & Personal Pursuits",interestsSubtitle:"Interactive showcase of hardware prototyping, AI graphic novel art, and sports analytics."};}}),[se,xe]=q.useState({title:"",category:"Web3D",image:"",description:"",github:"",live:"",featured:!0}),[Pe,Ne]=q.useState({title:"",issuer:"",date:"",credentialId:"",category:"Cloud",image:"",summary:"",verifyUrl:""}),[it,vt]=q.useState({title:"",category:"Hardware",image:"",description:""}),[eduList,setEduList]=q.useState([]),[eduForm,setEduForm]=q.useState({degree:"",institution:"",period:"",location:"",grade:"",badge:"",highlights:""}),[intList,setIntList]=q.useState([]),[intForm,setIntForm]=q.useState({title:"",badge:"",category:"Hardware",image:"",description:"",tags:""}),[ft,We]=q.useState(""),[authMode,setAuthMode]=q.useState("password"),[totpCode,setTotpCode]=q.useState(""),[otpInput,setOtpInput]=q.useState(""),[recoveryCode,setRecoveryCode]=q.useState(""),[activeOtp,setActiveOtp]=q.useState(null);q.useEffect(()=>{localStorage.setItem("santo_admin_password",h)},[h]),q.useEffect(()=>{sessionStorage.getItem("admin_authenticated")==="true"&&e(!0)},[]);const G=async()=>{const B=await ni("hero_info",[Bn]);B&&B.length>0&&E({...Bn,...B[0]});const Ce=await ni("about_info",[$c]);Ce&&Ce.length>0&&v({...$c,...Ce[0]});const ht=await ni("messages",[]);F(ht);const st=await ni("projects",Vb);b(st);const Qe=await ni("certificates",sT);U(Qe);const gt=await ni("skills",Ub);N(gt);const Q=await ni("work_experience",Ob);P(Q);const Re=await ni("gallery",Fb);D(Re);const Y=await ni("access_requests",[]),Se=await ni("visitor_logs",[]);me(Y),fe(Se);const _ed=await ni("education",yle);setEduList(_ed);const _it=await ni("interests",Ele);setIntList(_it);const _sp=await ni("studio_projects",defaultStudioProjects);setStudioList(_sp);const _si=await ni("studio_info",[defaultStudioInfo]);_si&&_si.length>0&&setStudioInfo({...defaultStudioInfo,..._si[0]})};q.useEffect(()=>{n&&G()},[n]);const Ie=B=>B.trim().toLowerCase(),ke=async B=>{B.preventDefault(),a("");const Ce=Ie(t),ht=r.trim();if(!Ce||!ht){a("Please enter your Username/Email and Password.");return}if(!["santostark","santo","santosh","santoshdabadiaiyyanna@gmail.com","8431069633","+918431069633"].some(gt=>Ie(gt)===Ce)){a("⛔ ACCESS DENIED: Invalid Username, Email, or Phone Number.");return}if(Su&&Sp&&Ce.includes("@"))try{await CQ(Sp,Ce,ht),e(!0),sessionStorage.setItem("admin_authenticated","true");return}catch{}ht===h||ht==="Santo@2017"||ht==="santo"||ht==="santo123"?(e(!0),sessionStorage.setItem("admin_authenticated","true")):a("Incorrect Password. Please enter your valid admin password.")},Ge=()=>{Su&&Sp&&RQ(Sp),e(!1),i(""),s(""),sessionStorage.removeItem("admin_authenticated")},
 handleBiometricLogin=async()=>{try{if(!window.PublicKeyCredential){a("Biometrics (Windows Hello / Fingerprint) not supported in this browser.");return}const challenge=new Uint8Array(32);window.crypto.getRandomValues(challenge);const credId=localStorage.getItem("santo_biometric_cred");if(credId){const assertion=await navigator.credentials.get({publicKey:{challenge,timeout:60000,userVerification:"preferred"}});if(assertion){e(!0),sessionStorage.setItem("admin_authenticated","true"),We("Biometric verification successful! Welcome Santo Stark.");return}}else{const cred=await navigator.credentials.create({publicKey:{challenge,rp:{name:"ME"},user:{id:new Uint8Array([1,2,3,4]),name:"santostark",displayName:"Santo Stark (Owner)"},pubKeyCredParams:[{alg:-7,type:"public-key"},{alg:-257,type:"public-key"}],authenticatorSelection:{userVerification:"preferred"},timeout:60000}});if(cred){localStorage.setItem("santo_biometric_cred",cred.id),e(!0),sessionStorage.setItem("admin_authenticated","true"),We("Biometrics enrolled & logged in successfully!");return}}}catch(err){console.warn("Biometrics error:",err);a("Biometric verification cancelled or unavailable.")}},
 handleTotpLogin=async B=>{B.preventDefault();a("");const ok=await verifyTOTP(totpCode);if(ok){e(!0),sessionStorage.setItem("admin_authenticated","true"),We("Google Authenticator TOTP verified!");setTotpCode("");}else{a("Invalid 6-digit Authenticator code. Please check Google Authenticator.")}},
 handleOtpSend=()=>{a("ACCESS RESTRICTED: SMS/Email OTP is only accessible by Santo Stark.");},
 handleOtpVerify=B=>{B.preventDefault();a("");if(activeOtp&&otpInput.trim()===activeOtp){e(!0),sessionStorage.setItem("admin_authenticated","true"),We("Phone / Email OTP verified successfully!");setOtpInput("");}else{a("Invalid or expired OTP code. Please try again.")}},
-handleRecoveryLogin=B=>{B.preventDefault();a("");const clean=recoveryCode.trim().toUpperCase();if(SANTO_RECOVERY_CODES.includes(clean)){e(!0),sessionStorage.setItem("admin_authenticated","true"),We("Emergency Recovery Code accepted! Access granted.");setRecoveryCode("");}else{a("Invalid Emergency Recovery Code.")}},be=B=>{B.preventDefault(),p.trim()&&(f(p.trim()),We("Admin password updated successfully! New password is now active."),g(""),setTimeout(()=>We(""),4e3))},rt=(B,Ce)=>{const ht=B.target.files&&B.target.files[0];if(ht){const st=new FileReader;st.onloadend=()=>{Ce(st.result)},st.readAsDataURL(ht)}},qe=async B=>{B.preventDefault(),await xc("hero_info","main_hero",x),localStorage.setItem("portfolio_hero_info",JSON.stringify([x])),We("Website Headers & Contact Info updated and synced live to Firebase!"),G(),setTimeout(()=>We(""),4e3)},Ye=async B=>{B.preventDefault(),await xc("about_info","main_about",w),localStorage.setItem("portfolio_about_info",JSON.stringify([w])),We("About section details & photo updated and synced live to Firebase!"),G(),setTimeout(()=>We(""),4e3)},$=async B=>{B.preventDefault(),W?(await xc("projects",W.id,se),We(`Updated project "${se.title}" in Firebase!`),Z(null)):(await hl("projects",se),We(`Published new project "${se.title}" to Firebase!`)),xe({title:"",category:"Web3D",image:"",description:"",github:"",live:"",featured:!0}),G(),setTimeout(()=>We(""),4e3)},V=async B=>{window.confirm("Are you sure you want to delete this project from your website & Firebase?")&&(await $f("projects",B),We("Project removed successfully!"),G(),setTimeout(()=>We(""),4e3))},le=async B=>{B.preventDefault(),W?(await xc("skills",W.id,{...Me,rating:Number(Me.rating)}),We(`Updated skill "${Me.name}" in Firebase!`),Z(null)):(await hl("skills",{...Me,rating:Number(Me.rating)}),We(`Published new skill "${Me.name}" to Firebase!`)),Ue({name:"",category:"Languages",rating:8,description:""}),G(),setTimeout(()=>We(""),4e3)},Te=async B=>{B.preventDefault(),W?(await xc("certificates",W.id,Pe),We(`Updated Certificate "${Pe.title}" in Firebase!`),Z(null)):(await hl("certificates",Pe),We(`Published new Certificate "${Pe.title}" to Firebase!`)),Ne({title:"",issuer:"",date:"",credentialId:"",category:"Cloud",image:"",summary:"",verifyUrl:""}),G(),setTimeout(()=>We(""),4e3)},_e=async B=>{window.confirm("Delete this Certificate entry from Firebase?")&&(await $f("certificates",B),We("Certificate removed successfully!"),G(),setTimeout(()=>We(""),4e3))},Ae=async B=>{window.confirm("Delete this skill from Firebase?")&&(await $f("skills",B),We("Skill removed successfully!"),G(),setTimeout(()=>We(""),4e3))},$e=async B=>{B.preventDefault();const Ce=Array.isArray(J.skills)?J.skills:J.skills.split(",").map(st=>st.trim()).filter(Boolean),ht={...J,skills:Ce};W?(await xc("work_experience",W.id,ht),We("Updated Work Experience entry in Firebase!"),Z(null)):(await hl("work_experience",ht),We("Published new Work Experience entry to Firebase!")),ce({role:"",company:"",period:"",location:"",type:"Internship",description:"",skills:""}),G(),setTimeout(()=>We(""),4e3)},Oe=async B=>{window.confirm("Delete this Work Experience entry from Firebase?")&&(await $f("work_experience",B),We("Work Experience entry removed!"),G(),setTimeout(()=>We(""),4e3))},Xe=async B=>{B.preventDefault(),W?(await xc("gallery",W.id,it),We("Updated Gallery item in Firebase!"),Z(null)):(await hl("gallery",it),We("Published new Gallery item to Firebase!")),vt({title:"",category:"Hardware",image:"",description:""}),G(),setTimeout(()=>We(""),4e3)},Mt=async B=>{window.confirm("Delete this Gallery item from Firebase?")&&(await $f("gallery",B),We("Gallery item removed!"),G(),setTimeout(()=>We(""),4e3))},saveEdu=async B=>{B.preventDefault();const hlArr=Array.isArray(eduForm.highlights)?eduForm.highlights:(eduForm.highlights||"").split("\n").map(st=>st.trim()).filter(Boolean);const payload={...eduForm,highlights:hlArr};W?(await xc("education",W.id,payload),We("Updated Education milestone in Firebase!"),Z(null)):(await hl("education",payload),We("Published new Education milestone to Firebase!"));setEduForm({degree:"",institution:"",period:"",location:"",grade:"",badge:"",highlights:""});G();setTimeout(()=>We(""),4e3)},delEdu=async B=>{window.confirm("Delete this Education milestone from Firebase?")&&(await $f("education",B),We("Education milestone removed!"),G(),setTimeout(()=>We(""),4e3))},saveInt=async B=>{B.preventDefault();const tagArr=Array.isArray(intForm.tags)?intForm.tags:(intForm.tags||"").split(",").map(st=>st.trim()).filter(Boolean);const payload={...intForm,tags:tagArr};W?(await xc("interests",W.id,payload),We("Updated Interest item in Firebase!"),Z(null)):(await hl("interests",payload),We("Published new Interest item to Firebase!"));setIntForm({title:"",badge:"",category:"Hardware",image:"",description:"",tags:""});G();setTimeout(()=>We(""),4e3)},delInt=async B=>{window.confirm("Delete this Interest item from Firebase?")&&(await $f("interests",B),We("Interest item removed!"),G(),setTimeout(()=>We(""),4e3))},saveStudioProj=async B=>{B.preventDefault();const tagArr=Array.isArray(studioForm.tags)?studioForm.tags:(studioForm.tags||"").split(",").map(st=>st.trim()).filter(Boolean);const payload={...studioForm,tags:tagArr};W?(await xc("studio_projects",W.id,payload),We("Updated Studio project in Firebase!"),Z(null)):(await hl("studio_projects",payload),We("Published new Studio project to Firebase!"));setStudioForm({title:"",wing:"technical",summary:"",image:"",fileLink:"",demoUrl:"",tags:"",status:"In Progress"});G();setTimeout(()=>We(""),4e3)},delStudioProj=async B=>{window.confirm("Delete this Studio project from Firebase?")&&(await $f("studio_projects",B),We("Studio project removed!"),G(),setTimeout(()=>We(""),4e3))};return m.jsx(oo,{title:"Admin CMS Dashboard",subtitle:"Secret administrative panel for content management, access requests, and visitor telemetry.",bgImage:"https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=2000&q=80",children:m.jsx("div",{className:"max-w-5xl mx-auto space-y-8 relative",children:n?m.jsxs("div",{className:"space-y-6",children:[m.jsxs("div",{className:"glass-panel p-5 rounded-3xl border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xl",children:[m.jsxs("div",{className:"flex items-center space-x-3",children:[m.jsx("div",{className:"p-3 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400",children:m.jsx(mu,{className:"w-6 h-6"})}),m.jsxs("div",{children:[m.jsx("h3",{className:"text-lg font-bold text-slate-100",children:"Verified Owner Admin Hub"}),m.jsxs("span",{className:"text-xs text-emerald-400 font-mono flex items-center space-x-1",children:[m.jsx("span",{className:"w-2 h-2 rounded-full bg-emerald-400 animate-pulse"}),m.jsx("span",{children:"Authenticated Admin Session Active"})]})]})]}),m.jsxs("button",{onClick:Ge,className:"px-4 py-2 rounded-xl glass-card text-xs font-semibold text-rose-400 hover:bg-rose-500/20 border border-rose-500/30 transition-all flex items-center space-x-1.5 self-start sm:self-auto",children:[m.jsx(I7,{className:"w-4 h-4"}),m.jsx("span",{children:"Logout Session"})]})]}),ft&&m.jsxs("div",{className:"p-4 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs flex items-center space-x-2 animate-bounce",children:[m.jsx(BM,{className:"w-4 h-4"}),m.jsx("span",{children:ft})]}),m.jsx("div",{className:"flex flex-wrap gap-2 p-1.5 glass-panel rounded-2xl border border-white/10",children:[{id:"hero",label:"Edit Website Header & Bio",icon:IR},{id:"messages",label:"Hiring Messages Inbox 📩",icon:gl},{id:"projects",label:"Manage Projects",icon:CR},{id:"certificates",label:"Manage Certificates 🏆",icon:Yv},{id:"skills",label:"Manage Skills Matrix",icon:fu},{id:"sectiontitles",label:"Edit Section Titles & Subtitles ✏️",icon:IR},{id:"education",label:"Manage Education 🎓",icon:J4},{id:"work",label:"Manage Work Experience",icon:db},{id:"interests",label:"Manage Interests 💡",icon:Fl},{id:"gallery",label:"Manage Gallery",icon:mo},{id:"requests",label:"Access Requests",icon:RR},{id:"analytics",label:"Visitor Telemetry",icon:AR},{id:"studio",label:"Studio Hub CMS 🎬",icon:Fl},{id:"textcms",label:"Site Text & Copy 📝",icon:AR},{id:"security",label:"Change Password",icon:qS}].map(B=>{const Ce=B.icon;return m.jsxs("button",{onClick:()=>{c(B.id),Z(null)},className:`flex items-center space-x-2 px-4 py-2.5 rounded-xl text-xs font-semibold transition-all ${l===B.id?"bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 shadow-lg":"text-slate-400 hover:text-slate-200 hover:bg-white/5"}`,children:[m.jsx(Ce,{className:"w-4 h-4"}),m.jsx("span",{children:B.label})]},B.id)})}),l==="hero"&&m.jsxs("div",{className:"space-y-6",children:[m.jsxs(Rt.form,{initial:{opacity:0},animate:{opacity:1},onSubmit:qe,className:"glass-panel p-6 rounded-3xl border border-white/10 space-y-5",children:[m.jsxs("div",{className:"flex items-center justify-between border-b border-slate-800 pb-3",children:[m.jsxs("h4",{className:"text-base font-bold text-cyan-300 flex items-center gap-2",children:[m.jsx(IR,{className:"w-5 h-5 text-cyan-400"})," Edit Home Page Headers & Contact Info"]}),m.jsx("span",{className:"text-[11px] text-emerald-400 font-mono",children:"Live Firebase Sync"})]}),m.jsxs("div",{className:"p-4 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 space-y-4",children:[m.jsxs("h5",{className:"text-xs font-bold text-cyan-300 font-mono flex items-center gap-1.5",children:[m.jsx(Cd,{className:"w-4 h-4 text-cyan-400"})," Top Navigation Bar Logo & Brand Name Settings"]}),m.jsxs("div",{className:"grid grid-cols-1 sm:grid-cols-2 gap-4",children:[m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Top Bar Brand Name"}),m.jsx("input",{type:"text",required:!0,value:x.brandName||"",onChange:B=>E({...x,brandName:B.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs",placeholder:"e.g. SANTO STARK or MY PORTFOLIO"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Top Bar Brand Subtitle"}),m.jsx("input",{type:"text",required:!0,value:x.brandSubtitle||"",onChange:B=>E({...x,brandSubtitle:B.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs",placeholder:"e.g. SYSTEMS DEVELOPER"})]})]}),m.jsxs("div",{children:[m.jsxs("label",{className:"block text-xs font-semibold text-slate-300 mb-1 flex items-center justify-between",children:[m.jsx("span",{children:"Top Bar Brand Logo / Photo (Upload from PC/Phone OR Paste URL)"}),m.jsx(mo,{className:"w-3.5 h-3.5 text-cyan-400"})]}),m.jsxs("div",{className:"grid grid-cols-1 sm:grid-cols-2 gap-3 items-center",children:[m.jsxs("div",{children:[m.jsx("span",{className:"block text-[10px] text-slate-400 mb-1 font-mono",children:"📁 Select Logo File from PC/Phone:"}),m.jsx("input",{type:"file",accept:"image/*",onChange:B=>rt(B,Ce=>E({...x,brandLogo:Ce})),className:"w-full text-xs text-slate-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-cyan-500/20 file:text-cyan-300 hover:file:bg-cyan-500/30 cursor-pointer glass-card"})]}),m.jsxs("div",{children:[m.jsx("span",{className:"block text-[10px] text-slate-400 mb-1 font-mono",children:"🔗 OR Paste Logo Link (URL):"}),m.jsx("input",{type:"text",placeholder:"https://...",value:x.brandLogo||"",onChange:B=>E({...x,brandLogo:B.target.value}),className:"w-full px-3 py-2 rounded-xl glass-input text-xs"})]})]}),x.brandLogo&&m.jsxs("div",{className:"mt-2 flex items-center space-x-2",children:[m.jsx("img",{src:x.brandLogo,alt:"Logo Preview",className:"w-10 h-10 object-cover rounded-xl border border-cyan-400/40 shadow-md"}),m.jsx("span",{className:"text-[10px] text-emerald-400 font-mono",children:"✓ Brand Logo Attached"})]})]})]}),m.jsxs("div",{className:"grid grid-cols-1 sm:grid-cols-2 gap-4",children:[m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Greeting Text"}),m.jsx("input",{type:"text",required:!0,value:x.greeting||"",onChange:B=>E({...x,greeting:B.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Main Title / Headline"}),m.jsx("input",{type:"text",required:!0,value:x.title||"",onChange:B=>E({...x,title:B.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Status Badge Text"}),m.jsx("input",{type:"text",value:x.badge||"",onChange:B=>E({...x,badge:B.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Location"}),m.jsx("input",{type:"text",value:x.location||"",onChange:B=>E({...x,location:B.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Direct Contact Email"}),m.jsx("input",{type:"email",required:!0,value:x.email||"",onChange:B=>E({...x,email:B.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Direct Contact Phone"}),m.jsx("input",{type:"text",required:!0,value:x.phone||"",onChange:B=>E({...x,phone:B.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Sub-headline / Summary Bio"}),m.jsx("textarea",{rows:3,required:!0,value:x.subtitle||"",onChange:B=>E({...x,subtitle:B.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]}),m.jsxs("div",{className:"grid grid-cols-1 sm:grid-cols-2 gap-4",children:[m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"🐱 GitHub Profile Link"}),m.jsx("input",{type:"url",value:x.github||"",onChange:B=>E({...x,github:B.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"💼 LinkedIn Profile Link"}),m.jsx("input",{type:"url",value:x.linkedin||"",onChange:B=>E({...x,linkedin:B.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"🐦 Twitter / X Profile Link"}),m.jsx("input",{type:"url",value:x.twitter||"",onChange:B=>E({...x,twitter:B.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"📷 Instagram Profile Link"}),m.jsx("input",{type:"url",value:x.instagram||"",onChange:B=>E({...x,instagram:B.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"📹 YouTube Channel Link"}),m.jsx("input",{type:"url",value:x.youtube||"",onChange:B=>E({...x,youtube:B.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"🧩 LeetCode / Coding Profile Link"}),m.jsx("input",{type:"url",value:x.leetcode||"",onChange:B=>E({...x,leetcode:B.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]})]}),m.jsxs("div",{children:[m.jsxs("label",{className:"block text-xs font-semibold text-slate-300 mb-1 flex items-center justify-between",children:[m.jsx("span",{children:"📄 Resume / CV Document (Upload PDF/File OR Paste Link)"}),m.jsx(mo,{className:"w-3.5 h-3.5 text-cyan-400"})]}),m.jsxs("div",{className:"grid grid-cols-1 sm:grid-cols-2 gap-3 items-center",children:[m.jsxs("div",{children:[m.jsx("span",{className:"block text-[10px] text-slate-400 mb-1 font-mono",children:"📁 Upload Resume PDF from Device:"}),m.jsx("input",{type:"file",accept:".pdf,.doc,.docx,image/*",onChange:B=>rt(B,Ce=>E({...x,resume:Ce})),className:"w-full text-xs text-slate-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-cyan-500/20 file:text-cyan-300 hover:file:bg-cyan-500/30 cursor-pointer glass-card"})]}),m.jsxs("div",{children:[m.jsx("span",{className:"block text-[10px] text-slate-400 mb-1 font-mono",children:"🔗 OR Paste Resume Link (URL):"}),m.jsx("input",{type:"text",placeholder:"https://drive.google.com/...",value:x.resume||"",onChange:B=>E({...x,resume:B.target.value}),className:"w-full px-3 py-2 rounded-xl glass-input text-xs"})]})]}),x.resume&&m.jsx("span",{className:"inline-block mt-1 text-[10px] text-emerald-400 font-mono",children:"✓ Resume Attached & Connected to Footer Icon"})]}),m.jsxs("div",{className:"p-4 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 space-y-3",children:[
+handleRecoveryLogin=B=>{B.preventDefault();a("");const clean=recoveryCode.trim().toUpperCase();if(SANTO_RECOVERY_CODES.includes(clean)){e(!0),sessionStorage.setItem("admin_authenticated","true"),We("Emergency Recovery Code accepted! Access granted.");setRecoveryCode("");}else{a("Invalid Emergency Recovery Code.")}},be=B=>{B.preventDefault(),p.trim()&&(f(p.trim()),We("Admin password updated successfully! New password is now active."),g(""),setTimeout(()=>We(""),4e3))},rt=(B,Ce)=>{const ht=B.target.files&&B.target.files[0];if(ht){const st=new FileReader;st.onloadend=()=>{Ce(st.result)},st.readAsDataURL(ht)}},qe=async B=>{B.preventDefault(),await xc("hero_info","main_hero",x),localStorage.setItem("portfolio_hero_info",JSON.stringify([x])),We("Website Headers & Contact Info updated and synced live to Firebase!"),G(),setTimeout(()=>We(""),4e3)},Ye=async B=>{B.preventDefault(),await xc("about_info","main_about",w),localStorage.setItem("portfolio_about_info",JSON.stringify([w])),We("About section details & photo updated and synced live to Firebase!"),G(),setTimeout(()=>We(""),4e3)},$=async B=>{B.preventDefault(),W?(await xc("projects",W.id,se),We(`Updated project "${se.title}" in Firebase!`),Z(null)):(await hl("projects",se),We(`Published new project "${se.title}" to Firebase!`)),xe({title:"",category:"Web3D",image:"",description:"",github:"",live:"",featured:!0}),G(),setTimeout(()=>We(""),4e3)},V=async B=>{window.confirm("Are you sure you want to delete this project from your website & Firebase?")&&(await $f("projects",B),We("Project removed successfully!"),G(),setTimeout(()=>We(""),4e3))},le=async B=>{B.preventDefault(),W?(await xc("skills",W.id,{...Me,rating:Number(Me.rating)}),We(`Updated skill "${Me.name}" in Firebase!`),Z(null)):(await hl("skills",{...Me,rating:Number(Me.rating)}),We(`Published new skill "${Me.name}" to Firebase!`)),Ue({name:"",category:"Languages",rating:8,description:""}),G(),setTimeout(()=>We(""),4e3)},Te=async B=>{B.preventDefault(),W?(await xc("certificates",W.id,Pe),We(`Updated Certificate "${Pe.title}" in Firebase!`),Z(null)):(await hl("certificates",Pe),We(`Published new Certificate "${Pe.title}" to Firebase!`)),Ne({title:"",issuer:"",date:"",credentialId:"",category:"Cloud",image:"",summary:"",verifyUrl:""}),G(),setTimeout(()=>We(""),4e3)},_e=async B=>{window.confirm("Delete this Certificate entry from Firebase?")&&(await $f("certificates",B),We("Certificate removed successfully!"),G(),setTimeout(()=>We(""),4e3))},Ae=async B=>{window.confirm("Delete this skill from Firebase?")&&(await $f("skills",B),We("Skill removed successfully!"),G(),setTimeout(()=>We(""),4e3))},$e=async B=>{B.preventDefault();const Ce=Array.isArray(J.skills)?J.skills:J.skills.split(",").map(st=>st.trim()).filter(Boolean),ht={...J,skills:Ce};W?(await xc("work_experience",W.id,ht),We("Updated Work Experience entry in Firebase!"),Z(null)):(await hl("work_experience",ht),We("Published new Work Experience entry to Firebase!")),ce({role:"",company:"",period:"",location:"",type:"Internship",description:"",skills:""}),G(),setTimeout(()=>We(""),4e3)},Oe=async B=>{window.confirm("Delete this Work Experience entry from Firebase?")&&(await $f("work_experience",B),We("Work Experience entry removed!"),G(),setTimeout(()=>We(""),4e3))},Xe=async B=>{B.preventDefault(),W?(await xc("gallery",W.id,it),We("Updated Gallery item in Firebase!"),Z(null)):(await hl("gallery",it),We("Published new Gallery item to Firebase!")),vt({title:"",category:"Hardware",image:"",description:""}),G(),setTimeout(()=>We(""),4e3)},Mt=async B=>{window.confirm("Delete this Gallery item from Firebase?")&&(await $f("gallery",B),We("Gallery item removed!"),G(),setTimeout(()=>We(""),4e3))},saveEdu=async B=>{B.preventDefault();const hlArr=Array.isArray(eduForm.highlights)?eduForm.highlights:(eduForm.highlights||"").split("\n").map(st=>st.trim()).filter(Boolean);const payload={...eduForm,highlights:hlArr};W?(await xc("education",W.id,payload),We("Updated Education milestone in Firebase!"),Z(null)):(await hl("education",payload),We("Published new Education milestone to Firebase!"));setEduForm({degree:"",institution:"",period:"",location:"",grade:"",badge:"",highlights:""});G();setTimeout(()=>We(""),4e3)},delEdu=async B=>{window.confirm("Delete this Education milestone from Firebase?")&&(await $f("education",B),We("Education milestone removed!"),G(),setTimeout(()=>We(""),4e3))},saveInt=async B=>{B.preventDefault();const tagArr=Array.isArray(intForm.tags)?intForm.tags:(intForm.tags||"").split(",").map(st=>st.trim()).filter(Boolean);const payload={...intForm,tags:tagArr};W?(await xc("interests",W.id,payload),We("Updated Interest item in Firebase!"),Z(null)):(await hl("interests",payload),We("Published new Interest item to Firebase!"));setIntForm({title:"",badge:"",category:"Hardware",image:"",description:"",tags:""});G();setTimeout(()=>We(""),4e3)},delInt=async B=>{window.confirm("Delete this Interest item from Firebase?")&&(await $f("interests",B),We("Interest item removed!"),G(),setTimeout(()=>We(""),4e3))},saveStudioInfo=async B=>{B.preventDefault();try{await xc("studio_info","main_studio",studioInfo);localStorage.setItem("portfolio_studio_info",JSON.stringify([studioInfo]));We("🎉 Studio Settings Saved to Firebase & Live Site!");setTimeout(()=>We(""),4e3);}catch(err){console.error(err);}},saveStudioProj=async B=>{B.preventDefault();const tagArr=Array.isArray(studioForm.tags)?studioForm.tags:(studioForm.tags||"").split(",").map(st=>st.trim()).filter(Boolean);const payload={...studioForm,desc:studioForm.desc||studioForm.summary||"",summary:studioForm.desc||studioForm.summary||"",details:studioForm.details||studioForm.desc||studioForm.summary||"",tags:tagArr,featured:Boolean(studioForm.featured)};W?(await xc("studio_projects",W.id,payload),We("Updated Studio project in Firebase!"),Z(null)):(await hl("studio_projects",payload),We("Published new Studio project to Firebase!"));setStudioForm({title:"",wing:"technical",desc:"",details:"",image:"",fileLink:"",demoUrl:"",tags:"",status:"In Progress",featured:!1});G();setTimeout(()=>We(""),4e3);},delStudioProj=async B=>{window.confirm("Delete this Studio project from Firebase?")&&(await $f("studio_projects",B),We("Studio project removed!"),G(),setTimeout(()=>We(""),4e3));};return m.jsx(oo,{title:"Admin CMS Dashboard",subtitle:"Secret administrative panel for content management, access requests, and visitor telemetry.",bgImage:"https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=2000&q=80",children:m.jsx("div",{className:"max-w-5xl mx-auto space-y-8 relative",children:n?m.jsxs("div",{className:"space-y-6",children:[m.jsxs("div",{className:"glass-panel p-5 rounded-3xl border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xl",children:[m.jsxs("div",{className:"flex items-center space-x-3",children:[m.jsx("div",{className:"p-3 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400",children:m.jsx(mu,{className:"w-6 h-6"})}),m.jsxs("div",{children:[m.jsx("h3",{className:"text-lg font-bold text-slate-100",children:"Verified Owner Admin Hub"}),m.jsxs("span",{className:"text-xs text-emerald-400 font-mono flex items-center space-x-1",children:[m.jsx("span",{className:"w-2 h-2 rounded-full bg-emerald-400 animate-pulse"}),m.jsx("span",{children:"Authenticated Admin Session Active"})]})]})]}),m.jsxs("button",{onClick:Ge,className:"px-4 py-2 rounded-xl glass-card text-xs font-semibold text-rose-400 hover:bg-rose-500/20 border border-rose-500/30 transition-all flex items-center space-x-1.5 self-start sm:self-auto",children:[m.jsx(I7,{className:"w-4 h-4"}),m.jsx("span",{children:"Logout Session"})]})]}),ft&&m.jsxs("div",{className:"p-4 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs flex items-center space-x-2 animate-bounce",children:[m.jsx(BM,{className:"w-4 h-4"}),m.jsx("span",{children:ft})]}),m.jsx("div",{className:"flex flex-wrap gap-2 p-1.5 glass-panel rounded-2xl border border-white/10",children:[{id:"hero",label:"Edit Website Header & Bio",icon:IR},{id:"messages",label:"Hiring Messages Inbox 📩",icon:gl},{id:"projects",label:"Manage Projects",icon:CR},{id:"certificates",label:"Manage Certificates 🏆",icon:Yv},{id:"skills",label:"Manage Skills Matrix",icon:fu},{id:"sectiontitles",label:"Edit Section Titles & Subtitles ✏️",icon:IR},{id:"education",label:"Manage Education 🎓",icon:J4},{id:"work",label:"Manage Work Experience",icon:db},{id:"interests",label:"Manage Interests 💡",icon:Fl},{id:"gallery",label:"Manage Gallery",icon:mo},{id:"requests",label:"Access Requests",icon:RR},{id:"analytics",label:"Visitor Telemetry",icon:AR},{id:"studio",label:"Studio Hub CMS 🎬",icon:Fl},{id:"textcms",label:"Site Text & Copy 📝",icon:AR},{id:"security",label:"Change Password",icon:qS}].map(B=>{const Ce=B.icon;return m.jsxs("button",{onClick:()=>{c(B.id),Z(null)},className:`flex items-center space-x-2 px-4 py-2.5 rounded-xl text-xs font-semibold transition-all ${l===B.id?"bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 shadow-lg":"text-slate-400 hover:text-slate-200 hover:bg-white/5"}`,children:[m.jsx(Ce,{className:"w-4 h-4"}),m.jsx("span",{children:B.label})]},B.id)})}),l==="hero"&&m.jsxs("div",{className:"space-y-6",children:[m.jsxs(Rt.form,{initial:{opacity:0},animate:{opacity:1},onSubmit:qe,className:"glass-panel p-6 rounded-3xl border border-white/10 space-y-5",children:[m.jsxs("div",{className:"flex items-center justify-between border-b border-slate-800 pb-3",children:[m.jsxs("h4",{className:"text-base font-bold text-cyan-300 flex items-center gap-2",children:[m.jsx(IR,{className:"w-5 h-5 text-cyan-400"})," Edit Home Page Headers & Contact Info"]}),m.jsx("span",{className:"text-[11px] text-emerald-400 font-mono",children:"Live Firebase Sync"})]}),m.jsxs("div",{className:"p-4 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 space-y-4",children:[m.jsxs("h5",{className:"text-xs font-bold text-cyan-300 font-mono flex items-center gap-1.5",children:[m.jsx(Cd,{className:"w-4 h-4 text-cyan-400"})," Top Navigation Bar Logo & Brand Name Settings"]}),m.jsxs("div",{className:"grid grid-cols-1 sm:grid-cols-2 gap-4",children:[m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Top Bar Brand Name"}),m.jsx("input",{type:"text",required:!0,value:x.brandName||"",onChange:B=>E({...x,brandName:B.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs",placeholder:"e.g. SANTO STARK or MY PORTFOLIO"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Top Bar Brand Subtitle"}),m.jsx("input",{type:"text",required:!0,value:x.brandSubtitle||"",onChange:B=>E({...x,brandSubtitle:B.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs",placeholder:"e.g. SYSTEMS DEVELOPER"})]})]}),m.jsxs("div",{children:[m.jsxs("label",{className:"block text-xs font-semibold text-slate-300 mb-1 flex items-center justify-between",children:[m.jsx("span",{children:"Top Bar Brand Logo / Photo (Upload from PC/Phone OR Paste URL)"}),m.jsx(mo,{className:"w-3.5 h-3.5 text-cyan-400"})]}),m.jsxs("div",{className:"grid grid-cols-1 sm:grid-cols-2 gap-3 items-center",children:[m.jsxs("div",{children:[m.jsx("span",{className:"block text-[10px] text-slate-400 mb-1 font-mono",children:"📁 Select Logo File from PC/Phone:"}),m.jsx("input",{type:"file",accept:"image/*",onChange:B=>rt(B,Ce=>E({...x,brandLogo:Ce})),className:"w-full text-xs text-slate-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-cyan-500/20 file:text-cyan-300 hover:file:bg-cyan-500/30 cursor-pointer glass-card"})]}),m.jsxs("div",{children:[m.jsx("span",{className:"block text-[10px] text-slate-400 mb-1 font-mono",children:"🔗 OR Paste Logo Link (URL):"}),m.jsx("input",{type:"text",placeholder:"https://...",value:x.brandLogo||"",onChange:B=>E({...x,brandLogo:B.target.value}),className:"w-full px-3 py-2 rounded-xl glass-input text-xs"})]})]}),x.brandLogo&&m.jsxs("div",{className:"mt-2 flex items-center space-x-2",children:[m.jsx("img",{src:x.brandLogo,alt:"Logo Preview",className:"w-10 h-10 object-cover rounded-xl border border-cyan-400/40 shadow-md"}),m.jsx("span",{className:"text-[10px] text-emerald-400 font-mono",children:"✓ Brand Logo Attached"})]})]})]}),m.jsxs("div",{className:"grid grid-cols-1 sm:grid-cols-2 gap-4",children:[m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Greeting Text"}),m.jsx("input",{type:"text",required:!0,value:x.greeting||"",onChange:B=>E({...x,greeting:B.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Main Title / Headline"}),m.jsx("input",{type:"text",required:!0,value:x.title||"",onChange:B=>E({...x,title:B.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Status Badge Text"}),m.jsx("input",{type:"text",value:x.badge||"",onChange:B=>E({...x,badge:B.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Location"}),m.jsx("input",{type:"text",value:x.location||"",onChange:B=>E({...x,location:B.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Direct Contact Email"}),m.jsx("input",{type:"email",required:!0,value:x.email||"",onChange:B=>E({...x,email:B.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Direct Contact Phone"}),m.jsx("input",{type:"text",required:!0,value:x.phone||"",onChange:B=>E({...x,phone:B.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Sub-headline / Summary Bio"}),m.jsx("textarea",{rows:3,required:!0,value:x.subtitle||"",onChange:B=>E({...x,subtitle:B.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]}),m.jsxs("div",{className:"grid grid-cols-1 sm:grid-cols-2 gap-4",children:[m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"🐱 GitHub Profile Link"}),m.jsx("input",{type:"url",value:x.github||"",onChange:B=>E({...x,github:B.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"💼 LinkedIn Profile Link"}),m.jsx("input",{type:"url",value:x.linkedin||"",onChange:B=>E({...x,linkedin:B.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"🐦 Twitter / X Profile Link"}),m.jsx("input",{type:"url",value:x.twitter||"",onChange:B=>E({...x,twitter:B.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"📷 Instagram Profile Link"}),m.jsx("input",{type:"url",value:x.instagram||"",onChange:B=>E({...x,instagram:B.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"📹 YouTube Channel Link"}),m.jsx("input",{type:"url",value:x.youtube||"",onChange:B=>E({...x,youtube:B.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"🧩 LeetCode / Coding Profile Link"}),m.jsx("input",{type:"url",value:x.leetcode||"",onChange:B=>E({...x,leetcode:B.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]})]}),m.jsxs("div",{children:[m.jsxs("label",{className:"block text-xs font-semibold text-slate-300 mb-1 flex items-center justify-between",children:[m.jsx("span",{children:"📄 Resume / CV Document (Upload PDF/File OR Paste Link)"}),m.jsx(mo,{className:"w-3.5 h-3.5 text-cyan-400"})]}),m.jsxs("div",{className:"grid grid-cols-1 sm:grid-cols-2 gap-3 items-center",children:[m.jsxs("div",{children:[m.jsx("span",{className:"block text-[10px] text-slate-400 mb-1 font-mono",children:"📁 Upload Resume PDF from Device:"}),m.jsx("input",{type:"file",accept:".pdf,.doc,.docx,image/*",onChange:B=>rt(B,Ce=>E({...x,resume:Ce})),className:"w-full text-xs text-slate-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-cyan-500/20 file:text-cyan-300 hover:file:bg-cyan-500/30 cursor-pointer glass-card"})]}),m.jsxs("div",{children:[m.jsx("span",{className:"block text-[10px] text-slate-400 mb-1 font-mono",children:"🔗 OR Paste Resume Link (URL):"}),m.jsx("input",{type:"text",placeholder:"https://drive.google.com/...",value:x.resume||"",onChange:B=>E({...x,resume:B.target.value}),className:"w-full px-3 py-2 rounded-xl glass-input text-xs"})]})]}),x.resume&&m.jsx("span",{className:"inline-block mt-1 text-[10px] text-emerald-400 font-mono",children:"✓ Resume Attached & Connected to Footer Icon"})]}),m.jsxs("div",{className:"p-4 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 space-y-3",children:[
     m.jsxs("h5",{className:"text-xs font-bold text-cyan-300 font-mono flex items-center gap-1.5",children:[m.jsx(cg,{className:"w-4 h-4 text-cyan-400"})," Home Page Skill Chips (3 Chips)"]}),
     m.jsxs("div",{className:"grid grid-cols-1 sm:grid-cols-3 gap-3",children:[
       m.jsxs("div",{children:[m.jsx("label",{className:"block text-[11px] text-slate-300 mb-1 font-semibold",children:"Chip 1"}),m.jsx("input",{type:"text",value:x.skillPill1!==void 0?x.skillPill1:"<> C++ & Python",onChange:B=>E({...x,skillPill1:B.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]}),
@@ -7650,7 +7689,245 @@ handleRecoveryLogin=B=>{B.preventDefault();a("");const clean=recoveryCode.trim()
 Your request to access "${st}" has been APPROVED!
 
 Best regards,
-Santosh`)}`,className:"px-3.5 py-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 font-bold text-xs flex items-center space-x-1.5 hover:bg-cyan-500/30 transition-all",children:[m.jsx(gl,{className:"w-3.5 h-3.5"}),m.jsx("span",{children:"✉️ Approve & Send File via Email"})]}),ht&&m.jsx("a",{href:`https://wa.me/91${ht}?text=${encodeURIComponent(`Hi ${B.name}! Your permission request for "${st}" has been APPROVED by Santosh!`)}`,target:"_blank",rel:"noreferrer",className:"px-3.5 py-2 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 font-bold text-xs flex items-center space-x-1.5 hover:bg-emerald-500/30 transition-all",children:m.jsx("span",{children:"💬 Approve & Send via WhatsApp ↗"})})]})]},Ce)})})]}),l==="analytics"&&m.jsxs(Rt.div,{initial:{opacity:0},animate:{opacity:1},className:"glass-panel p-6 rounded-3xl border border-white/10 space-y-4",children:[m.jsxs("h4",{className:"text-base font-bold text-cyan-300 flex items-center gap-2",children:[m.jsx(AR,{className:"w-5 h-5 text-cyan-400"})," Visitor Telemetry Logs (",ae.length,")"]}),ae.length===0?m.jsx("p",{className:"text-xs text-slate-400 italic",children:"No visitor logs recorded yet."}):m.jsx("div",{className:"space-y-2 max-h-96 overflow-y-auto font-mono text-[11px]",children:ae.map((B,Ce)=>m.jsxs("div",{className:"p-2.5 rounded-xl bg-slate-900/80 border border-slate-800/80 text-slate-300 flex justify-between",children:[m.jsxs("span",{children:["Path: ",B.pathname]}),m.jsx("span",{className:"text-slate-400",children:new Date(B.timestamp).toLocaleString()})]},Ce))})]}),l==="studio"&&m.jsxs(Rt.div,{initial:{opacity:0},animate:{opacity:1},className:"space-y-6",children:[m.jsxs("div",{className:"glass-panel p-6 rounded-3xl border border-violet-500/30 space-y-5",children:[m.jsxs("div",{className:"flex items-center justify-between border-b border-slate-800 pb-3",children:[m.jsxs("h4",{className:"text-base font-bold text-violet-300 flex items-center gap-2",children:[m.jsx(Fl,{className:"w-5 h-5 text-violet-400"}),"Studio Hub CMS",m.jsx("span",{className:"text-xs font-mono text-slate-400 ml-2",children:"— Add / Edit / Delete Projects in The Studio"})]}),m.jsx("span",{className:"text-[11px] text-emerald-400 font-mono",children:"Live Firebase Sync"})]}),m.jsxs("div",{className:"flex flex-wrap gap-2 text-[11px] font-mono",children:[m.jsx("span",{className:"px-2.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400",children:"⚡ technical"}),m.jsx("span",{className:"px-2.5 py-1 rounded-full bg-violet-500/10 border border-violet-500/30 text-violet-400",children:"🎬 entertainment"}),m.jsx("span",{className:"px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400",children:"🎨 arts"}),m.jsx("span",{className:"px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400",children:"🔧 other"})]}),m.jsxs("form",{onSubmit:saveStudioProj,className:"space-y-4",children:[m.jsxs("div",{className:"grid grid-cols-1 sm:grid-cols-2 gap-4",children:[m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Project Title *"}),m.jsx("input",{type:"text",required:true,placeholder:"e.g. Gaming Montage Reel 2025",value:studioForm.title,onChange:e=>setStudioForm({...studioForm,title:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Wing (Category) *"}),m.jsxs("select",{value:studioForm.wing,onChange:e=>setStudioForm({...studioForm,wing:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 text-slate-100 text-xs border border-white/10 outline-none focus:border-violet-400",children:[m.jsx("option",{value:"technical",children:"⚡ Technical Wing"}),m.jsx("option",{value:"entertainment",children:"🎬 Entertainment Wing"}),m.jsx("option",{value:"arts",children:"🎨 Arts & Design Wing"}),m.jsx("option",{value:"other",children:"🔧 Lab & Other Wing"})]})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Status"}),m.jsxs("select",{value:studioForm.status,onChange:e=>setStudioForm({...studioForm,status:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 text-slate-100 text-xs border border-white/10 outline-none focus:border-violet-400",children:[m.jsx("option",{value:"Live",children:"🟢 Live"}),m.jsx("option",{value:"In Progress",children:"🟡 In Progress"}),m.jsx("option",{value:"Completed",children:"🔵 Completed"}),m.jsx("option",{value:"Concept",children:"🟣 Concept"})]})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Tags (comma-separated)"}),m.jsx("input",{type:"text",placeholder:"e.g. React, Three.js, Firebase",value:studioForm.tags,onChange:e=>setStudioForm({...studioForm,tags:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Summary / Description *"}),m.jsx("textarea",{rows:3,required:true,placeholder:"Brief description of the project...",value:studioForm.summary,onChange:e=>setStudioForm({...studioForm,summary:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]}),m.jsxs("div",{className:"grid grid-cols-1 sm:grid-cols-2 gap-4",children:[m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Thumbnail Image (Upload File or URL)"}),m.jsx("input",{type:"file",accept:"image/*",onChange:e=>{const f=e.target.files&&e.target.files[0];if(f){const rd=new FileReader();rd.onloadend=()=>setStudioForm({...studioForm,image:rd.result});rd.readAsDataURL(f);}},className:"w-full text-xs text-slate-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-violet-500/20 file:text-violet-300 hover:file:bg-violet-500/30 cursor-pointer glass-card mb-2"}),m.jsx("input",{type:"text",placeholder:"OR paste image URL https://...",value:studioForm.image&&!studioForm.image.startsWith("data:")?studioForm.image:"",onChange:e=>setStudioForm({...studioForm,image:e.target.value}),className:"w-full px-3 py-2 rounded-xl glass-input text-xs"}),studioForm.image&&m.jsxs("div",{className:"mt-2 flex items-center space-x-2",children:[m.jsx("img",{src:studioForm.image,alt:"Preview",className:"w-12 h-12 object-cover rounded-xl border border-violet-400/40"}),m.jsx("span",{className:"text-[10px] text-emerald-400 font-mono",children:"✓ Thumbnail set"})]})]}),m.jsxs("div",{className:"space-y-3",children:[m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Demo / Live Link"}),m.jsx("input",{type:"text",placeholder:"https://...",value:studioForm.demoUrl,onChange:e=>setStudioForm({...studioForm,demoUrl:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"File / Download Link"}),m.jsx("input",{type:"text",placeholder:"https://drive.google.com/...",value:studioForm.fileLink,onChange:e=>setStudioForm({...studioForm,fileLink:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]})]})]}),m.jsxs("div",{className:"flex items-center gap-3 pt-2",children:[m.jsxs("button",{type:"submit",className:"px-6 py-2.5 bg-gradient-to-r from-violet-500 to-cyan-500 text-slate-950 font-extrabold rounded-xl text-xs shadow-xl hover:scale-105 transition-all flex items-center gap-2 cursor-pointer",children:[m.jsx(AR,{className:"w-4 h-4"}),W?"Update Studio Project":"➕ Publish Studio Project"]}),W&&m.jsx("button",{type:"button",onClick:()=>{Z(null);setStudioForm({title:"",wing:"technical",summary:"",image:"",fileLink:"",demoUrl:"",tags:"",status:"In Progress"});},className:"px-5 py-2.5 glass-card border border-white/15 text-slate-300 rounded-xl text-xs font-bold hover:text-white transition-all cursor-pointer",children:"Cancel Edit"})]})]})]}),m.jsxs("div",{className:"glass-panel p-6 rounded-3xl border border-white/10 space-y-4",children:[m.jsxs("h4",{className:"text-sm font-bold text-slate-200 flex items-center gap-2",children:[m.jsx(Fl,{className:"w-4 h-4 text-violet-400"}),"Studio Projects in Firebase ("+studioList.length+")"]}),studioList.length===0?m.jsxs("div",{className:"text-center py-10 text-slate-500 text-xs",children:[m.jsx(Fl,{className:"w-8 h-8 mx-auto mb-2 opacity-30"}),"No Studio projects added yet. Use the form above to publish your first one."]}):m.jsx("div",{className:"space-y-3",children:studioList.map(proj=>{const tagsArr=Array.isArray(proj.tags)?proj.tags:(typeof proj.tags==="string"?proj.tags.split(",").map(t=>t.trim()).filter(Boolean):[]);return m.jsxs("div",{key:proj.id,className:"glass-card rounded-2xl border border-white/10 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4",children:[m.jsxs("div",{className:"flex items-start gap-3 min-w-0",children:[proj.image&&m.jsx("img",{src:proj.image,alt:proj.title,className:"w-12 h-12 rounded-xl object-cover border border-white/10 flex-shrink-0"}),m.jsxs("div",{className:"min-w-0",children:[m.jsxs("div",{className:"flex items-center gap-2 flex-wrap",children:[m.jsx("span",{className:"text-xs font-bold px-2 py-0.5 rounded-full border border-violet-500/30 bg-violet-500/10 text-violet-400",children:proj.wing}),m.jsx("span",{className:"text-[10px] font-mono text-slate-400",children:proj.status})]}),m.jsx("p",{className:"text-sm font-bold text-slate-100 mt-0.5 truncate",children:proj.title}),m.jsx("p",{className:"text-[11px] text-slate-400 line-clamp-1 mt-0.5",children:proj.summary}),m.jsx("div",{className:"flex flex-wrap gap-1 mt-1",children:tagsArr.slice(0,4).map((t,i)=>m.jsx("span",{key:i,className:"px-1.5 py-0.5 rounded text-[9px] font-mono bg-white/5 text-slate-300 border border-white/10",children:t}))})]})]}),m.jsxs("div",{className:"flex items-center gap-2 shrink-0",children:[m.jsx("button",{onClick:()=>{Z(proj);setStudioForm({title:proj.title||"",wing:proj.wing||"technical",summary:proj.summary||"",image:proj.image||"",fileLink:proj.fileLink||"",demoUrl:proj.demoUrl||"",tags:Array.isArray(proj.tags)?proj.tags.join(", "):(proj.tags||""),status:proj.status||"In Progress"});window.scrollTo({top:0,behavior:"smooth"});},className:"px-3 py-1.5 rounded-xl bg-violet-500/20 border border-violet-500/40 text-violet-300 text-[11px] font-bold hover:bg-violet-500/30 transition-all flex items-center gap-1 cursor-pointer",children:"Edit"}),m.jsx("button",{onClick:()=>delStudioProj(proj.id),className:"px-3 py-1.5 rounded-xl bg-rose-500/20 border border-rose-500/40 text-rose-300 text-[11px] font-bold hover:bg-rose-500/30 transition-all flex items-center gap-1 cursor-pointer",children:"Delete"})]})]});})})]}),m.jsxs("div",{className:"p-4 rounded-2xl bg-violet-500/5 border border-violet-500/20 text-violet-200 text-xs space-y-1.5",children:[m.jsx("p",{className:"font-bold text-violet-300",children:"✦ Studio Hub CMS Information:"}),m.jsx("p",{children:"Projects published here are saved to Firebase and instantly display on /studio under their assigned Wing tab."}),m.jsx("p",{children:"Choose Wing: Technical ⚡, Entertainment 🎬, Arts 🎨, or Lab 🔧."})]})]}),l==="textcms"&&m.jsxs(Rt.div,{initial:{opacity:0},animate:{opacity:1},className:"space-y-6",children:[m.jsxs("div",{className:"glass-panel p-6 rounded-3xl border border-cyan-500/30 space-y-6",children:[m.jsxs("div",{className:"flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4",children:[m.jsxs("div",{children:[m.jsxs("h4",{className:"text-base font-bold text-cyan-300 flex items-center gap-2",children:[m.jsx(AR,{className:"w-5 h-5 text-cyan-400"}),"Universal Website Text & Copy CMS (Option A)"]}),m.jsx("p",{className:"text-xs text-slate-400 mt-0.5",children:"Edit any section, heading, badge, or bio across your entire portfolio and studio."})]}),m.jsxs("div",{className:"flex items-center gap-2",children:[m.jsx("button",{type:"button",onClick:()=>{window.location.href="/";setTimeout(()=>{if(window.StarkContentEngine)window.StarkContentEngine.toggleLiveEdit(true);},400);},className:"px-4 py-2 rounded-xl bg-gradient-to-r from-violet-500 to-pink-600 text-white font-bold text-xs shadow-lg hover:scale-105 transition-all cursor-pointer flex items-center gap-1.5",children:[m.jsx("span",{children:"⚡"}),"Launch Live Edit (Option B)"]}),m.jsx("button",{type:"button",onClick:async()=>{try{await xc("hero_info","main_hero",x);await xc("about_info","main_about",w);localStorage.setItem("portfolio_hero_info",JSON.stringify([x]));localStorage.setItem("portfolio_about_info",JSON.stringify([w]));We("🎉 All Website Text Saved to Firebase & Live Site!");setTimeout(()=>We(""),4e3);}catch(err){We("Error saving: "+err.message);}},className:"px-5 py-2 rounded-xl bg-gradient-to-r from-cyan-400 to-emerald-400 text-slate-950 font-extrabold text-xs shadow-lg hover:scale-105 transition-all cursor-pointer flex items-center gap-1.5",children:[m.jsx("span",{children:"💾"}),"Save All Text to Firebase"]})]})]}),m.jsxs("div",{className:"p-5 rounded-2xl bg-slate-900/60 border border-cyan-500/20 space-y-4",children:[m.jsxs("h5",{className:"text-xs font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-2",children:[m.jsx("span",{children:"🏠"}),"Home Hero Section & Headings"]}),m.jsxs("div",{className:"grid grid-cols-1 md:grid-cols-2 gap-4",children:[m.jsxs("div",{children:[m.jsx("label",{className:"block text-[11px] text-slate-400 mb-1",children:"Hero Top Badge / Tagline"}),m.jsx("input",{type:"text",value:x.tagline||"",onChange:e=>E({...x,tagline:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs text-slate-100 border border-white/10"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-[11px] text-slate-400 mb-1",children:"Full Display Name"}),m.jsx("input",{type:"text",value:x.name||"",onChange:e=>E({...x,name:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs text-slate-100 border border-white/10"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-[11px] text-slate-400 mb-1",children:"Main Title / Role"}),m.jsx("input",{type:"text",value:x.title||"",onChange:e=>E({...x,title:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs text-slate-100 border border-white/10"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-[11px] text-slate-400 mb-1",children:"Operational Base / Location"}),m.jsx("input",{type:"text",value:x.location||"",onChange:e=>E({...x,location:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs text-slate-100 border border-white/10"})]})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-[11px] text-slate-400 mb-1",children:"Hero Subtitle / Mission Statement"}),m.jsx("textarea",{rows:2,value:x.subtitle||"",onChange:e=>E({...x,subtitle:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs text-slate-100 border border-white/10"})]})]}),m.jsxs("div",{className:"p-5 rounded-2xl bg-slate-900/60 border border-violet-500/20 space-y-4",children:[m.jsxs("h5",{className:"text-xs font-bold text-violet-300 uppercase tracking-wider flex items-center gap-2",children:[m.jsx("span",{children:"👤"}),"About Me & Narrative Biography"]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-[11px] text-slate-400 mb-1",children:"Full Narrative Bio Paragraphs"}),m.jsx("textarea",{rows:4,value:w.bio||"",onChange:e=>v({...w,bio:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs text-slate-100 border border-white/10"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-[11px] text-slate-400 mb-1",children:"Engineering Philosophy / Quote"}),m.jsx("input",{type:"text",value:w.quote||"",onChange:e=>v({...w,quote:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs text-slate-100 border border-white/10"})]})]}),m.jsxs("div",{className:"p-5 rounded-2xl bg-slate-900/60 border border-emerald-500/20 space-y-4",children:[m.jsxs("h5",{className:"text-xs font-bold text-emerald-300 uppercase tracking-wider flex items-center gap-2",children:[m.jsx("span",{children:"💬"}),"Contact Channels & Direct Links"]}),m.jsxs("div",{className:"grid grid-cols-1 md:grid-cols-2 gap-4",children:[m.jsxs("div",{children:[m.jsx("label",{className:"block text-[11px] text-slate-400 mb-1",children:"Direct Email Address"}),m.jsx("input",{type:"text",value:x.email||"",onChange:e=>E({...x,email:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs text-slate-100 border border-white/10"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-[11px] text-slate-400 mb-1",children:"GitHub Profile URL"}),m.jsx("input",{type:"text",value:x.github||"",onChange:e=>E({...x,github:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs text-slate-100 border border-white/10"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-[11px] text-slate-400 mb-1",children:"LinkedIn Profile URL"}),m.jsx("input",{type:"text",value:x.linkedin||"",onChange:e=>E({...x,linkedin:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs text-slate-100 border border-white/10"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-[11px] text-slate-400 mb-1",children:"Resume / CV - View URL (Google Drive or PDF)"}),m.jsx("input",{type:"text",value:x.resume||"",onChange:e=>E({...x,resume:e.target.value}),placeholder:"https://drive.google.com/file/d/YOUR_FILE_ID/view",className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs text-slate-100 border border-white/10"}),m.jsx("p",{className:"text-[10px] text-emerald-400/70 mt-1",children:"Paste your Google Drive share link or any PDF URL. Opens as view-only in a new tab."})]})]})]}),m.jsxs("div",{className:"flex items-center justify-between pt-2 border-t border-slate-800",children:[m.jsx("span",{className:"text-xs text-slate-400 font-mono",children:"✓ Real-time bidirectional Cloud Firestore sync"}),m.jsx("button",{type:"button",onClick:async()=>{try{await xc("hero_info","main_hero",x);await xc("about_info","main_about",w);localStorage.setItem("portfolio_hero_info",JSON.stringify([x]));localStorage.setItem("portfolio_about_info",JSON.stringify([w]));We("🎉 All Website Text Saved to Firebase & Live Site!");setTimeout(()=>We(""),4e3);}catch(err){We("Error saving: "+err.message);}},className:"px-8 py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-emerald-400 text-slate-950 font-extrabold text-xs shadow-xl hover:scale-105 transition-all cursor-pointer",children:"💾 Save All Website Text to Firebase"})]})]})]}),l==="security"&&m.jsxs(Rt.div,{initial:{opacity:0},animate:{opacity:1},className:"glass-panel p-6 rounded-3xl border border-white/10 space-y-6",children:[m.jsxs("div",{children:[m.jsxs("h4",{className:"text-base font-bold text-cyan-300 flex items-center gap-2",children:[m.jsx(qS,{className:"w-5 h-5 text-cyan-400"})," Change Admin CMS Password"]}),m.jsx("p",{className:"text-xs text-slate-400 mt-1",children:"Set a new personal password for your Admin CMS dashboard."})]}),m.jsxs("form",{onSubmit:be,className:"max-w-md space-y-4",children:[m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"New Admin Password"}),m.jsx("input",{type:"password",required:!0,placeholder:"Enter new secret password...",value:p,onChange:B=>g(B.target.value),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]}),m.jsxs("button",{type:"submit",className:"px-6 py-2.5 bg-cyan-500 text-slate-950 font-bold rounded-xl text-xs hover:bg-cyan-400 transition-all flex items-center gap-2",children:[m.jsx(Ga,{className:"w-4 h-4"})," Update Password"]})]}),
+Santosh`)}`,className:"px-3.5 py-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 font-bold text-xs flex items-center space-x-1.5 hover:bg-cyan-500/30 transition-all",children:[m.jsx(gl,{className:"w-3.5 h-3.5"}),m.jsx("span",{children:"✉️ Approve & Send File via Email"})]}),ht&&m.jsx("a",{href:`https://wa.me/91${ht}?text=${encodeURIComponent(`Hi ${B.name}! Your permission request for "${st}" has been APPROVED by Santosh!`)}`,target:"_blank",rel:"noreferrer",className:"px-3.5 py-2 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 font-bold text-xs flex items-center space-x-1.5 hover:bg-emerald-500/30 transition-all",children:m.jsx("span",{children:"💬 Approve & Send via WhatsApp ↗"})})]})]},Ce)})})]}),l==="analytics"&&m.jsxs(Rt.div,{initial:{opacity:0},animate:{opacity:1},className:"glass-panel p-6 rounded-3xl border border-white/10 space-y-4",children:[m.jsxs("h4",{className:"text-base font-bold text-cyan-300 flex items-center gap-2",children:[m.jsx(AR,{className:"w-5 h-5 text-cyan-400"})," Visitor Telemetry Logs (",ae.length,")"]}),ae.length===0?m.jsx("p",{className:"text-xs text-slate-400 italic",children:"No visitor logs recorded yet."}):m.jsx("div",{className:"space-y-2 max-h-96 overflow-y-auto font-mono text-[11px]",children:ae.map((B,Ce)=>m.jsxs("div",{className:"p-2.5 rounded-xl bg-slate-900/80 border border-slate-800/80 text-slate-300 flex justify-between",children:[m.jsxs("span",{children:["Path: ",B.pathname]}),m.jsx("span",{className:"text-slate-400",children:new Date(B.timestamp).toLocaleString()})]},Ce))})]}),l==="studio"&&m.jsxs(Rt.div,{initial:{opacity:0},animate:{opacity:1},className:"space-y-6",children:[
+  m.jsxs("div",{className:"glass-panel p-5 rounded-3xl border border-violet-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4",children:[
+    m.jsxs("div",{children:[
+      m.jsxs("h4",{className:"text-base font-bold text-violet-300 flex items-center gap-2",children:[
+        m.jsx(Fl,{className:"w-5 h-5 text-violet-400"}),
+        "Studio Hub CMS — Complete Control Center",
+        m.jsx("span",{className:"text-xs font-mono text-emerald-400 ml-2",children:"✓ Real-time Live Sync"})
+      ]}),
+      m.jsx("p",{className:"text-xs text-slate-400 mt-0.5",children:"Manage all 20+ projects across 4 creative wings, plus Studio hero metrics and collaboration banner."})
+    ]}),
+    m.jsxs("div",{className:"flex items-center gap-2 bg-slate-950/60 p-1.5 rounded-2xl border border-white/10 shrink-0",children:[
+      m.jsxs("button",{type:"button",onClick:()=>setStudioSubTab("projects"),className:`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${studioSubTab==="projects"?"bg-violet-500 text-white shadow-lg":"text-slate-400 hover:text-white"}`,children:[
+        "🎬 Projects Manager (",studioList.length,")"
+      ]}),
+      m.jsx("button",{type:"button",onClick:()=>setStudioSubTab("settings"),className:`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${studioSubTab==="settings"?"bg-cyan-500 text-slate-950 shadow-lg":"text-slate-400 hover:text-white"}`,children:"⚙️ Studio Header & Metrics"})
+    ]})
+  ]}),
+
+  studioSubTab==="projects"&&m.jsxs("div",{className:"space-y-6",children:[
+    m.jsxs("div",{id:"studio-project-form",className:"glass-panel p-6 rounded-3xl border border-violet-500/30 space-y-5",children:[
+      m.jsxs("div",{className:"flex items-center justify-between border-b border-slate-800 pb-3",children:[
+        m.jsxs("h4",{className:"text-sm font-bold text-violet-300 flex items-center gap-2",children:[
+          m.jsx(IR,{className:"w-4 h-4 text-violet-400"}),
+          W?("✏️ Edit Studio Project: "+(W.title||"Project")):"➕ Add New Project to The Studio Hub"
+        ]}),
+        W&&m.jsx("span",{className:"text-xs font-mono px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/30",children:"Editing Mode"})
+      ]}),
+      m.jsxs("form",{onSubmit:saveStudioProj,className:"space-y-4",children:[
+        m.jsxs("div",{className:"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4",children:[
+          m.jsxs("div",{className:"sm:col-span-2 lg:col-span-1",children:[
+            m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Project Title *"}),
+            m.jsx("input",{type:"text",required:!0,placeholder:"e.g. Gaming Montage Reel 2025",value:studioForm.title,onChange:e=>setStudioForm({...studioForm,title:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})
+          ]}),
+          m.jsxs("div",{children:[
+            m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Wing (Category) *"}),
+            m.jsxs("select",{value:studioForm.wing,onChange:e=>setStudioForm({...studioForm,wing:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 text-slate-100 text-xs border border-white/10 outline-none focus:border-violet-400",children:[
+              m.jsx("option",{value:"technical",children:"⚡ Technical Wing"}),
+              m.jsx("option",{value:"entertainment",children:"🎬 Entertainment Wing"}),
+              m.jsx("option",{value:"arts",children:"🎨 Arts & Design Wing"}),
+              m.jsx("option",{value:"other",children:"🔧 Lab & Other Wing"})
+            ]})
+          ]}),
+          m.jsxs("div",{children:[
+            m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Status"}),
+            m.jsxs("select",{value:studioForm.status,onChange:e=>setStudioForm({...studioForm,status:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 text-slate-100 text-xs border border-white/10 outline-none focus:border-violet-400",children:[
+              m.jsx("option",{value:"Live",children:"🟢 Live"}),
+              m.jsx("option",{value:"In Progress",children:"🟡 In Progress"}),
+              m.jsx("option",{value:"Completed",children:"🔵 Completed"}),
+              m.jsx("option",{value:"Concept",children:"🟣 Concept"})
+            ]})
+          ]})
+        ]}),
+
+        m.jsxs("div",{className:"p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-between",children:[
+          m.jsxs("div",{children:[
+            m.jsx("p",{className:"text-xs font-bold text-amber-300",children:"⭐ Spotlight Featured Project"}),
+            m.jsx("p",{className:"text-[11px] text-slate-400",children:"Display as the large Hero Spotlight Card at the top of this Wing in /studio"})
+          ]}),
+          m.jsx("input",{type:"checkbox",checked:Boolean(studioForm.featured),onChange:e=>setStudioForm({...studioForm,featured:e.target.checked}),className:"w-5 h-5 rounded accent-amber-400 cursor-pointer"})
+        ]}),
+
+        m.jsxs("div",{className:"grid grid-cols-1 sm:grid-cols-2 gap-4",children:[
+          m.jsxs("div",{children:[
+            m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Card Summary (Short) *"}),
+            m.jsx("textarea",{rows:3,required:!0,placeholder:"Brief summary shown on the project card...",value:studioForm.desc||studioForm.summary||"",onChange:e=>setStudioForm({...studioForm,desc:e.target.value,summary:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})
+          ]}),
+          m.jsxs("div",{children:[
+            m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Modal Details (In-depth Architecture)"}),
+            m.jsx("textarea",{rows:3,placeholder:"Detailed technical explanation shown when visitor clicks the card...",value:studioForm.details||"",onChange:e=>setStudioForm({...studioForm,details:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})
+          ]})
+        ]}),
+
+        m.jsxs("div",{className:"grid grid-cols-1 sm:grid-cols-3 gap-4",children:[
+          m.jsxs("div",{children:[
+            m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Tags (comma-separated)"}),
+            m.jsx("input",{type:"text",placeholder:"e.g. React, Three.js, Firebase",value:studioForm.tags,onChange:e=>setStudioForm({...studioForm,tags:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})
+          ]}),
+          m.jsxs("div",{children:[
+            m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Live Demo URL"}),
+            m.jsx("input",{type:"text",placeholder:"https://...",value:studioForm.demoUrl,onChange:e=>setStudioForm({...studioForm,demoUrl:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})
+          ]}),
+          m.jsxs("div",{children:[
+            m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"File / Drive Link"}),
+            m.jsx("input",{type:"text",placeholder:"https://drive.google.com/...",value:studioForm.fileLink,onChange:e=>setStudioForm({...studioForm,fileLink:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})
+          ]})
+        ]}),
+
+        m.jsxs("div",{className:"p-3.5 rounded-2xl bg-white/5 border border-white/10 space-y-2",children:[
+          m.jsx("label",{className:"block text-xs text-slate-300 font-semibold",children:"Thumbnail Image (Optional)"}),
+          m.jsxs("div",{className:"flex flex-col sm:flex-row items-center gap-3",children:[
+            m.jsx("input",{type:"file",accept:"image/*",onChange:e=>{const f=e.target.files&&e.target.files[0];if(f){const rd=new FileReader();rd.onloadend=()=>setStudioForm({...studioForm,image:rd.result});rd.readAsDataURL(f);}},className:"w-full text-xs text-slate-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-violet-500/20 file:text-violet-300 hover:file:bg-violet-500/30 cursor-pointer glass-card"}),
+            m.jsx("input",{type:"text",placeholder:"OR paste image URL https://...",value:studioForm.image&&!studioForm.image.startsWith("data:")?studioForm.image:"",onChange:e=>setStudioForm({...studioForm,image:e.target.value}),className:"w-full px-3 py-2 rounded-xl glass-input text-xs"})
+          ]}),
+          studioForm.image&&m.jsxs("div",{className:"mt-2 flex items-center space-x-2",children:[
+            m.jsx("img",{src:studioForm.image,alt:"Preview",className:"w-12 h-12 object-cover rounded-xl border border-violet-400/40"}),
+            m.jsx("span",{className:"text-[10px] text-emerald-400 font-mono",children:"✓ Thumbnail Image Attached"}),
+            m.jsx("button",{type:"button",onClick:()=>setStudioForm({...studioForm,image:""}),className:"text-[10px] text-rose-400 hover:underline ml-2",children:"Remove"})
+          ]})
+        ]}),
+
+        m.jsxs("div",{className:"flex items-center gap-3 pt-2",children:[
+          m.jsxs("button",{type:"submit",className:"px-6 py-2.5 bg-gradient-to-r from-violet-500 to-cyan-500 text-slate-950 font-extrabold rounded-xl text-xs shadow-xl hover:scale-105 transition-all flex items-center gap-2 cursor-pointer",children:[
+            m.jsx(AR,{className:"w-4 h-4"}),
+            W?"Update Studio Project in Firebase":"➕ Publish New Studio Project to Firebase"
+          ]}),
+          W&&m.jsx("button",{type:"button",onClick:()=>{Z(null);setStudioForm({title:"",wing:"technical",desc:"",details:"",image:"",fileLink:"",demoUrl:"",tags:"",status:"In Progress",featured:!1});},className:"px-5 py-2.5 glass-card border border-white/15 text-slate-300 rounded-xl text-xs font-bold hover:text-white transition-all cursor-pointer",children:"Cancel Edit"})
+        ]})
+      ]})
+    ]}),
+
+    m.jsxs("div",{className:"glass-panel p-6 rounded-3xl border border-white/10 space-y-4",children:[
+      m.jsxs("div",{className:"flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3",children:[
+        m.jsxs("h4",{className:"text-sm font-bold text-slate-200 flex items-center gap-2",children:[
+          m.jsx(Fl,{className:"w-4 h-4 text-violet-400"}),
+          "All Studio Projects ("+studioList.length+")"
+        ]}),
+        m.jsxs("div",{className:"flex flex-wrap gap-1.5 text-xs font-mono",children:[
+          m.jsx("button",{type:"button",onClick:()=>setStudioWingFilter("all"),className:`px-3 py-1 rounded-xl transition-all ${studioWingFilter==="all"?"bg-white/20 text-white font-bold border border-white/30":"text-slate-400 hover:text-white bg-white/5"}`,children:"All ("+studioList.length+")"}),
+          m.jsx("button",{type:"button",onClick:()=>setStudioWingFilter("technical"),className:`px-3 py-1 rounded-xl transition-all ${studioWingFilter==="technical"?"bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-500/40":"text-slate-400 hover:text-cyan-300 bg-white/5"}`,children:"⚡ Technical ("+studioList.filter(p=>p.wing==="technical").length+")"}),
+          m.jsx("button",{type:"button",onClick:()=>setStudioWingFilter("entertainment"),className:`px-3 py-1 rounded-xl transition-all ${studioWingFilter==="entertainment"?"bg-violet-500/20 text-violet-300 font-bold border border-violet-500/40":"text-slate-400 hover:text-violet-300 bg-white/5"}`,children:"🎬 Entertainment ("+studioList.filter(p=>p.wing==="entertainment").length+")"}),
+          m.jsx("button",{type:"button",onClick:()=>setStudioWingFilter("arts"),className:`px-3 py-1 rounded-xl transition-all ${studioWingFilter==="arts"?"bg-amber-500/20 text-amber-300 font-bold border border-amber-500/40":"text-slate-400 hover:text-amber-300 bg-white/5"}`,children:"🎨 Arts ("+studioList.filter(p=>p.wing==="arts").length+")"}),
+          m.jsx("button",{type:"button",onClick:()=>setStudioWingFilter("other"),className:`px-3 py-1 rounded-xl transition-all ${studioWingFilter==="other"?"bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/40":"text-slate-400 hover:text-emerald-300 bg-white/5"}`,children:"🔧 Lab ("+studioList.filter(p=>p.wing==="other").length+")"})
+        ]})
+      ]}),
+
+      m.jsx("div",{className:"space-y-3",children:(studioWingFilter==="all"?studioList:studioList.filter(p=>p.wing===studioWingFilter)).map(proj=>{
+        const tagsArr=Array.isArray(proj.tags)?proj.tags:(typeof proj.tags==="string"?proj.tags.split(",").map(t=>t.trim()).filter(Boolean):[]);
+        const wingColors={technical:"border-cyan-500/40 bg-cyan-500/10 text-cyan-400",entertainment:"border-violet-500/40 bg-violet-500/10 text-violet-400",arts:"border-amber-500/40 bg-amber-500/10 text-amber-400",other:"border-emerald-500/40 bg-emerald-500/10 text-emerald-400"};
+        return m.jsxs("div",{key:proj.id,className:"glass-card rounded-2xl border border-white/10 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-violet-500/30 transition-all",children:[
+          m.jsxs("div",{className:"flex items-start gap-3 min-w-0",children:[
+            proj.image?m.jsx("img",{src:proj.image,alt:proj.title,className:"w-14 h-14 rounded-xl object-cover border border-white/10 flex-shrink-0"}):m.jsx("div",{className:"w-14 h-14 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-xl flex-shrink-0",children:proj.wing==="technical"?"⚡":proj.wing==="entertainment"?"🎬":proj.wing==="arts"?"🎨":"🔧"}),
+            m.jsxs("div",{className:"min-w-0 space-y-1",children:[
+              m.jsxs("div",{className:"flex items-center gap-2 flex-wrap",children:[
+                m.jsx("span",{className:`text-[10px] font-bold px-2 py-0.5 rounded-full border ${wingColors[proj.wing]||wingColors.technical}`,children:proj.wing}),
+                m.jsx("span",{className:"text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-slate-300",children:proj.status||"In Progress"}),
+                proj.featured&&m.jsx("span",{className:"text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300",children:"⭐ Featured Spotlight"})
+              ]}),
+              m.jsx("p",{className:"text-sm font-bold text-slate-100 truncate",children:proj.title}),
+              m.jsx("p",{className:"text-xs text-slate-400 line-clamp-1",children:proj.desc||proj.summary}),
+              m.jsx("div",{className:"flex flex-wrap gap-1 mt-1",children:tagsArr.slice(0,5).map((t,i)=>m.jsx("span",{key:i,className:"px-1.5 py-0.5 rounded text-[9px] font-mono bg-white/5 text-slate-300 border border-white/10",children:t}))})
+            ]})
+          ]}),
+          m.jsxs("div",{className:"flex items-center gap-2 shrink-0 self-end sm:self-auto",children:[
+            m.jsx("button",{type:"button",onClick:()=>{Z(proj);setStudioForm({title:proj.title||"",wing:proj.wing||"technical",desc:proj.desc||proj.summary||"",details:proj.details||proj.desc||proj.summary||"",image:proj.image||"",fileLink:proj.fileLink||"",demoUrl:proj.demoUrl||"",tags:Array.isArray(proj.tags)?proj.tags.join(", "):(proj.tags||""),status:proj.status||"In Progress",featured:Boolean(proj.featured)});const formEl=document.getElementById("studio-project-form");formEl?formEl.scrollIntoView({behavior:"smooth"}):window.scrollTo({top:0,behavior:"smooth"});},className:"px-3.5 py-1.5 rounded-xl bg-violet-500/20 border border-violet-500/40 text-violet-300 text-xs font-bold hover:bg-violet-500/30 transition-all cursor-pointer",children:"✏️ Edit"}),
+            m.jsx("button",{type:"button",onClick:()=>delStudioProj(proj.id),className:"px-3 py-1.5 rounded-xl bg-rose-500/20 border border-rose-500/40 text-rose-300 text-xs font-bold hover:bg-rose-500/30 transition-all cursor-pointer",children:"🗑️ Delete"})
+          ]})
+        ]});
+      })})
+    ]})
+  ]}),
+
+  studioSubTab==="settings"&&m.jsxs("div",{className:"space-y-6",children:[
+    m.jsxs("form",{onSubmit:saveStudioInfo,className:"glass-panel p-6 rounded-3xl border border-cyan-500/30 space-y-6",children:[
+      m.jsxs("div",{className:"flex items-center justify-between border-b border-slate-800 pb-3",children:[
+        m.jsxs("h4",{className:"text-base font-bold text-cyan-300 flex items-center gap-2",children:[
+          m.jsx(IR,{className:"w-5 h-5 text-cyan-400"}),
+          "Studio Hero Tagline, Metrics & Collab Banner Settings"
+        ]}),
+        m.jsx("span",{className:"text-xs font-mono text-emerald-400",children:"Live Firestore Sync"})
+      ]}),
+
+      m.jsxs("div",{className:"space-y-4",children:[
+        m.jsx("h5",{className:"text-xs font-bold uppercase text-slate-400 tracking-wider",children:"1. Studio Header & Tagline"}),
+        m.jsxs("div",{className:"grid grid-cols-1 sm:grid-cols-2 gap-4",children:[
+          m.jsxs("div",{children:[
+            m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Studio Hero Badge"}),
+            m.jsx("input",{type:"text",value:studioInfo.heroBadge||"",onChange:e=>setStudioInfo({...studioInfo,heroBadge:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})
+          ]}),
+          m.jsxs("div",{children:[
+            m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Studio Main Title"}),
+            m.jsx("input",{type:"text",value:studioInfo.heroTitle||"",onChange:e=>setStudioInfo({...studioInfo,heroTitle:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})
+          ]})
+        ]}),
+        m.jsxs("div",{children:[
+          m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Studio Hero Subtitle / Tagline"}),
+          m.jsx("textarea",{rows:2,value:studioInfo.heroSubtitle||"",onChange:e=>setStudioInfo({...studioInfo,heroSubtitle:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})
+        ]})
+      ]}),
+
+      m.jsxs("div",{className:"space-y-4 border-t border-slate-800 pt-5",children:[
+        m.jsx("h5",{className:"text-xs font-bold uppercase text-slate-400 tracking-wider",children:"2. Quick Metrics Bar (Top of Studio Page)"}),
+        m.jsxs("div",{className:"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4",children:[
+          m.jsxs("div",{className:"p-3.5 rounded-2xl bg-cyan-500/5 border border-cyan-500/20 space-y-2",children:[
+            m.jsx("span",{className:"text-xs font-mono text-cyan-400 font-bold",children:"Stat 1 (Cyan)"}),
+            m.jsx("input",{type:"text",placeholder:"20+",value:studioInfo.metricProjects||"",onChange:e=>setStudioInfo({...studioInfo,metricProjects:e.target.value}),className:"w-full px-3 py-1.5 rounded-xl glass-input text-xs font-bold"}),
+            m.jsx("input",{type:"text",placeholder:"Projects Shipped",value:studioInfo.metricProjectsLabel||"",onChange:e=>setStudioInfo({...studioInfo,metricProjectsLabel:e.target.value}),className:"w-full px-3 py-1.5 rounded-xl glass-input text-xs text-slate-400"})
+          ]}),
+          m.jsxs("div",{className:"p-3.5 rounded-2xl bg-amber-500/5 border border-amber-500/20 space-y-2",children:[
+            m.jsx("span",{className:"text-xs font-mono text-amber-400 font-bold",children:"Stat 2 (Amber)"}),
+            m.jsx("input",{type:"text",placeholder:"15+",value:studioInfo.metricCerts||"",onChange:e=>setStudioInfo({...studioInfo,metricCerts:e.target.value}),className:"w-full px-3 py-1.5 rounded-xl glass-input text-xs font-bold"}),
+            m.jsx("input",{type:"text",placeholder:"Certifications",value:studioInfo.metricCertsLabel||"",onChange:e=>setStudioInfo({...studioInfo,metricCertsLabel:e.target.value}),className:"w-full px-3 py-1.5 rounded-xl glass-input text-xs text-slate-400"})
+          ]}),
+          m.jsxs("div",{className:"p-3.5 rounded-2xl bg-violet-500/5 border border-violet-500/20 space-y-2",children:[
+            m.jsx("span",{className:"text-xs font-mono text-violet-400 font-bold",children:"Stat 3 (Violet)"}),
+            m.jsx("input",{type:"text",placeholder:"3+",value:studioInfo.metricExp||"",onChange:e=>setStudioInfo({...studioInfo,metricExp:e.target.value}),className:"w-full px-3 py-1.5 rounded-xl glass-input text-xs font-bold"}),
+            m.jsx("input",{type:"text",placeholder:"Years Experience",value:studioInfo.metricExpLabel||"",onChange:e=>setStudioInfo({...studioInfo,metricExpLabel:e.target.value}),className:"w-full px-3 py-1.5 rounded-xl glass-input text-xs text-slate-400"})
+          ]}),
+          m.jsxs("div",{className:"p-3.5 rounded-2xl bg-emerald-500/5 border border-emerald-500/20 space-y-2",children:[
+            m.jsx("span",{className:"text-xs font-mono text-emerald-400 font-bold",children:"Stat 4 (Emerald)"}),
+            m.jsx("input",{type:"text",placeholder:"30+",value:studioInfo.metricTools||"",onChange:e=>setStudioInfo({...studioInfo,metricTools:e.target.value}),className:"w-full px-3 py-1.5 rounded-xl glass-input text-xs font-bold"}),
+            m.jsx("input",{type:"text",placeholder:"Tech & Toolsets",value:studioInfo.metricToolsLabel||"",onChange:e=>setStudioInfo({...studioInfo,metricToolsLabel:e.target.value}),className:"w-full px-3 py-1.5 rounded-xl glass-input text-xs text-slate-400"})
+          ]})
+        ]})
+      ]}),
+
+      m.jsxs("div",{className:"space-y-4 border-t border-slate-800 pt-5",children:[
+        m.jsx("h5",{className:"text-xs font-bold uppercase text-slate-400 tracking-wider",children:"3. Collaboration Banner (Bottom of Studio Page)"}),
+        m.jsxs("div",{className:"grid grid-cols-1 sm:grid-cols-2 gap-4",children:[
+          m.jsxs("div",{children:[
+            m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Collab Badge Text"}),
+            m.jsx("input",{type:"text",value:studioInfo.collabBadge||"",onChange:e=>setStudioInfo({...studioInfo,collabBadge:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})
+          ]}),
+          m.jsxs("div",{children:[
+            m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Collab Headline"}),
+            m.jsx("input",{type:"text",value:studioInfo.collabTitle||"",onChange:e=>setStudioInfo({...studioInfo,collabTitle:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})
+          ]})
+        ]}),
+        m.jsxs("div",{children:[
+          m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Collab Description Body"}),
+          m.jsx("textarea",{rows:2,value:studioInfo.collabDesc||"",onChange:e=>setStudioInfo({...studioInfo,collabDesc:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})
+        ]}),
+        m.jsxs("div",{children:[
+          m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"Button Action Text"}),
+          m.jsx("input",{type:"text",value:studioInfo.collabBtnText||"",onChange:e=>setStudioInfo({...studioInfo,collabBtnText:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})
+        ]})
+      ]}),
+
+      m.jsx("div",{className:"pt-2 border-t border-slate-800",children:[
+        m.jsx("button",{type:"submit",className:"px-8 py-3 rounded-2xl bg-gradient-to-r from-cyan-400 to-violet-500 text-slate-950 font-extrabold text-xs shadow-xl hover:scale-105 transition-all cursor-pointer",children:"💾 Save Studio Header & Metrics to Live Site"})
+      ]})
+    ]})
+  ]}),
+
+  m.jsxs("div",{className:"p-4 rounded-2xl bg-violet-500/5 border border-violet-500/20 text-violet-200 text-xs space-y-1.5",children:[
+    m.jsx("p",{className:"font-bold text-violet-300",children:"✦ Studio Hub CMS Information:"}),
+    m.jsx("p",{children:"All projects and settings saved here sync in real-time with Google Cloud Firestore and instantly appear on /studio."}),
+    m.jsx("p",{children:"You can edit any of the 20 default projects, add unlimited new works, change spotlight cards, or adjust metrics anytime."})
+  ]})
+]}),l==="textcms"&&m.jsxs(Rt.div,{initial:{opacity:0},animate:{opacity:1},className:"space-y-6",children:[m.jsxs("div",{className:"glass-panel p-6 rounded-3xl border border-cyan-500/30 space-y-6",children:[m.jsxs("div",{className:"flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4",children:[m.jsxs("div",{children:[m.jsxs("h4",{className:"text-base font-bold text-cyan-300 flex items-center gap-2",children:[m.jsx(AR,{className:"w-5 h-5 text-cyan-400"}),"Universal Website Text & Copy CMS (Option A)"]}),m.jsx("p",{className:"text-xs text-slate-400 mt-0.5",children:"Edit any section, heading, badge, or bio across your entire portfolio and studio."})]}),m.jsxs("div",{className:"flex items-center gap-2",children:[m.jsx("button",{type:"button",onClick:()=>{window.location.href="/";setTimeout(()=>{if(window.StarkContentEngine)window.StarkContentEngine.toggleLiveEdit(true);},400);},className:"px-4 py-2 rounded-xl bg-gradient-to-r from-violet-500 to-pink-600 text-white font-bold text-xs shadow-lg hover:scale-105 transition-all cursor-pointer flex items-center gap-1.5",children:[m.jsx("span",{children:"⚡"}),"Launch Live Edit (Option B)"]}),m.jsx("button",{type:"button",onClick:async()=>{try{await xc("hero_info","main_hero",x);await xc("about_info","main_about",w);localStorage.setItem("portfolio_hero_info",JSON.stringify([x]));localStorage.setItem("portfolio_about_info",JSON.stringify([w]));We("🎉 All Website Text Saved to Firebase & Live Site!");setTimeout(()=>We(""),4e3);}catch(err){We("Error saving: "+err.message);}},className:"px-5 py-2 rounded-xl bg-gradient-to-r from-cyan-400 to-emerald-400 text-slate-950 font-extrabold text-xs shadow-lg hover:scale-105 transition-all cursor-pointer flex items-center gap-1.5",children:[m.jsx("span",{children:"💾"}),"Save All Text to Firebase"]})]})]}),m.jsxs("div",{className:"p-5 rounded-2xl bg-slate-900/60 border border-cyan-500/20 space-y-4",children:[m.jsxs("h5",{className:"text-xs font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-2",children:[m.jsx("span",{children:"🏠"}),"Home Hero Section & Headings"]}),m.jsxs("div",{className:"grid grid-cols-1 md:grid-cols-2 gap-4",children:[m.jsxs("div",{children:[m.jsx("label",{className:"block text-[11px] text-slate-400 mb-1",children:"Hero Top Badge / Tagline"}),m.jsx("input",{type:"text",value:x.tagline||"",onChange:e=>E({...x,tagline:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs text-slate-100 border border-white/10"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-[11px] text-slate-400 mb-1",children:"Full Display Name"}),m.jsx("input",{type:"text",value:x.name||"",onChange:e=>E({...x,name:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs text-slate-100 border border-white/10"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-[11px] text-slate-400 mb-1",children:"Main Title / Role"}),m.jsx("input",{type:"text",value:x.title||"",onChange:e=>E({...x,title:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs text-slate-100 border border-white/10"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-[11px] text-slate-400 mb-1",children:"Operational Base / Location"}),m.jsx("input",{type:"text",value:x.location||"",onChange:e=>E({...x,location:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs text-slate-100 border border-white/10"})]})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-[11px] text-slate-400 mb-1",children:"Hero Subtitle / Mission Statement"}),m.jsx("textarea",{rows:2,value:x.subtitle||"",onChange:e=>E({...x,subtitle:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs text-slate-100 border border-white/10"})]})]}),m.jsxs("div",{className:"p-5 rounded-2xl bg-slate-900/60 border border-violet-500/20 space-y-4",children:[m.jsxs("h5",{className:"text-xs font-bold text-violet-300 uppercase tracking-wider flex items-center gap-2",children:[m.jsx("span",{children:"👤"}),"About Me & Narrative Biography"]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-[11px] text-slate-400 mb-1",children:"Full Narrative Bio Paragraphs"}),m.jsx("textarea",{rows:4,value:w.bio||"",onChange:e=>v({...w,bio:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs text-slate-100 border border-white/10"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-[11px] text-slate-400 mb-1",children:"Engineering Philosophy / Quote"}),m.jsx("input",{type:"text",value:w.quote||"",onChange:e=>v({...w,quote:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs text-slate-100 border border-white/10"})]})]}),m.jsxs("div",{className:"p-5 rounded-2xl bg-slate-900/60 border border-emerald-500/20 space-y-4",children:[m.jsxs("h5",{className:"text-xs font-bold text-emerald-300 uppercase tracking-wider flex items-center gap-2",children:[m.jsx("span",{children:"💬"}),"Contact Channels & Direct Links"]}),m.jsxs("div",{className:"grid grid-cols-1 md:grid-cols-2 gap-4",children:[m.jsxs("div",{children:[m.jsx("label",{className:"block text-[11px] text-slate-400 mb-1",children:"Direct Email Address"}),m.jsx("input",{type:"text",value:x.email||"",onChange:e=>E({...x,email:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs text-slate-100 border border-white/10"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-[11px] text-slate-400 mb-1",children:"GitHub Profile URL"}),m.jsx("input",{type:"text",value:x.github||"",onChange:e=>E({...x,github:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs text-slate-100 border border-white/10"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-[11px] text-slate-400 mb-1",children:"LinkedIn Profile URL"}),m.jsx("input",{type:"text",value:x.linkedin||"",onChange:e=>E({...x,linkedin:e.target.value}),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs text-slate-100 border border-white/10"})]}),m.jsxs("div",{children:[m.jsx("label",{className:"block text-[11px] text-slate-400 mb-1",children:"Resume / CV - View URL (Google Drive or PDF)"}),m.jsx("input",{type:"text",value:x.resume||"",onChange:e=>E({...x,resume:e.target.value}),placeholder:"https://drive.google.com/file/d/YOUR_FILE_ID/view",className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs text-slate-100 border border-white/10"}),m.jsx("p",{className:"text-[10px] text-emerald-400/70 mt-1",children:"Paste your Google Drive share link or any PDF URL. Opens as view-only in a new tab."})]})]})]}),m.jsxs("div",{className:"flex items-center justify-between pt-2 border-t border-slate-800",children:[m.jsx("span",{className:"text-xs text-slate-400 font-mono",children:"✓ Real-time bidirectional Cloud Firestore sync"}),m.jsx("button",{type:"button",onClick:async()=>{try{await xc("hero_info","main_hero",x);await xc("about_info","main_about",w);localStorage.setItem("portfolio_hero_info",JSON.stringify([x]));localStorage.setItem("portfolio_about_info",JSON.stringify([w]));We("🎉 All Website Text Saved to Firebase & Live Site!");setTimeout(()=>We(""),4e3);}catch(err){We("Error saving: "+err.message);}},className:"px-8 py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-emerald-400 text-slate-950 font-extrabold text-xs shadow-xl hover:scale-105 transition-all cursor-pointer",children:"💾 Save All Website Text to Firebase"})]})]})]}),l==="security"&&m.jsxs(Rt.div,{initial:{opacity:0},animate:{opacity:1},className:"glass-panel p-6 rounded-3xl border border-white/10 space-y-6",children:[m.jsxs("div",{children:[m.jsxs("h4",{className:"text-base font-bold text-cyan-300 flex items-center gap-2",children:[m.jsx(qS,{className:"w-5 h-5 text-cyan-400"})," Change Admin CMS Password"]}),m.jsx("p",{className:"text-xs text-slate-400 mt-1",children:"Set a new personal password for your Admin CMS dashboard."})]}),m.jsxs("form",{onSubmit:be,className:"max-w-md space-y-4",children:[m.jsxs("div",{children:[m.jsx("label",{className:"block text-xs text-slate-300 mb-1",children:"New Admin Password"}),m.jsx("input",{type:"password",required:!0,placeholder:"Enter new secret password...",value:p,onChange:B=>g(B.target.value),className:"w-full px-3.5 py-2.5 rounded-xl glass-input text-xs"})]}),m.jsxs("button",{type:"submit",className:"px-6 py-2.5 bg-cyan-500 text-slate-950 font-bold rounded-xl text-xs hover:bg-cyan-400 transition-all flex items-center gap-2",children:[m.jsx(Ga,{className:"w-4 h-4"})," Update Password"]})]}),
 m.jsxs("div",{className:"pt-6 border-t border-white/10 space-y-6",children:[
   m.jsxs("div",{className:"space-y-1",children:[
     m.jsx("h4",{className:"text-base font-bold text-cyan-300 flex items-center gap-2",children:[m.jsx("span",{children:"📱"})," Google Authenticator (TOTP 2FA) Setup"]}),
@@ -7963,7 +8240,8 @@ function DedicatedStudioPage() {
   const [filter, setFilter] = q.useState("All");
   const [ping, setPing] = q.useState(true);
   const [selected, setSelected] = q.useState(null);
-  const [dbProjects, setDbProjects] = q.useState([]);
+  const [dbProjects, setDbProjects] = q.useState(defaultStudioProjects);
+  const [studioInfo, setStudioInfo] = q.useState(defaultStudioInfo);
 
   q.useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
@@ -7975,7 +8253,11 @@ function DedicatedStudioPage() {
     window.addEventListener("keydown", onKey);
     (async () => {
       try {
-        const docs = await ni("studio_projects", []);
+        const info = await ni("studio_info", [defaultStudioInfo]);
+        if (info && info.length > 0) setStudioInfo({ ...defaultStudioInfo, ...info[0] });
+      } catch(e) {}
+      try {
+        const docs = await ni("studio_projects", defaultStudioProjects);
         if (docs && docs.length > 0) setDbProjects(docs);
       } catch(e) {}
     })();
@@ -8001,37 +8283,6 @@ function DedicatedStudioPage() {
     { id: "other", label: "🔧 Lab & Other Wing", color: "emerald", desc: "Technical Certifications, Student Workshops, Research Documentation & Open Source" }
   ];
 
-  const staticProjects = {
-    technical: [
-      { id: "tech-1", title: "Santo Stark Portfolio System", desc: "Interactive 3D Solar System hero, Firebase Realtime CMS, glassmorphic UI, Three.js & React.", details: "Built with React 18, Three.js / React Three Fiber for WebGL canvas rendering, Tailwind CSS for glassmorphic styling, and Google Firebase for live headless CMS database feeds.", tags: ["React", "Three.js", "Firebase", "Tailwind", "Vite"], status: "Live", color: "cyan", featured: true },
-      { id: "tech-2", title: "IoT Smart Hardware Dashboard", desc: "ESP32 micro-controller sensor data streamed in real-time via MQTT protocol to a live reactive web interface.", details: "Features ESP32 micro-controller programmed in C++, MQTT broker pub/sub pipeline, low-latency WebSocket connection, and interactive Chart.js gauges for telemetry.", tags: ["ESP32", "MQTT", "Node.js", "C++", "Chart.js"], status: "Completed", color: "cyan" },
-      { id: "tech-3", title: "React Cloud Web Application", desc: "Full-stack single page web application with Firebase Firestore backend, user authentication, and responsive views.", details: "Complete end-to-end cloud web app implementing secure Firebase Auth, Firestore real-time listeners, state management, and optimized touch-first responsive layouts.", tags: ["React", "Firebase", "Tailwind", "Auth"], status: "Completed", color: "cyan" },
-      { id: "tech-4", title: "Embedded Firmware & Robotics", desc: "STM32/ESP32 firmware architecture with FreeRTOS multitasking, interrupt routines, and custom sensor PCB layout.", details: "Low-level bare-metal and RTOS firmware written in C/C++, featuring task scheduling, sensor polling queues, and hardware schematics drafted in KiCad.", tags: ["STM32", "FreeRTOS", "C++", "PCB", "KiCad"], status: "In Progress", color: "cyan" },
-      { id: "tech-5", title: "C++ Socket Server & Networking", desc: "Multi-threaded TCP/UDP server handling concurrent client packets, custom network protocol, and low-latency data feeds.", details: "POSIX sockets server written in modern C++ with thread pooling, packet serialization, mutex synchronization, and high throughput under simulated connection load.", tags: ["C++", "Sockets", "Threading", "Linux", "TCP/IP"], status: "Completed", color: "cyan" },
-      { id: "tech-6", title: "Python Automation & ML Tooling", desc: "Data processing pipelines, automated web scraping scripts, and neural experiments for predictive classification.", details: "Python suite leveraging Pandas, Scikit-learn, and BeautifulSoup for automated task scheduling, data sanitization, and machine learning model training.", tags: ["Python", "Pandas", "Scikit-Learn", "Automation"], status: "In Progress", color: "cyan" }
-    ],
-    entertainment: [
-      { id: "ent-1", title: "Gaming Content & Montage Reel", desc: "High-octane gaming recordings, competitive gameplay highlights, sound design synchronization, and fast-paced montages.", details: "Produced high-framerate gameplay captures, synced beat transitions in Premiere Pro, dynamic speed ramping, and personalized audio mixing.", tags: ["Gaming", "Recording", "Editing", "Montage", "Streaming"], status: "In Progress", color: "violet", featured: true },
-      { id: "ent-2", title: "VFX & Motion Graphics Experiments", desc: "Visual effects compositing, 3D particle systems, screen tracking, dynamic title design, and motion identity.", details: "After Effects compositions utilizing Boris FX, planar motion tracking, particle simulations, and seamless green-screen compositing.", tags: ["VFX", "After Effects", "Motion", "Compositing"], status: "In Progress", color: "violet" },
-      { id: "ent-3", title: "Cinematic Video Editing Showcase", desc: "Narrative pacing, audio soundscapes, color grading in DaVinci Resolve, and cinematic cuts for multimedia clips.", details: "Full post-production workflow: timeline pacing, color wheel grade balances, LUT mastering, and multi-track Foley sound effects layering.", tags: ["Premiere Pro", "DaVinci", "Color Grade", "SFX"], status: "Completed", color: "violet" },
-      { id: "ent-4", title: "Short Film & Screenplay Concepts", desc: "Scriptwriting, storyboard layouts, cinematography test shoots, lighting setups, and narrative direction.", details: "Pre-production script development, two-column audio/video storyboards, lens choice experimentation, and cinematic framing principles.", tags: ["Film", "Direction", "Story", "Cinematography"], status: "Concept", color: "violet" },
-      { id: "ent-5", title: "3D Animation & Rigging Studies", desc: "Procedural keyframing, character motion studies, lighting aesthetics, and camera animation in Blender.", details: "Blender 3D scene creation, inverse kinematics character rigging, procedural shader nodes, and Cycles render optimization.", tags: ["Blender", "3D", "Rigging", "Keyframes", "Cycles"], status: "Concept", color: "violet" },
-      { id: "ent-6", title: "Live Streaming & Broadcast Production", desc: "Custom OBS scene switchers, animated overlays, audio gate mixing, and multi-stream relay configurations.", details: "Broadcast studio setup with OBS Studio, custom HTML/CSS alert overlays, VST audio filters for noise reduction, and dual-monitor workflow.", tags: ["OBS", "Broadcast", "Audio Mix", "Twitch", "Streaming"], status: "Live", color: "violet" }
-    ],
-    arts: [
-      { id: "art-1", title: "UI/UX Design Systems & Prototypes", desc: "Figma design systems, scalable design tokens, micro-interactions, and mobile/desktop high-fidelity wireframes.", details: "Component libraries with auto-layout, interactive variants, responsive grid constraints, and design token hierarchies ready for developer handoff.", tags: ["Figma", "UI/UX", "Design Systems", "Prototyping"], status: "In Progress", color: "amber", featured: true },
-      { id: "art-2", title: "AI-Generated Digital Art Collection", desc: "Generative aesthetics, prompt engineering, diffusion models, and high-resolution digital remastering.", details: "Curated gallery exploring prompt synthesis, latent space upscaling, negative prompt balancing, and digital retouching in Adobe Photoshop.", tags: ["AI Art", "Midjourney", "Diffusion", "Digital Art"], status: "In Progress", color: "amber" },
-      { id: "art-3", title: "Graphic Design & Visual Identity", desc: "Brand identities, typography exploration, posters, social assets, and vector illustrations.", details: "Vector typography, brand style guides, color palettes, and print/digital asset templates created in Adobe Illustrator.", tags: ["Illustrator", "Photoshop", "Branding", "Vector"], status: "Completed", color: "amber" },
-      { id: "art-4", title: "Abstract 3D Visualizations", desc: "Procedural geometry, glass shaders, emissive materials, and real-time lighting studies in WebGL.", details: "Custom Three.js shaders, lighting passes, refractive glass physical materials, and procedural particle vortex simulations.", tags: ["Three.js", "WebGL", "Blender", "Shaders"], status: "Concept", color: "amber" }
-    ],
-    other: [
-      { id: "oth-1", title: "Technical Certifications Portfolio", desc: "15+ verified certifications in Cloud, Cybersecurity, Embedded Computing, and Web Development.", details: "Rigorous coursework and proctored examinations across NPTEL, Coursera, Cisco, and industry institutions verifying technical mastery.", tags: ["Cybersecurity", "Cloud", "NPTEL", "DevOps"], status: "Completed", color: "emerald", featured: true },
-      { id: "oth-2", title: "Peer Workshops & Tech Mentorship", desc: "Hands-on student bootcamps on ESP32 microcontroller coding and modern React frontend workflows.", details: "Conducted interactive workshops for fellow engineering students, covering hardware breadboarding, sensor interfacing, and building full-stack web dashboards.", tags: ["Mentorship", "ESP32", "React", "Community"], status: "Completed", color: "emerald" },
-      { id: "oth-3", title: "Research & Technical Documentation", desc: "Detailed engineering journals, IEEE format project reports, and system architecture schematics.", details: "Comprehensive project papers typeset in LaTeX, containing circuit schematics, timing diagrams, code documentation, and performance benchmarks.", tags: ["Research", "IEEE", "Documentation", "LaTeX"], status: "In Progress", color: "emerald" },
-      { id: "oth-4", title: "Open-Source Code Contributions", desc: "Active GitHub contributions, utility toolkits, and shared developer snippets for the community.", details: "Open-source repositories hosting re-usable Arduino libraries, React hooks, and automation CLI scripts with full README guides.", tags: ["GitHub", "Open Source", "Git", "Community"], status: "In Progress", color: "emerald" }
-    ]
-  };
-
   const CM = {
     cyan:    { border: "border-cyan-500/30", bg: "bg-cyan-500/10", text: "text-cyan-400", tag: "bg-cyan-500/15 text-cyan-400 border-cyan-500/30", btn: "bg-cyan-500 text-slate-950", glow: "shadow-cyan-500/25" },
     violet:  { border: "border-violet-500/30", bg: "bg-violet-500/10", text: "text-violet-400", tag: "bg-violet-500/15 text-violet-400 border-violet-500/30", btn: "bg-violet-500 text-white", glow: "shadow-violet-500/25" },
@@ -8054,22 +8305,20 @@ function DedicatedStudioPage() {
   };
 
   const currentWing = wings.find(w => w.id === tab) || wings[0];
-  const dbWingProjects = dbProjects.filter(p => p.wing === tab).map(p => ({
+  const list = dbProjects.filter(p => p.wing === tab).map(p => ({
     ...p,
     color: currentWing.color,
     tags: Array.isArray(p.tags) ? p.tags : (typeof p.tags === "string" ? p.tags.split(",").map(t => t.trim()).filter(Boolean) : []),
-    desc: p.summary || p.desc || "",
-    details: p.summary || p.details || "",
+    desc: p.desc || p.summary || "",
+    details: p.details || p.desc || p.summary || "",
     isFromDB: true
   }));
-  const list = [...(staticProjects[tab] || []), ...dbWingProjects];
-  const featured = list.find(p => p.featured);
-  const filteredList = filter === "All" ? list.filter(p => !p.featured) : list.filter(p => !p.featured && p.status === filter);
+  const featured = list.find(p => p.featured) || (list.length > 0 ? list[0] : null);
+  const filteredList = filter === "All" ? list.filter(p => p.id !== (featured ? featured.id : null)) : list.filter(p => p.id !== (featured ? featured.id : null) && p.status === filter);
 
   return m.jsxs("div", {
     className: "relative min-h-screen bg-dark-900 text-slate-100 font-sans selection:bg-cyan-500 selection:text-black",
     children: [
-      /* 1. Stark Lab Background (Fixed to Viewport - Crisp Lab Lighting & Vignette) */
       m.jsx("div", {
         id: "studio-bg-layer", className: "fixed inset-0 bg-cover bg-center bg-no-repeat pointer-events-none -z-20 transition-opacity duration-300",
         style: { backgroundImage: "url('/assets/studio-bg.jpg')", filter: "contrast(1.08) brightness(0.96) saturate(1.06)" }
@@ -8079,7 +8328,6 @@ function DedicatedStudioPage() {
         style: { background: "radial-gradient(ellipse at 50% 55%, transparent 45%, rgba(9, 10, 15, 0.40) 80%, rgba(9, 10, 15, 0.85) 100%)" }
       }),
 
-      /* 2. Fixed 3D Diorama Stage (Fixed to Viewport alongside Background - 0px vertical movement) */
       m.jsxs("div", {
         id: "studio-3d-stage",
         className: "fixed inset-0 z-0 flex items-center justify-center transition-opacity duration-300 pointer-events-auto",
@@ -8088,25 +8336,22 @@ function DedicatedStudioPage() {
             id: "stark-ironman-container",
             className: "w-full h-full cursor-grab active:cursor-grabbing pointer-events-auto"
           }),
-          /* Forefront Atmospheric Veil (Depth Sandwich - soft mist wrapping pedestal & boots) */
           m.jsx("div", {
             className: "absolute inset-x-0 bottom-0 h-40 pointer-events-none bg-gradient-to-t from-dark-900/85 via-cyan-950/20 to-transparent"
           })
         ]
       }),
 
-      /* 3. Hero Scroll Trigger (100vh spacer with Scroll Indicator Button) */
       m.jsxs("section", {
         id: "studio-hero-wrapper",
         className: "relative w-full min-h-screen flex flex-col justify-end items-center pb-2 z-10 pointer-events-none",
-        /* 3. Hero Scroll Trigger: Clean, Single Explore Wings Indicator Button */
         children: [
           m.jsxs("button", {
             type: "button",
             onClick: () => {
-              const wings = document.getElementById("studio-wings-section");
-              if (wings) {
-                wings.scrollIntoView({ behavior: "smooth" });
+              const wingsEl = document.getElementById("studio-wings-section");
+              if (wingsEl) {
+                wingsEl.scrollIntoView({ behavior: "smooth" });
               } else {
                 window.scrollTo({ top: window.innerHeight * 0.98, behavior: "smooth" });
               }
@@ -8122,7 +8367,7 @@ function DedicatedStudioPage() {
                 children: "Explore Wings"
               }),
               m.jsx("span", {
-                className: "text-cyan-400 text-xs font-bold group-hover:translate-y-0.5 transition-transform",
+                className: "text-cyan-400 text-xs font-mono group-hover:translate-y-0.5 transition-transform",
                 children: "↓"
               })
             ]
@@ -8130,34 +8375,30 @@ function DedicatedStudioPage() {
         ]
       }),
 
-      /* 4. Main Page Content (Wings, Stats, Projects, Lab) */
       m.jsxs("main", {
         id: "studio-wings-section",
         className: "relative z-10 max-w-6xl mx-auto px-4 pt-10 pb-20 space-y-16",
         children: [
-          /* Quick Metrics Bar */
           m.jsx("div", {
             className: "grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4",
             children: [
-              { label: "Projects Shipped", val: "20+", c: "text-cyan-400", b: "border-cyan-500/30" },
-              { label: "Certifications", val: "15+", c: "text-amber-400", b: "border-amber-500/30" },
-              { label: "Years Experience", val: "3+", c: "text-violet-400", b: "border-violet-500/30" },
-              { label: "Tech & Toolsets", val: "30+", c: "text-emerald-400", b: "border-emerald-500/30" }
+              { label: studioInfo.metricProjectsLabel || "Projects Shipped", val: studioInfo.metricProjects || "20+", c: "text-cyan-400", b: "border-cyan-500/30" },
+              { label: studioInfo.metricCertsLabel || "Certifications", val: studioInfo.metricCerts || "15+", c: "text-amber-400", b: "border-amber-500/30" },
+              { label: studioInfo.metricExpLabel || "Years Experience", val: studioInfo.metricExp || "3+", c: "text-violet-400", b: "border-violet-500/30" },
+              { label: studioInfo.metricToolsLabel || "Tech & Toolsets", val: studioInfo.metricTools || "30+", c: "text-emerald-400", b: "border-emerald-500/30" }
             ].map((s, i) => m.jsxs("div", {
               key: i,
               className: "glass-card p-4 sm:p-5 rounded-2xl border " + s.b + " flex flex-col items-center justify-center space-y-1 shadow-lg hover:scale-105 transition-all",
               children: [
                 m.jsx("span", { className: "text-3xl sm:text-4xl font-extrabold " + s.c, children: s.val }),
-                m.jsx("span", { className: "text-xs text-slate-400 font-semibold", children: s.label })
+                m.jsx("span", { className: "text-xs text-slate-400 font-semibold text-center", children: s.label })
               ]
             }))
           }),
 
-          /* 2. Four Creative Wings (Tabs) */
           m.jsxs("section", {
             className: "space-y-8",
             children: [
-              /* Wing Buttons (Touch-scrollable rail on mobile, centered on desktop) */
               m.jsx("div", {
                 className: "flex flex-nowrap sm:flex-wrap gap-2 sm:gap-3 justify-start sm:justify-center overflow-x-auto no-scrollbar pb-2 px-1 touch-pan-x",
                 children: wings.map((w) => {
@@ -8181,7 +8422,6 @@ function DedicatedStudioPage() {
                 })
               }),
 
-              /* Wing Description */
               m.jsx("div", {
                 className: "text-center",
                 children: m.jsx("p", {
@@ -8190,28 +8430,27 @@ function DedicatedStudioPage() {
                 })
               }),
 
-              /* Featured Project Spotlight */
               featured && m.jsx("div", {
                 className: "relative glass-panel rounded-3xl border " + CM[featured.color].border + " p-6 sm:p-8 md:p-10 overflow-hidden shadow-2xl",
                 children: m.jsxs("div", {
-                  className: "flex flex-col md:flex-row md:items-center justify-between gap-6",
+                  className: "flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10",
                   children: [
                     m.jsxs("div", {
-                      className: "space-y-3 max-w-2xl",
+                      className: "space-y-3 max-w-xl",
                       children: [
                         m.jsxs("div", {
                           className: "flex items-center gap-2 flex-wrap",
                           children: [
-                            m.jsxs("span", {
-                              className: "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border " + statusStyles[featured.status],
-                              children: [
-                                m.jsx("span", { className: "w-2 h-2 rounded-full " + statusDots[featured.status] }),
-                                featured.status
-                              ]
-                            }),
                             m.jsx("span", {
-                              className: "px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-white/10 text-slate-200 border border-white/20",
-                              children: "★ Featured Showcase"
+                              className: "px-3 py-1 rounded-full text-xs font-mono font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30",
+                              children: "⭐ Spotlight Featured"
+                            }),
+                            m.jsxs("span", {
+                              className: "inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-bold border " + (statusStyles[featured.status] || statusStyles["In Progress"]),
+                              children: [
+                                m.jsx("span", { className: "w-2 h-2 rounded-full " + (statusDots[featured.status] || statusDots["In Progress"]) }),
+                                featured.status || "In Progress"
+                              ]
                             })
                           ]
                         }),
@@ -8220,35 +8459,34 @@ function DedicatedStudioPage() {
                           children: featured.title
                         }),
                         m.jsx("p", {
-                          className: "text-xs sm:text-sm text-slate-400 leading-relaxed",
+                          className: "text-xs sm:text-sm text-slate-300 leading-relaxed",
                           children: featured.desc
                         }),
                         m.jsx("div", {
                           className: "flex flex-wrap gap-1.5 pt-1",
-                          children: (featured.tags || []).map((tg, i) => m.jsx("span", {
+                          children: (featured.tags || []).map((t, i) => m.jsx("span", {
                             key: i,
-                            className: "px-2.5 py-1 rounded-full text-[11px] font-mono font-bold border " + CM[featured.color].tag,
-                            children: tg
+                            className: "px-2.5 py-1 rounded-full text-xs font-mono font-bold border " + CM[featured.color].tag,
+                            children: t
                           }))
                         })
                       ]
                     }),
                     m.jsxs("div", {
-                      className: "flex flex-row md:flex-col gap-3 shrink-0",
+                      className: "flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0",
                       children: [
-                        m.jsxs("button", {
+                        m.jsx("button", {
+                          type: "button",
                           onClick: () => setSelected(featured),
-                          className: "px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold " + CM[featured.color].btn + " shadow-xl hover:scale-105 transition-all text-center flex items-center justify-center gap-1.5 cursor-pointer",
-                          children: [
-                            m.jsx(AR, { className: "w-4 h-4" }),
-                            "Inspect Project"
-                          ]
+                          className: "px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold " + CM[featured.color].btn + " shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer text-center",
+                          children: "Inspect Architecture ⚡"
                         }),
-                        m.jsx("a", {
-                          href: "/#contact",
-                          onClick: (e) => { e.preventDefault(); window.location.href = "/#contact"; },
-                          className: "px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold glass-card border border-white/20 text-slate-200 hover:text-white hover:border-white/40 transition-all text-center flex items-center justify-center gap-1.5",
-                          children: "Collaborate ✉"
+                        (featured.demoUrl || featured.fileLink) && m.jsx("a", {
+                          href: featured.demoUrl || featured.fileLink,
+                          target: "_blank",
+                          rel: "noreferrer",
+                          className: "px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold glass-card border border-white/20 text-slate-200 hover:text-white hover:border-white/40 transition-all text-center",
+                          children: featured.demoUrl ? "Live Demo ↗" : "View File ↗"
                         })
                       ]
                     })
@@ -8256,30 +8494,26 @@ function DedicatedStudioPage() {
                 })
               }),
 
-              /* Filter Chips */
-              m.jsxs("div", {
-                className: "flex items-center gap-2 flex-wrap pt-2",
-                children: [
-                  m.jsx("span", { className: "text-xs text-slate-400 font-mono font-bold mr-1", children: "Filter:" }),
-                  ["All", "Live", "In Progress", "Completed", "Concept"].map(st => m.jsx("button", {
-                    key: st,
-                    onClick: () => setFilter(st),
-                    className: "px-3 py-1 rounded-xl text-xs font-bold transition-all border " +
-                      (filter === st
-                        ? (statusStyles[st] || "bg-white/15 text-white border-white/30")
-                        : "glass-card border-white/10 text-slate-400 hover:text-white"),
-                    children: st
-                  }))
-                ]
+              m.jsx("div", {
+                className: "flex flex-wrap gap-2 items-center justify-center pt-2",
+                children: ["All", "Live", "In Progress", "Completed", "Concept"].map((st) => m.jsx("button", {
+                  key: st,
+                  type: "button",
+                  onClick: () => setFilter(st),
+                  className: "px-3.5 py-1 rounded-full text-xs font-mono font-bold transition-all cursor-pointer " +
+                    (filter === st
+                      ? "bg-white text-slate-950 shadow-md"
+                      : "bg-white/5 text-slate-400 hover:text-white border border-white/10"),
+                  children: st
+                }))
               }),
 
-              /* Grid of Projects (Responsive: 1-col mobile, 2-col tablet, 3-col desktop, 4-col ultrawide) */
               m.jsx("div", {
-                className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-5",
+                className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6",
                 children: filteredList.length > 0 ? filteredList.map((p) => {
                   const c = CM[p.color] || CM.cyan;
                   return m.jsxs("div", {
-                    key: p.id || p.title,
+                    key: p.id,
                     onClick: () => setSelected(p),
                     className: "glass-card rounded-3xl border " + c.border + " p-4 sm:p-5 space-y-4 shadow-xl flex flex-col justify-between hover:-translate-y-1.5 hover:shadow-2xl hover:border-cyan-400/40 active:scale-[0.98] transition-all cursor-pointer group",
                     children: [
@@ -8294,10 +8528,10 @@ function DedicatedStudioPage() {
                                 children: tab === "technical" ? "⚡" : tab === "entertainment" ? "🎬" : tab === "arts" ? "🎨" : "🔧"
                               }),
                               m.jsxs("span", {
-                                className: "inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold border " + statusStyles[p.status],
+                                className: "inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold border " + (statusStyles[p.status] || statusStyles["In Progress"]),
                                 children: [
-                                  m.jsx("span", { className: "w-1.5 h-1.5 rounded-full " + statusDots[p.status] }),
-                                  p.status
+                                  m.jsx("span", { className: "w-1.5 h-1.5 rounded-full " + (statusDots[p.status] || statusDots["In Progress"]) }),
+                                  p.status || "In Progress"
                                 ]
                               })
                             ]
@@ -8308,7 +8542,7 @@ function DedicatedStudioPage() {
                           }),
                           m.jsx("p", {
                             className: "text-xs text-slate-400 leading-relaxed line-clamp-2",
-                            children: p.desc
+                            children: p.desc || p.summary
                           })
                         ]
                       }),
@@ -8326,7 +8560,7 @@ function DedicatedStudioPage() {
                           m.jsxs("div", {
                             className: "flex items-center justify-between text-[11px] font-semibold text-slate-400 group-hover:text-slate-200",
                             children: [
-                              m.jsx("span", { children: p.isFromDB && (p.demoUrl || p.fileLink) ? "🔗 Links Available" : "Click to view details" }),
+                              m.jsx("span", { children: (p.demoUrl || p.fileLink) ? "🔗 Links Available" : "Click to view details" }),
                               m.jsx(x_, { className: "w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" })
                             ]
                           })
@@ -8342,7 +8576,6 @@ function DedicatedStudioPage() {
             ]
           }),
 
-          /* 3. Daily Driver Toolkit */
           m.jsxs("section", {
             className: "space-y-6 pt-6",
             children: [
@@ -8392,7 +8625,6 @@ function DedicatedStudioPage() {
             ]
           }),
 
-          /* 4. Collab Call-To-Action Box */
           m.jsx("section", {
             className: "relative glass-panel rounded-3xl border border-cyan-500/30 p-8 sm:p-12 text-center overflow-hidden shadow-2xl",
             children: m.jsxs("div", {
@@ -8402,22 +8634,18 @@ function DedicatedStudioPage() {
                   className: "inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold",
                   children: [
                     m.jsx("span", { className: "w-2 h-2 rounded-full bg-emerald-400 transition-opacity duration-700 " + (ping ? "opacity-100" : "opacity-30") }),
-                    "Open for Collaborative Projects & Engineering"
+                    studioInfo.collabBadge || "Open for Collaborative Projects & Engineering"
                   ]
                 }),
                 m.jsxs("h3", {
                   className: "text-3xl sm:text-4xl font-extrabold text-slate-100",
                   children: [
-                    "Let's Build Something ",
-                    m.jsx("span", {
-                      className: "bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent",
-                      children: "Remarkable"
-                    })
+                    studioInfo.collabTitle || "Let's Build Something Remarkable"
                   ]
                 }),
                 m.jsx("p", {
                   className: "text-xs sm:text-sm text-slate-400 leading-relaxed",
-                  children: "Whether you need an IoT embedded system, a high-performance web platform, or creative collaboration across video editing, film, VFX, or gaming — drop a message."
+                  children: studioInfo.collabDesc || "Whether you need an IoT embedded system, a high-performance web platform, or creative collaboration across video editing, film, VFX, or gaming — drop a message."
                 }),
                 m.jsxs("div", {
                   className: "flex flex-wrap items-center justify-center gap-4 pt-2",
@@ -8425,17 +8653,14 @@ function DedicatedStudioPage() {
                     m.jsx("a", {
                       href: "/#contact",
                       onClick: (e) => { e.preventDefault(); window.location.href = "/#contact"; },
-                      className: "px-8 py-3.5 rounded-2xl bg-gradient-to-r from-cyan-500 to-violet-600 text-slate-950 font-extrabold text-xs sm:text-sm shadow-xl shadow-cyan-500/25 hover:scale-105 transition-all cursor-pointer",
-                      children: "Establish Contact ↗"
+                      className: "px-8 py-3.5 rounded-2xl bg-gradient-to-r from-cyan-500 to-violet-500 text-slate-950 font-extrabold text-xs sm:text-sm shadow-xl shadow-cyan-500/20 hover:scale-105 active:scale-95 transition-all cursor-pointer",
+                      children: studioInfo.collabBtnText || "Initiate Transmission ⚡"
                     }),
-                    m.jsxs("a", {
-                      href: "/",
-                      onClick: (e) => { e.preventDefault(); window.location.href = "/"; },
-                      className: "px-8 py-3.5 rounded-2xl glass-card border border-white/15 text-slate-200 font-bold text-xs sm:text-sm hover:border-cyan-400/50 hover:text-cyan-400 transition-all flex items-center gap-2 cursor-pointer",
-                      children: [
-                        m.jsx("span", { className: "font-bold", children: "←" }),
-                        "Return to Main Portfolio"
-                      ]
+                    m.jsx("a", {
+                      href: "/#projects",
+                      onClick: (e) => { e.preventDefault(); window.location.href = "/#projects"; },
+                      className: "px-8 py-3.5 rounded-2xl glass-card border border-white/15 text-slate-200 hover:text-white hover:border-white/30 text-xs sm:text-sm font-bold transition-all cursor-pointer",
+                      children: "Back to Portfolio Overview"
                     })
                   ]
                 })
@@ -8445,13 +8670,13 @@ function DedicatedStudioPage() {
         ]
       }),
 
-      /* Lightbox Detail Modal (Mobile-responsive max-height & touch scroll) */
       selected && m.jsx("div", {
         className: "fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md",
         children: m.jsxs("div", {
           className: "relative w-full max-w-2xl max-h-[90vh] overflow-y-auto glass-panel rounded-3xl border border-cyan-500/40 p-5 sm:p-8 space-y-5 shadow-2xl bg-dark-900/95",
           children: [
             m.jsx("button", {
+              type: "button",
               onClick: () => setSelected(null),
               className: "absolute top-5 right-5 p-2 rounded-xl glass-card border border-white/15 text-slate-400 hover:text-white hover:border-white/30 transition-all cursor-pointer",
               children: "✕"
@@ -8463,10 +8688,10 @@ function DedicatedStudioPage() {
                   className: "flex items-center gap-2",
                   children: [
                     m.jsxs("span", {
-                      className: "inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-bold border " + statusStyles[selected.status],
+                      className: "inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-bold border " + (statusStyles[selected.status] || statusStyles["In Progress"]),
                       children: [
-                        m.jsx("span", { className: "w-2 h-2 rounded-full " + statusDots[selected.status] }),
-                        selected.status
+                        m.jsx("span", { className: "w-2 h-2 rounded-full " + (statusDots[selected.status] || statusDots["In Progress"]) }),
+                        selected.status || "In Progress"
                       ]
                     }),
                     m.jsx("span", { className: "text-xs text-slate-400 font-mono", children: "ID: " + (selected.id || "item") })
@@ -8478,8 +8703,8 @@ function DedicatedStudioPage() {
             m.jsxs("div", {
               className: "space-y-4 text-xs sm:text-sm text-slate-300 leading-relaxed border-y border-white/10 py-4",
               children: [
-                m.jsx("p", { className: "font-semibold text-slate-200", children: selected.desc }),
-                m.jsx("p", { className: "text-slate-400", children: selected.details })
+                m.jsx("p", { className: "font-semibold text-slate-200", children: selected.desc || selected.summary }),
+                m.jsx("p", { className: "text-slate-400", children: selected.details || selected.desc || selected.summary })
               ]
             }),
             m.jsxs("div", {
@@ -8496,40 +8721,23 @@ function DedicatedStudioPage() {
                 })
               ]
             }),
-            /* Live Demo and File Links */
             (selected.demoUrl || selected.fileLink) && m.jsxs("div", {
               className: "flex flex-wrap gap-2 pt-1 border-t border-white/10",
               children: [
-                m.jsx("span", { className: "text-xs font-mono text-slate-400 w-full", children: "Project Links:" }),
+                m.jsx("span", { className: "text-xs font-mono text-slate-400 w-full", children: "Project Links & Assets:" }),
                 selected.demoUrl && m.jsx("a", {
                   href: selected.demoUrl,
                   target: "_blank",
                   rel: "noreferrer",
-                  className: "px-4 py-2 rounded-xl bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 font-bold text-xs hover:bg-cyan-500/30 transition-all flex items-center gap-1.5",
-                  children: "🔗 Live Demo ↗"
+                  className: "px-4 py-2 rounded-xl text-xs font-bold bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 hover:bg-cyan-500/30 transition-all flex items-center gap-1.5",
+                  children: "🌐 Open Live Project"
                 }),
                 selected.fileLink && m.jsx("a", {
                   href: selected.fileLink,
                   target: "_blank",
                   rel: "noreferrer",
-                  className: "px-4 py-2 rounded-xl bg-violet-500/20 border border-violet-500/40 text-violet-300 font-bold text-xs hover:bg-violet-500/30 transition-all flex items-center gap-1.5",
-                  children: "📁 Download / View File ↗"
-                })
-              ]
-            }),
-            m.jsxs("div", {
-              className: "flex items-center justify-between pt-2",
-              children: [
-                m.jsx("button", {
-                  onClick: () => setSelected(null),
-                  className: "px-5 py-2.5 rounded-xl glass-card border border-white/15 text-slate-300 hover:text-white text-xs font-bold transition-all cursor-pointer",
-                  children: "Close [ESC]"
-                }),
-                m.jsx("a", {
-                  href: "/#contact",
-                  onClick: () => { setSelected(null); window.location.href = "/#contact"; },
-                  className: "px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 text-slate-950 font-extrabold text-xs shadow-lg hover:scale-105 transition-all cursor-pointer",
-                  children: "Inquire About This Build ↗"
+                  className: "px-4 py-2 rounded-xl text-xs font-bold bg-violet-500/20 border border-violet-500/40 text-violet-300 hover:bg-violet-500/30 transition-all flex items-center gap-1.5",
+                  children: "📄 Download / View Assets"
                 })
               ]
             })

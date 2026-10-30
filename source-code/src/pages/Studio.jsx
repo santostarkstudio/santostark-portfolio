@@ -12,14 +12,14 @@ import { subscribeToCollection } from '../services/firebase';
 /* ─────────────────────────────────────
    STATIC DATA
    ───────────────────────────────────── */
-const STATS = [
+export const STATS = [
   { label: 'Projects Shipped', val: '20+', c: 'text-cyan-400', b: 'border-cyan-500/30', bg: 'bg-cyan-500/10' },
   { label: 'Certifications', val: '15+', c: 'text-amber-400', b: 'border-amber-500/30', bg: 'bg-amber-500/10' },
   { label: 'Years Experience', val: '3+', c: 'text-violet-400', b: 'border-violet-500/30', bg: 'bg-violet-500/10' },
   { label: 'Tech & Toolsets', val: '30+', c: 'text-emerald-400', b: 'border-emerald-500/30', bg: 'bg-emerald-500/10' },
 ];
 
-const WINGS = [
+export const WINGS = [
   { id: 'technical', label: '⚡ Technical Wing', icon: Cpu, color: 'cyan', desc: 'Computer Science, Full-Stack Web, Embedded Systems, IoT & Automation' },
   { id: 'entertainment', label: '🎬 Entertainment Wing', icon: Film, color: 'violet', desc: 'Gaming Content, VFX Compositing, Film Production, Video Editing & Live Streaming' },
   { id: 'arts', label: '🎨 Arts & Design Wing', icon: Palette, color: 'amber', desc: 'UI/UX Design Systems, AI Digital Art, Creative Branding & 3D Visuals' },
@@ -47,7 +47,7 @@ const STATUS_DOTS = {
   'Concept':     'bg-violet-400',
 };
 
-const PROJECTS = {
+export const PROJECTS = {
   technical: [
     {
       id: 'tech-1',
@@ -325,8 +325,14 @@ export default function Studio() {
       details: p.summary || p.details || '',
       isFromDB: true,
     }));
-  const staticList = PROJECTS[activeWing] || [];
-  const list = [...staticList, ...dbWingProjects];
+  const staticList = (PROJECTS[activeWing] || []).map(p => ({
+    ...p,
+    wing: activeWing,
+    color: currentWing.color,
+    desc: p.desc || p.summary || '',
+    details: p.details || p.desc || p.summary || '',
+  }));
+  const list = dbStudioProjects.some(p => p.wing === activeWing) ? dbWingProjects : staticList;
   const featured = list.find(p => p.featured);
   const filteredList = statusFilter === 'All'
     ? list.filter(p => !p.featured)

@@ -35,6 +35,7 @@ import {
   Mail
 } from 'lucide-react';
 import PageWrapper from '../components/PageWrapper';
+import { PROJECTS } from './Studio';
 import { 
   auth, 
   isRealFirebase, 
@@ -99,7 +100,13 @@ export default function Admin() {
   const [educationList, setEducationList] = useState([]);
   const [interestsList, setInterestsList] = useState([]);
   const [galleryList, setGalleryList] = useState([]);
-  const [studioProjectsList, setStudioProjectsList] = useState([]);
+  const defaultStudioProjects = PROJECTS ? [
+    ...(PROJECTS.technical || []).map(p => ({ ...p, wing: 'technical' })),
+    ...(PROJECTS.entertainment || []).map(p => ({ ...p, wing: 'entertainment' })),
+    ...(PROJECTS.arts || []).map(p => ({ ...p, wing: 'arts' })),
+    ...(PROJECTS.other || []).map(p => ({ ...p, wing: 'other' })),
+  ] : [];
+  const [studioProjectsList, setStudioProjectsList] = useState(defaultStudioProjects);
   const [contactMessages, setContactMessages] = useState([]);
   const [accessRequests, setAccessRequests] = useState([]);
   const [visitorLogs, setVisitorLogs] = useState([]);
