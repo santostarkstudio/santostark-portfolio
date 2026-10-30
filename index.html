@@ -82,8 +82,7 @@
       @font-face { font-family: 'Fira Code'; font-display: swap; }
     </style>
       <link rel="preload" href="/assets/brand-logo.webp" as="image" type="image/webp">
-      <!-- ⚡ Low-priority prefetch of Iron Man 3D model for instant Studio entry -->
-      <link rel="prefetch" href="/assets/models/iron_man.glb" as="fetch" crossorigin>
+      <!-- Iron Man GLB: loaded on-demand only when /studio route is visited -->
   </head>
   <body class="bg-[#090a0f] text-slate-100 font-sans antialiased selection:bg-cyan-500 selection:text-black overflow-x-hidden touch-manipulation">
     
@@ -112,15 +111,37 @@
       })();
     </script>
 
-        <!-- Three.js 3D Engine & Loaders — DEFERRED (non-blocking parse) -->
-    <!-- Preload Three.js core so it fetches early but doesn't block render -->
-    <link rel="preload" href="/assets/three.min.js" as="script">
-    <script defer src="/assets/three.min.js"></script>
-    <script defer src="/assets/three-gltf-loader.js"></script>
-    <script defer src="/assets/three-rgbe-loader.js"></script>
-    <script defer src="/assets/three-orbit-controls.js"></script>
-    <script defer src="/assets/studio-ironman-3d.js?v=stark-data-v6"></script>
-    <script defer src="/assets/stark-content-engine.js?v=stark-data-v6"></script>
+        <!-- Three.js 3D Engine: Route-aware lazy loader (only fires on /studio) -->
+    <script>
+      (function() {
+        function loadStudioScripts() {
+          if (window._starkStudioScriptsLoaded) return;
+          window._starkStudioScriptsLoaded = true;
+          var scripts = [
+            '/assets/three.min.js',
+            '/assets/three-gltf-loader.js',
+            '/assets/three-rgbe-loader.js',
+            '/assets/three-orbit-controls.js',
+            '/assets/studio-ironman-3d.js?v=stark-data-v6',
+            '/assets/stark-content-engine.js?v=stark-data-v6'
+          ];
+          function loadSeq(i) {
+            if (i >= scripts.length) return;
+            var s = document.createElement('script');
+            s.src = scripts[i];
+            s.onload = function() { loadSeq(i + 1); };
+            document.body.appendChild(s);
+          }
+          loadSeq(0);
+        }
+        // Load immediately if already on /studio
+        if (window.location.pathname === '/studio' || window.location.pathname.startsWith('/studio')) {
+          window.addEventListener('DOMContentLoaded', loadStudioScripts);
+        }
+        // Expose so DedicatedStudioPage React component can trigger loading
+        window.loadStudioScripts = loadStudioScripts;
+      })();
+    </script>
 
     <!-- Built JS bundle (React app) -->
     <script type="module" crossorigin src="/assets/index-BMqPMOZ-.js?v=stark-data-v6"></script>

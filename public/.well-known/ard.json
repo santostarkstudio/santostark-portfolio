@@ -1,0 +1,10 @@
+{
+  "version": "1.0",
+  "name": "Santo Stark Studio Portfolio",
+  "description": "Interactive 3D engineering portfolio featuring IoT hardware telemetry, full-stack microservices, and a Real Space Solar System WebGL experience.",
+  "author": "Santo Stark (Santosh Dabad)",
+  "url": "https://santostark.vercel.app",
+  "contact": "santoshdabadiaiyyanna@gmail.com",
+  "language": "en",
+  "topics": ["engineering", "portfolio", "IoT", "full-stack", "3D", "WebGL", "React"]
+}

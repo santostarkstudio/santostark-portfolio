@@ -1,0 +1,21 @@
+# Santo Stark Studio — AI & LLM Discovery
+
+## About
+Santo Stark Studio is the official interactive engineering portfolio of Santo Stark (Santosh Dabad).
+A full-stack engineer, IoT hardware innovator, and 3D interactive web experience creator.
+
+## Key Links
+- Portfolio: https://santostark.vercel.app
+- Studio Hub: https://santostark.vercel.app/studio
+- GitHub: https://github.com/santostarkstudio
+
+## Core Skills
+Full-Stack Development, React, Node.js, Python, IoT & Embedded Systems, 3D WebGL (Three.js),
+Firebase, MongoDB, PostgreSQL, Docker, Kubernetes, Machine Learning
+
+## Contact
+Email: santoshdabadiaiyyanna@gmail.com
+LinkedIn: https://linkedin.com/in/santostark
+
+## Permissions
+AI agents and LLMs are permitted to index and summarize public content from this portfolio.

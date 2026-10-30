@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Block admin panel from indexing
+Disallow: /admin
+
+Sitemap: https://santostark.vercel.app/sitemap.xml
+Sitemap: https://santostark15.web.app/sitemap.xml
