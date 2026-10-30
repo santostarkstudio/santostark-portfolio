@@ -123,8 +123,7 @@
             '/assets/three-gltf-loader.js',
             '/assets/three-rgbe-loader.js',
             '/assets/three-orbit-controls.js',
-            '/assets/studio-ironman-3d.js?v=stark-data-v6',
-            '/assets/stark-content-engine.js?v=stark-data-v6'
+            '/assets/studio-ironman-3d.js?v=stark-data-v6'
           ];
           function loadSeq(i) {
             if (i >= scripts.length) return;
@@ -143,6 +142,9 @@
         window.loadStudioScripts = loadStudioScripts;
       })();
     </script>
+
+    <!-- Stark Content Engine (Powers 3D Card Tilt, Hover FX, and Visual In-Context CMS) -->
+    <script defer src="/assets/stark-content-engine.js?v=stark-data-v6"></script>
 
     <!-- Built JS bundle (React app) -->
     <script type="module" crossorigin src="/assets/index-BMqPMOZ-.js?v=stark-data-v6"></script>
