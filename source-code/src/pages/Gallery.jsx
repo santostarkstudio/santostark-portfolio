@@ -23,6 +23,20 @@ export default function Gallery() {
     return () => unsub();
   }, []);
 
+  const [expanded, setExpanded] = useState(false);
+  const [displayLimit, setDisplayLimit] = useState(6);
+  const sectionRef = React.useRef(null);
+
+  useEffect(() => {
+    const updateLimit = () => {
+      const w = window.innerWidth;
+      setDisplayLimit(w < 768 ? 4 : w < 1024 ? 6 : Infinity);
+    };
+    updateLimit();
+    window.addEventListener('resize', updateLimit);
+    return () => window.removeEventListener('resize', updateLimit);
+  }, []);
+
   const [sortBy, setSortBy] = useState('newest');
 
   const categories = ['All', 'Hardware', 'Robotics', 'AI Art', 'Analytics', 'Workspace'];
@@ -85,8 +99,9 @@ export default function Gallery() {
             Fetching gallery records from Firebase Firestore...
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredImages.map((item) => (
+          <>
+          <div ref={sectionRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {(expanded ? filteredImages : filteredImages.slice(0, displayLimit)).map((item) => (
               <motion.div
                 key={item.id}
                 variants={{
@@ -128,6 +143,35 @@ export default function Gallery() {
               </motion.div>
             ))}
           </div>
+          {filteredImages.length > displayLimit && (
+            <div className="flex justify-center pt-4 pb-2">
+              <button
+                type="button"
+                onClick={() => {
+                  if (expanded && sectionRef.current) {
+                    sectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }
+                  setExpanded(!expanded);
+                }}
+                className="group relative inline-flex items-center gap-2.5 px-6 sm:px-8 py-3 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider text-cyan-300 hover:text-white transition-all cursor-pointer shadow-lg active:scale-95"
+                style={{
+                  background: 'rgba(5, 7, 17, 0.88)',
+                  backdropFilter: 'blur(20px)',
+                  WebkitBackdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(34, 211, 238, 0.35)',
+                  boxShadow: '0 8px 32px rgba(0,0,0,0.7), 0 0 20px rgba(34,211,238,0.25), inset 0 1px 0 rgba(255,255,255,0.1)',
+                }}
+              >
+                <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shrink-0" style={{ boxShadow: '0 0 10px #22d3ee, 0 0 20px #22d3ee' }} />
+                <span>
+                  {expanded
+                    ? '▲ Collapse Gallery ↑'
+                    : `✦ View Full Gallery (${filteredImages.length - displayLimit} More) ↓`}
+                </span>
+              </button>
+            </div>
+          )}
+          </>
         )}
       </div>
     </PageWrapper>

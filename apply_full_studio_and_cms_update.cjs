@@ -598,16 +598,27 @@ for (const b of BUNDLES) {
   // ==========================================
   // 1. UPDATE NAVBAR (GJ) TO TRANSFORM ON /studio
   // ==========================================
-  const navbarStudioCheck = 'if(n&&n.pathname==="/studio"){return m.jsx("header",{className:"fixed top-0 left-0 right-0 z-50 flex justify-center pt-3 pointer-events-none"';
-  if (!content.includes(navbarStudioCheck)) {
+  const navbarStudioCheck = 'if(n&&n.pathname==="/studio"){return m.jsx("header",{className:"fixed top-0 left-0 right-0 z-50 flex justify-center pt-3 px-3 sm:px-4 pointer-events-none"';
+  const oldNavbarStudioCheck = 'if(n&&n.pathname==="/studio"){return m.jsx("header",{className:"fixed top-0 left-0 right-0 z-50 flex justify-center pt-3 pointer-events-none"';
+  const newStudioHeader = 'if(n&&n.pathname==="/studio"){return m.jsx("header",{className:"fixed top-0 left-0 right-0 z-50 flex justify-center pt-3 px-3 sm:px-4 pointer-events-none",children:m.jsx("div",{className:"pointer-events-auto w-full max-w-[1100px]",children:m.jsxs("div",{className:"flex items-center justify-between gap-2 px-3 sm:px-6 py-2 sm:py-2.5 relative overflow-hidden",style:{background:"rgba(5,7,17,0.88)",backdropFilter:"blur(28px) saturate(1.3)",WebkitBackdropFilter:"blur(28px) saturate(1.3)",borderRadius:"999px",border:"1px solid rgba(255,255,255,0.12)",boxShadow:"0 8px 32px rgba(0,0,0,0.80),0 0 0 1px rgba(255,255,255,0.05),inset 0 1px 0 rgba(255,255,255,0.08)"},children:[m.jsxs("a",{href:"/",onClick:e=>{e.preventDefault();window.location.href="/";},className:"inline-flex items-center gap-1.5 px-2.5 sm:px-4 py-1.5 text-cyan-300 hover:text-white font-bold text-xs sm:text-sm transition-all cursor-pointer shrink-0 z-10",style:{background:"rgba(34,211,238,0.08)",border:"1px solid rgba(34,211,238,0.25)",borderRadius:"999px"},children:[m.jsx("span",{className:"text-sm font-bold",children:"←"}),m.jsx("span",{className:"hidden xs:inline sm:inline",children:"Portfolio"})]}),m.jsxs("div",{className:"flex-1 flex items-center justify-center gap-1.5 sm:gap-2 min-w-0 px-1 pointer-events-none",children:[m.jsx("span",{className:"w-2 h-2 rounded-full bg-cyan-400 shrink-0",style:{boxShadow:"0 0 8px rgba(34,211,238,0.9)"}}),m.jsx("span",{className:"text-[11px] sm:text-xs md:text-sm font-extrabold uppercase tracking-wider sm:tracking-widest truncate text-white",style:{color:"#ffffff",textShadow:"0 0 16px rgba(255,255,255,0.4), 0 0 30px rgba(34,211,238,0.3)"},children:"SANTO STARK STUDIO"})]}),m.jsxs("div",{className:"inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-emerald-400 text-[10px] sm:text-[11px] font-mono font-bold shrink-0 z-10",style:{background:"rgba(52,211,153,0.07)",border:"1px solid rgba(52,211,153,0.22)",borderRadius:"999px"},children:[m.jsx("span",{className:"w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"}),m.jsx("span",{className:"hidden sm:inline",children:"Online"})]})]})})});}';
+
+  if (content.includes(oldNavbarStudioCheck) && !content.includes(navbarStudioCheck)) {
+    const endSnippet = 'Online"})]})]})}})});}';
+    const sIdx = content.indexOf(oldNavbarStudioCheck);
+    const eIdx = content.indexOf(endSnippet, sIdx);
+    if (sIdx >= 0 && eIdx >= 0) {
+      content = content.substring(0, sIdx) + newStudioHeader + content.substring(eIdx + endSnippet.length);
+      console.log('SUCCESS: Upgraded Studio floating pill header to non-overlapping white text');
+    }
+  } else if (!content.includes(navbarStudioCheck)) {
     const gjStart = 'function GJ(){const n=Ru(),';
-    const gjReplace = 'function GJ(){const n=Ru();if(n&&n.pathname==="/studio"){return m.jsx("header",{className:"fixed top-0 left-0 right-0 z-50 flex justify-center pt-3 pointer-events-none",children:m.jsx("div",{className:"pointer-events-auto w-full mx-4 sm:mx-8 md:mx-12",style:{maxWidth:"1100px"},children:m.jsxs("div",{className:"flex items-center justify-between px-4 sm:px-6 py-2.5 sm:py-3 relative",style:{background:"rgba(5,7,17,0.82)",backdropFilter:"blur(28px) saturate(1.3)",WebkitBackdropFilter:"blur(28px) saturate(1.3)",borderRadius:"999px",border:"1px solid rgba(255,255,255,0.09)",boxShadow:"0 8px 32px rgba(0,0,0,0.70),0 0 0 1px rgba(255,255,255,0.04),inset 0 1px 0 rgba(255,255,255,0.07)"},children:[m.jsxs("a",{href:"/",onClick:e=>{e.preventDefault();window.location.href="/";},className:"inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 text-cyan-300 hover:text-white font-bold text-xs sm:text-sm transition-all cursor-pointer shrink-0 z-10",style:{background:"rgba(34,211,238,0.08)",border:"1px solid rgba(34,211,238,0.25)",borderRadius:"999px"},children:[m.jsx("span",{className:"text-sm font-bold",children:"←"}),m.jsx("span",{children:"Portfolio"})]}),m.jsx("div",{className:"absolute inset-0 flex items-center justify-center pointer-events-none",children:m.jsxs("div",{className:"flex items-center gap-2",children:[m.jsx("span",{className:"w-2 h-2 rounded-full bg-cyan-400",style:{boxShadow:"0 0 8px rgba(34,211,238,0.9)",flexShrink:0}}),m.jsx("span",{className:"text-xs sm:text-sm font-extrabold uppercase",style:{background:"linear-gradient(90deg,#22d3ee 0%,#a78bfa 50%,#fbbf24 100%)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",letterSpacing:"0.18em",whiteSpace:"nowrap"},children:"SANTO STARK STUDIO"})]})}}),m.jsxs("div",{className:"inline-flex items-center gap-1.5 px-3 py-1.5 text-emerald-400 text-[10px] sm:text-[11px] font-mono font-bold shrink-0 z-10",style:{background:"rgba(52,211,153,0.07)",border:"1px solid rgba(52,211,153,0.22)",borderRadius:"999px"},children:[m.jsx("span",{className:"w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"}),m.jsx("span",{className:"hidden sm:inline",children:"Online"})]})]})}})});}const ';
+    const gjReplace = 'function GJ(){const n=Ru();' + newStudioHeader + 'const ';
     if (content.includes(gjStart)) {
       content = content.replace(gjStart, gjReplace);
-      console.log('✅ Injected Navbar Studio transformation into GJ()');
+      console.log('SUCCESS: Injected upgraded Studio navbar into GJ()');
     }
   } else {
-    console.log('ℹ Navbar Studio transformation already present in GJ()');
+    console.log('INFO: Upgraded Studio navbar already present in GJ()');
   }
 
   // ==========================================

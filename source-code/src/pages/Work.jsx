@@ -7,6 +7,18 @@ import { subscribeToCollection, initialWorkItems } from '../services/firebase';
 export default function Work() {
   const [workItems, setWorkItems] = useState(initialWorkItems);
   const [loading, setLoading] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [displayLimit, setDisplayLimit] = useState(3);
+
+  useEffect(() => {
+    const updateLimit = () => {
+      const w = window.innerWidth;
+      setDisplayLimit(w < 768 ? 1 : w < 1024 ? 2 : 3);
+    };
+    updateLimit();
+    window.addEventListener('resize', updateLimit);
+    return () => window.removeEventListener('resize', updateLimit);
+  }, []);
 
   useEffect(() => {
     const unsub = subscribeToCollection('work_experience', (data) => {
@@ -38,8 +50,13 @@ export default function Work() {
             Loading work experiences from Firebase...
           </div>
         ) : (
-          <div className="space-y-5">
-            {workItems.map((item, index) => (
+          {(() => {
+            const visibleWork = expanded ? workItems : workItems.slice(0, displayLimit);
+            const remainingCount = workItems.length - displayLimit;
+            return (
+              <>
+                <div className="space-y-5">
+                  {visibleWork.map((item, index) => (
               <motion.div
                 key={item.id || index}
                 variants={{
@@ -115,6 +132,42 @@ export default function Work() {
               </motion.div>
             ))}
           </div>
+
+          {workItems.length > displayLimit && (
+            <div className="flex justify-center pt-8 pb-4">
+              <button
+                type="button"
+                onClick={() => {
+                  if (expanded) {
+                    const el = document.getElementById('work');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  }
+                  setExpanded(!expanded);
+                }}
+                className="group relative inline-flex items-center gap-2.5 px-6 sm:px-8 py-3 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider text-cyan-300 hover:text-white transition-all cursor-pointer shadow-lg active:scale-95"
+                style={{
+                  background: 'rgba(5, 7, 17, 0.88)',
+                  backdropFilter: 'blur(20px)',
+                  WebkitBackdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(34, 211, 238, 0.35)',
+                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.7), 0 0 20px rgba(34, 211, 238, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+                }}
+              >
+                <span
+                  className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shrink-0"
+                  style={{ boxShadow: '0 0 10px #22d3ee, 0 0 20px #22d3ee' }}
+                />
+                <span>
+                  {expanded
+                    ? '▲ Collapse Work History ↑'
+                    : `✦ View Full Work History (${remainingCount} More) ↓`}
+                </span>
+              </button>
+            </div>
+          )}
+        </>
+      );
+    })()}
         )}
       </div>
     </PageWrapper>

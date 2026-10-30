@@ -19,6 +19,19 @@ const ICON_MAP = {
 export default function Interests() {
   const [interestsList, setInterestsList] = useState(initialInterestsData);
   const [loading, setLoading] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [displayLimit, setDisplayLimit] = useState(3);
+  const sectionRef = React.useRef(null);
+
+  useEffect(() => {
+    const updateLimit = () => {
+      const w = window.innerWidth;
+      setDisplayLimit(w < 768 ? 2 : w < 1024 ? 3 : Infinity);
+    };
+    updateLimit();
+    window.addEventListener('resize', updateLimit);
+    return () => window.removeEventListener('resize', updateLimit);
+  }, []);
 
   const openInViewer = (url, title) => {
     if (!url) return;
@@ -56,8 +69,9 @@ export default function Interests() {
             Loading interests & pursuits from Firebase...
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {interestsList.map((item) => {
+          <>
+          <div ref={sectionRef} className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {(expanded ? interestsList : interestsList.slice(0, displayLimit)).map((item) => {
               const Icon = (typeof item.icon === 'string' ? ICON_MAP[item.icon] : item.icon) || Sparkles;
               const tagsArr = Array.isArray(item.tags)
                 ? item.tags
@@ -122,8 +136,37 @@ export default function Interests() {
               </motion.div>
             );
           })}
-        </div>
-      )}
+          </div>
+          {interestsList.length > displayLimit && (
+            <div className="flex justify-center pt-4 pb-2">
+              <button
+                type="button"
+                onClick={() => {
+                  if (expanded && sectionRef.current) {
+                    sectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }
+                  setExpanded(!expanded);
+                }}
+                className="group relative inline-flex items-center gap-2.5 px-6 sm:px-8 py-3 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider text-cyan-300 hover:text-white transition-all cursor-pointer shadow-lg active:scale-95"
+                style={{
+                  background: 'rgba(5, 7, 17, 0.88)',
+                  backdropFilter: 'blur(20px)',
+                  WebkitBackdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(34, 211, 238, 0.35)',
+                  boxShadow: '0 8px 32px rgba(0,0,0,0.7), 0 0 20px rgba(34,211,238,0.25), inset 0 1px 0 rgba(255,255,255,0.1)',
+                }}
+              >
+                <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shrink-0" style={{ boxShadow: '0 0 10px #22d3ee, 0 0 20px #22d3ee' }} />
+                <span>
+                  {expanded
+                    ? '▲ Collapse Interests ↑'
+                    : `✦ View All Interests (${interestsList.length - displayLimit} More) ↓`}
+                </span>
+              </button>
+            </div>
+          )}
+          </>
+        )}
       </div>
     </PageWrapper>
   );

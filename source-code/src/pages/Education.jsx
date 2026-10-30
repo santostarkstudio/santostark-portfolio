@@ -7,6 +7,18 @@ import { subscribeToCollection, initialEducationData } from '../services/firebas
 export default function Education() {
   const [educationList, setEducationList] = useState(initialEducationData);
   const [loading, setLoading] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [displayLimit, setDisplayLimit] = useState(3);
+
+  useEffect(() => {
+    const updateLimit = () => {
+      const w = window.innerWidth;
+      setDisplayLimit(w < 768 ? 1 : w < 1024 ? 2 : 3);
+    };
+    updateLimit();
+    window.addEventListener('resize', updateLimit);
+    return () => window.removeEventListener('resize', updateLimit);
+  }, []);
 
   useEffect(() => {
     const unsub = subscribeToCollection('education', (data) => {
@@ -40,8 +52,13 @@ export default function Education() {
             Loading education milestones from Firebase...
           </div>
         ) : (
-          <div className="space-y-10">
-            {educationList.map((item, index) => {
+          {(() => {
+            const visibleList = expanded ? educationList : educationList.slice(0, displayLimit);
+            const remainingCount = educationList.length - displayLimit;
+            return (
+              <>
+                <div className="space-y-10">
+                  {visibleList.map((item, index) => {
               const isEven = index % 2 === 0;
               const highlightsArr = Array.isArray(item.highlights)
                 ? item.highlights
@@ -127,6 +144,42 @@ export default function Education() {
             );
           })}
         </div>
+
+        {educationList.length > displayLimit && (
+          <div className="flex justify-center pt-8 pb-4">
+            <button
+              type="button"
+              onClick={() => {
+                if (expanded) {
+                  const el = document.getElementById('education');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }
+                setExpanded(!expanded);
+              }}
+              className="group relative inline-flex items-center gap-2.5 px-6 sm:px-8 py-3 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider text-cyan-300 hover:text-white transition-all cursor-pointer shadow-lg active:scale-95"
+              style={{
+                background: 'rgba(5, 7, 17, 0.88)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+                border: '1px solid rgba(34, 211, 238, 0.35)',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.7), 0 0 20px rgba(34, 211, 238, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+              }}
+            >
+              <span
+                className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shrink-0"
+                style={{ boxShadow: '0 0 10px #22d3ee, 0 0 20px #22d3ee' }}
+              />
+              <span>
+                {expanded
+                  ? '▲ Collapse Journey ↑'
+                  : `✦ View Full Academic Journey (${remainingCount} More) ↓`}
+              </span>
+            </button>
+          </div>
+        )}
+      </>
+    );
+  })()}
       )}
       </div>
     </PageWrapper>

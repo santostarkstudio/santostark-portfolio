@@ -37,6 +37,18 @@ export default function Certificates() {
 
   const [activeCategory, setActiveCategory] = useState('All');
   const [sortBy, setSortBy] = useState('newest');
+  const [expanded, setExpanded] = useState(false);
+  const [displayLimit, setDisplayLimit] = useState(4);
+
+  useEffect(() => {
+    const updateLimit = () => {
+      const w = window.innerWidth;
+      setDisplayLimit(w < 768 ? 2 : w < 1024 ? 4 : 6);
+    };
+    updateLimit();
+    window.addEventListener('resize', updateLimit);
+    return () => window.removeEventListener('resize', updateLimit);
+  }, []);
 
   const categories = ['All', ...new Set(certsList.map((c) => c.category || c.issuer).filter(Boolean))];
 
@@ -93,8 +105,13 @@ export default function Certificates() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {filteredCerts.map((cert) => {
+        {(() => {
+          const visibleCerts = expanded ? filteredCerts : filteredCerts.slice(0, displayLimit);
+          const remainingCount = filteredCerts.length - displayLimit;
+          return (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {visibleCerts.map((cert) => {
             const isPdf = (v) => v && (v.startsWith('data:application/pdf') || v.includes('.pdf'));
             const docToOpen = cert.doc || cert.image;
             const hasPdf = isPdf(cert.doc) || isPdf(cert.image);
@@ -196,8 +213,44 @@ export default function Certificates() {
                 </div>
               </motion.div>
             );
-          })}
-        </div>
+                })}
+              </div>
+
+              {filteredCerts.length > displayLimit && (
+                <div className="flex justify-center pt-8 pb-4">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (expanded) {
+                        const el = document.getElementById('certificates');
+                        if (el) el.scrollIntoView({ behavior: 'smooth' });
+                      }
+                      setExpanded(!expanded);
+                    }}
+                    className="group relative inline-flex items-center gap-2.5 px-6 sm:px-8 py-3 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider text-cyan-300 hover:text-white transition-all cursor-pointer shadow-lg active:scale-95"
+                    style={{
+                      background: 'rgba(5, 7, 17, 0.88)',
+                      backdropFilter: 'blur(20px)',
+                      WebkitBackdropFilter: 'blur(20px)',
+                      border: '1px solid rgba(34, 211, 238, 0.35)',
+                      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.7), 0 0 20px rgba(34, 211, 238, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+                    }}
+                  >
+                    <span
+                      className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shrink-0"
+                      style={{ boxShadow: '0 0 10px #22d3ee, 0 0 20px #22d3ee' }}
+                    />
+                    <span>
+                      {expanded
+                        ? '▲ Collapse Certificates ↑'
+                        : `✦ View All Certificates (${remainingCount} More) ↓`}
+                    </span>
+                  </button>
+                </div>
+              )}
+            </>
+          );
+        })()}
 
         {/* Certificate Summary Modal */}
         {selectedCert && (

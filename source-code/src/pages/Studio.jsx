@@ -362,7 +362,7 @@ export default function Studio() {
       {/* 3. Hero Scroll Trigger (100vh spacer with Scroll Indicator Button) */}
       <section 
         id="studio-hero-wrapper"
-        className="relative w-full min-h-screen flex flex-col justify-end items-center pb-2 z-10 pointer-events-none"
+        className="relative w-full min-h-screen flex flex-col justify-end items-center pb-3 z-10 pointer-events-none"
       >
         {/* Simple, Small & Sleek Scroll Indicator Button */}
         <button
@@ -375,11 +375,11 @@ export default function Studio() {
               window.scrollTo({ top: window.innerHeight * 0.98, behavior: "smooth" });
             }
           }}
-          className="relative z-30 group flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/60 hover:bg-cyan-500/15 border border-cyan-400/30 hover:border-cyan-400/80 shadow-md shadow-cyan-500/10 hover:shadow-cyan-500/25 transition-all cursor-pointer backdrop-blur-md mb-1 pointer-events-auto"
+          className="relative z-30 group flex items-center gap-2 px-4 py-2 rounded-full bg-slate-950/70 hover:bg-cyan-500/15 border border-cyan-400/30 hover:border-cyan-400/80 shadow-lg shadow-cyan-500/10 hover:shadow-cyan-500/25 transition-all cursor-pointer backdrop-blur-md mb-2 pointer-events-auto"
           title="Scroll Down to Explore"
         >
           <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-          <span className="text-[10px] font-mono tracking-wider text-cyan-300 font-semibold uppercase">
+          <span className="text-[11px] font-mono tracking-wider text-cyan-300 font-semibold uppercase">
             Explore Wings
           </span>
           <span className="text-cyan-400 text-xs font-bold group-hover:translate-y-0.5 transition-transform">
@@ -389,7 +389,7 @@ export default function Studio() {
       </section>
 
       {/* 4. Main Page Content (Wings, Stats, Projects, Lab) */}
-      <main id="studio-wings-section" className="relative z-10 max-w-6xl mx-auto px-4 pt-12 pb-24 space-y-16">
+      <main id="studio-wings-section" className="relative z-10 max-w-6xl mx-auto px-4 pt-6 pb-24 space-y-16">
 
         {/* Quick Metrics Bar */}
         <motion.div

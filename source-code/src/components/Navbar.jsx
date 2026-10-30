@@ -91,20 +91,17 @@ export default function Navbar() {
   // Floating Black Pill Header for /studio
   if (location.pathname === '/studio') {
     return (
-      <header className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-3 pointer-events-none">
-        <div
-          className="pointer-events-auto w-full mx-4 sm:mx-8 md:mx-12"
-          style={{ maxWidth: '1100px' }}
-        >
+      <header className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-3 px-3 sm:px-4 pointer-events-none">
+        <div className="pointer-events-auto w-full max-w-[1100px]">
           <div
-            className="flex items-center justify-between px-4 sm:px-6 py-2.5 sm:py-3 relative"
+            className="flex items-center justify-between gap-2 px-3 sm:px-6 py-2 sm:py-2.5 relative overflow-hidden"
             style={{
-              background: 'rgba(5, 7, 17, 0.82)',
+              background: 'rgba(5, 7, 17, 0.88)',
               backdropFilter: 'blur(28px) saturate(1.3)',
               WebkitBackdropFilter: 'blur(28px) saturate(1.3)',
               borderRadius: '999px',
-              border: '1px solid rgba(255,255,255,0.09)',
-              boxShadow: '0 8px 32px rgba(0,0,0,0.70), 0 0 0 1px rgba(255,255,255,0.04), inset 0 1px 0 rgba(255,255,255,0.07)',
+              border: '1px solid rgba(255,255,255,0.12)',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.80), 0 0 0 1px rgba(255,255,255,0.05), inset 0 1px 0 rgba(255,255,255,0.08)',
             }}
           >
             {/* Back Button */}
@@ -114,7 +111,7 @@ export default function Navbar() {
                 e.preventDefault();
                 window.location.href = '/';
               }}
-              className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 text-cyan-300 hover:text-white font-bold text-xs sm:text-sm transition-all cursor-pointer shrink-0 z-10"
+              className="inline-flex items-center gap-1.5 px-2.5 sm:px-4 py-1.5 text-cyan-300 hover:text-white font-bold text-xs sm:text-sm transition-all cursor-pointer shrink-0 z-10"
               style={{
                 background: 'rgba(34,211,238,0.08)',
                 border: '1px solid rgba(34,211,238,0.25)',
@@ -122,34 +119,29 @@ export default function Navbar() {
               }}
             >
               <span className="text-sm font-bold">←</span>
-              <span>Portfolio</span>
+              <span className="hidden xs:inline sm:inline">Portfolio</span>
             </Link>
 
-            {/* Brand - Absolute Centre */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="flex items-center gap-2">
-                <span
-                  className="w-2 h-2 rounded-full bg-cyan-400"
-                  style={{ boxShadow: '0 0 8px rgba(34,211,238,0.9)', flexShrink: 0 }}
-                />
-                <span
-                  className="text-xs sm:text-sm font-extrabold uppercase"
-                  style={{
-                    background: 'linear-gradient(90deg, #22d3ee 0%, #a78bfa 50%, #fbbf24 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    letterSpacing: '0.18em',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {heroInfo.brandName || 'SANTO STARK STUDIO'}
-                </span>
-              </div>
+            {/* Brand - Flexible Center (no absolute overlay, pure white text) */}
+            <div className="flex-1 flex items-center justify-center gap-1.5 sm:gap-2 min-w-0 px-1 pointer-events-none">
+              <span
+                className="w-2 h-2 rounded-full bg-cyan-400 shrink-0"
+                style={{ boxShadow: '0 0 8px rgba(34,211,238,0.9)' }}
+              />
+              <span
+                className="text-[11px] sm:text-xs md:text-sm font-extrabold uppercase tracking-wider sm:tracking-widest truncate text-white"
+                style={{
+                  color: '#ffffff',
+                  textShadow: '0 0 16px rgba(255,255,255,0.4), 0 0 30px rgba(34,211,238,0.3)',
+                }}
+              >
+                {heroInfo.brandName || 'SANTO STARK STUDIO'}
+              </span>
             </div>
 
             {/* Status - Right */}
             <div
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-emerald-400 text-[10px] sm:text-[11px] font-mono font-bold shrink-0 z-10"
+              className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-emerald-400 text-[10px] sm:text-[11px] font-mono font-bold shrink-0 z-10"
               style={{
                 background: 'rgba(52,211,153,0.07)',
                 border: '1px solid rgba(52,211,153,0.22)',

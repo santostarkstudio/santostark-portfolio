@@ -17,6 +17,18 @@ export default function Skills() {
   }, []);
 
   const [sortBy, setSortBy] = useState('rating-desc');
+  const [expanded, setExpanded] = useState(false);
+  const [displayLimit, setDisplayLimit] = useState(6);
+
+  useEffect(() => {
+    const updateLimit = () => {
+      const w = window.innerWidth;
+      setDisplayLimit(w < 768 ? 3 : w < 1024 ? 4 : 6);
+    };
+    updateLimit();
+    window.addEventListener('resize', updateLimit);
+    return () => window.removeEventListener('resize', updateLimit);
+  }, []);
 
   const categories = ['All', 'Languages', 'Web', 'Hardware'];
 
@@ -85,17 +97,58 @@ export default function Skills() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {filteredSkills.map((skill) => (
-            <SkillCard
-              key={skill.id || skill.name}
-              name={skill.name}
-              category={skill.category}
-              description={skill.description}
-              rating={skill.rating}
-            />
-          ))}
-        </div>
+        {(() => {
+          const visibleSkills = expanded ? filteredSkills : filteredSkills.slice(0, displayLimit);
+          const remainingCount = filteredSkills.length - displayLimit;
+          return (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                {visibleSkills.map((skill) => (
+                  <SkillCard
+                    key={skill.id || skill.name}
+                    name={skill.name}
+                    category={skill.category}
+                    description={skill.description}
+                    rating={skill.rating}
+                  />
+                ))}
+              </div>
+
+              {filteredSkills.length > displayLimit && (
+                <div className="flex justify-center pt-8 pb-4">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (expanded) {
+                        const el = document.getElementById('skills');
+                        if (el) el.scrollIntoView({ behavior: 'smooth' });
+                      }
+                      setExpanded(!expanded);
+                    }}
+                    className="group relative inline-flex items-center gap-2.5 px-6 sm:px-8 py-3 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider text-cyan-300 hover:text-white transition-all cursor-pointer shadow-lg active:scale-95"
+                    style={{
+                      background: 'rgba(5, 7, 17, 0.88)',
+                      backdropFilter: 'blur(20px)',
+                      WebkitBackdropFilter: 'blur(20px)',
+                      border: '1px solid rgba(34, 211, 238, 0.35)',
+                      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.7), 0 0 20px rgba(34, 211, 238, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+                    }}
+                  >
+                    <span
+                      className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shrink-0"
+                      style={{ boxShadow: '0 0 10px #22d3ee, 0 0 20px #22d3ee' }}
+                    />
+                    <span>
+                      {expanded
+                        ? '▲ Collapse Skills ↑'
+                        : `✦ View All Skills (${remainingCount} More) ↓`}
+                    </span>
+                  </button>
+                </div>
+              )}
+            </>
+          );
+        })()}
       </div>
     </PageWrapper>
   );

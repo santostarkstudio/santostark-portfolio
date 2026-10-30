@@ -20,6 +20,18 @@ export default function Projects() {
   const [activeDetailsProject, setActiveDetailsProject] = useState(null);
   const [activeCategory, setActiveCategory] = useState('All');
   const [sortBy, setSortBy] = useState('newest');
+  const [expanded, setExpanded] = useState(false);
+  const [displayLimit, setDisplayLimit] = useState(3);
+
+  useEffect(() => {
+    const updateLimit = () => {
+      const w = window.innerWidth;
+      setDisplayLimit(w < 768 ? 2 : w < 1024 ? 2 : 3);
+    };
+    updateLimit();
+    window.addEventListener('resize', updateLimit);
+    return () => window.removeEventListener('resize', updateLimit);
+  }, []);
 
   const categories = ['All', ...new Set(projectsList.map((p) => p.category).filter(Boolean))];
 
@@ -76,8 +88,13 @@ export default function Projects() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {filteredProjects.map((project) => {
+        {(() => {
+          const visibleProjects = expanded ? filteredProjects : filteredProjects.slice(0, displayLimit);
+          const remainingCount = filteredProjects.length - displayLimit;
+          return (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                {visibleProjects.map((project) => {
             const specsArr = Array.isArray(project.specs) 
               ? project.specs 
               : typeof project.specs === 'string'
@@ -199,8 +216,44 @@ export default function Projects() {
                 </div>
               </motion.div>
             );
-          })}
-        </div>
+                })}
+              </div>
+
+              {filteredProjects.length > displayLimit && (
+                <div className="flex justify-center pt-8 pb-4">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (expanded) {
+                        const el = document.getElementById('projects');
+                        if (el) el.scrollIntoView({ behavior: 'smooth' });
+                      }
+                      setExpanded(!expanded);
+                    }}
+                    className="group relative inline-flex items-center gap-2.5 px-6 sm:px-8 py-3 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider text-cyan-300 hover:text-white transition-all cursor-pointer shadow-lg active:scale-95"
+                    style={{
+                      background: 'rgba(5, 7, 17, 0.88)',
+                      backdropFilter: 'blur(20px)',
+                      WebkitBackdropFilter: 'blur(20px)',
+                      border: '1px solid rgba(34, 211, 238, 0.35)',
+                      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.7), 0 0 20px rgba(34, 211, 238, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+                    }}
+                  >
+                    <span
+                      className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shrink-0"
+                      style={{ boxShadow: '0 0 10px #22d3ee, 0 0 20px #22d3ee' }}
+                    />
+                    <span>
+                      {expanded
+                        ? '▲ Collapse Projects ↑'
+                        : `✦ View All Projects (${remainingCount} More) ↓`}
+                    </span>
+                  </button>
+                </div>
+              )}
+            </>
+          );
+        })()}
 
         {/* Idea 4: Explore More in Studio Teaser Banner */}
         <div className="mt-12 relative glass-panel rounded-3xl border border-cyan-500/30 p-6 sm:p-8 md:p-10 overflow-hidden shadow-2xl">
