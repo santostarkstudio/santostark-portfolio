@@ -82,7 +82,8 @@
       @font-face { font-family: 'Fira Code'; font-display: swap; }
     </style>
       <link rel="preload" href="/assets/brand-logo.webp" as="image" type="image/webp">
-      <!-- Iron Man GLB: loaded on-demand only when /studio route is visited -->
+      <!-- ⚡ Prefetch of Iron Man 3D model for smooth Studio entry -->
+      <link rel="prefetch" href="/assets/models/iron_man.glb" as="fetch" crossorigin>
   </head>
   <body class="bg-[#090a0f] text-slate-100 font-sans antialiased selection:bg-cyan-500 selection:text-black overflow-x-hidden touch-manipulation">
     
