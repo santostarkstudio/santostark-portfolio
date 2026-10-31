@@ -257,14 +257,14 @@ div.min-h-screen.flex.flex-col.bg-dark-900,
 
 /* Vivid Purple-Pink Gradient Pill Button (Image 2) */
 .pixel-gradient-pill-btn {
-  background: linear-gradient(90deg, #6366f1 0%, #9333ea 50%, #ec4899 100%) !important;
-  color: #ffffff !important;
+  background: #06b6d4 !important;
+  color: #020617 !important;
   font-weight: 700 !important;
   border-radius: 9999px !important;
   padding: 1rem 2rem !important;
-  box-shadow: 0 10px 30px rgba(236, 72, 153, 0.4), 0 0 20px rgba(147, 51, 234, 0.3) !important;
+  box-shadow: 0 10px 25px rgba(6, 182, 212, 0.35), 0 0 20px rgba(6, 182, 212, 0.2) !important;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  border: none !important;
+  border: 1px solid rgba(34, 211, 238, 0.6) !important;
   cursor: pointer !important;
   display: flex !important;
   align-items: center !important;
@@ -272,12 +272,14 @@ div.min-h-screen.flex.flex-col.bg-dark-900,
 }
 
 .pixel-gradient-pill-btn:hover {
+  background: #0891b2 !important;
   transform: translateY(-2px) scale(1.02) !important;
-  box-shadow: 0 15px 40px rgba(236, 72, 153, 0.6), 0 0 30px rgba(147, 51, 234, 0.5) !important;
+  box-shadow: 0 15px 35px rgba(6, 182, 212, 0.5), 0 0 25px rgba(6, 182, 212, 0.35) !important;
 }
 
 .pixel-gradient-pill-btn:active {
   transform: translateY(1px) scale(0.98) !important;
+  box-shadow: 0 5px 15px rgba(6, 182, 212, 0.4) !important;
 }
 
 /* Bottom Horizon Specular Streak (Image 2) */

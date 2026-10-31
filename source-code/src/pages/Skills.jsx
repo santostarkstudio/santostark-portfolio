@@ -140,8 +140,8 @@ export default function Skills() {
                     />
                     <span>
                       {expanded
-                        ? '▲ Collapse Skills ↑'
-                        : `✦ View All Skills (${remainingCount} More) ↓`}
+                        ? '▲ Show Less ↑'
+                        : `✦ View More (${remainingCount} More) ↓`}
                     </span>
                   </button>
                 </div>

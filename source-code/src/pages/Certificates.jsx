@@ -242,8 +242,8 @@ export default function Certificates() {
                     />
                     <span>
                       {expanded
-                        ? '▲ Collapse Certificates ↑'
-                        : `✦ View All Certificates (${remainingCount} More) ↓`}
+                        ? '▲ Show Less ↑'
+                        : `✦ View More (${remainingCount} More) ↓`}
                     </span>
                   </button>
                 </div>

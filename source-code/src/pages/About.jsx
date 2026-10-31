@@ -117,7 +117,7 @@ export default function About() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-8">
             <div className="space-y-5">
-              <div className="flex items-center space-x-3">
+              <div className="flex items-start space-x-3">
                 <div className="p-3.5 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 shadow-lg shadow-cyan-500/10">
                   <Terminal className="w-7 h-7" />
                 </div>
@@ -140,7 +140,7 @@ export default function About() {
                     className="inline-flex items-center space-x-2 px-5 py-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-950 font-bold text-xs shadow-lg shadow-emerald-500/20 hover:scale-105 transition-all"
                   >
                     <FileText className="w-4 h-4" />
-                    <span>📄 View / Download Official Resume PDF ↗</span>
+                    <span>View Resume</span>
                   </a>
                 )}
               </div>

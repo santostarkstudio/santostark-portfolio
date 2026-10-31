@@ -80,8 +80,8 @@ export default function PageWrapper({ children, bgImage, title, subtitle, isHome
         exit="exit"
         className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-16 sm:pb-20 flex flex-col min-h-screen"
       >
-        {/* Page Header (Title + Subtitle) */}
-        {(title || subtitle) && (
+        {/* Page Header (Title with text-matching dynamic underline) */}
+        {title && (
           <motion.div 
             variants={{
               initial: { opacity: 0, y: 15 },
@@ -89,17 +89,12 @@ export default function PageWrapper({ children, bgImage, title, subtitle, isHome
             }}
             className="mb-8 sm:mb-10 text-center md:text-left"
           >
-            {title && (
+            <div className="inline-block">
               <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-cyan-400 bg-clip-text text-transparent">
                 {title}
               </h1>
-            )}
-            {subtitle && (
-              <p className="mt-2 text-xs sm:text-sm md:text-base text-slate-300 max-w-2xl font-light leading-relaxed">
-                {subtitle}
-              </p>
-            )}
-            <div className="mt-3 sm:mt-4 w-16 sm:w-20 h-1 bg-gradient-to-r from-cyan-500 to-violet-600 rounded-full mx-auto md:mx-0" />
+              <div className="mt-2 sm:mt-3 w-full h-1 bg-gradient-to-r from-cyan-500 to-violet-600 rounded-full" />
+            </div>
           </motion.div>
         )}
 

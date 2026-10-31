@@ -35,11 +35,8 @@ export default function Work() {
       bgImage="https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=2000&q=80"
     >
       <div className="space-y-6 max-w-5xl mx-auto">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center space-x-2 text-xs font-mono text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/30">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Synced from Firebase Store</span>
-          </div>
+        <div className="flex items-center justify-end mb-4">
+          
           <span className="text-xs text-slate-400 font-mono">
             Total Records: {workItems.length}
           </span>

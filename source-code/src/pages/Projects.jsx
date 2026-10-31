@@ -245,8 +245,8 @@ export default function Projects() {
                     />
                     <span>
                       {expanded
-                        ? '▲ Collapse Projects ↑'
-                        : `✦ View All Projects (${remainingCount} More) ↓`}
+                        ? '▲ Show Less ↑'
+                        : `✦ View More (${remainingCount} More) ↓`}
                     </span>
                   </button>
                 </div>
