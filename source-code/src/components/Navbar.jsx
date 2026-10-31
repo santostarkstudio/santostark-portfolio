@@ -198,7 +198,8 @@ export default function Navbar() {
 
           <Link 
             to="/" 
-            className="flex flex-col cursor-pointer"
+            className="flex items-center cursor-pointer transition-transform hover:scale-105 active:scale-95 shrink min-w-0"
+            aria-label="Santo Stark Studio Home"
             onClick={(e) => {
               e.preventDefault();
               setActiveSection('/');
@@ -209,12 +210,12 @@ export default function Navbar() {
               }
             }}
           >
-            <span className="text-lg font-bold bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent tracking-wide">
-              {heroInfo.brandName || "SANTO STARK STUDIO"}
-            </span>
-            <span className="block text-[10px] text-slate-400 tracking-widest uppercase font-mono">
-              {heroInfo.brandSubtitle || "cybersecurity and cse"}
-            </span>
+            <img 
+              src="/assets/santo-stark-studio-metallic-title.png" 
+              alt="Santo Stark Studio" 
+              className="h-5 sm:h-6 md:h-7 lg:h-8 w-auto max-w-[150px] sm:max-w-[200px] md:max-w-none object-contain select-none pointer-events-auto filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
+              loading="eager"
+            />
           </Link>
         </div>
 
