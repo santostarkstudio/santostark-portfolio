@@ -104,29 +104,48 @@
 
     <script>
       (function() {
-        // Bulletproof scroll-to-section
+        // Bulletproof scroll-to-section (Mobile & Desktop with extreme-distance leap glide)
         window.starkScrollTo = function(targetId) {
-          if (!targetId || targetId === 'home' || targetId === '/' || targetId === 'top') {
+          const cleanId = (targetId || '').replace(/^#|\//g, '') || 'home';
+          if (!cleanId || cleanId === 'home' || cleanId === 'top') {
             window.scrollTo({ top: 0, behavior: 'smooth' });
             if (window.history && window.history.replaceState) {
               window.history.replaceState(null, '', '/');
             }
             return;
           }
-          const el = document.getElementById(targetId);
+          const el = document.getElementById(cleanId);
           if (!el) {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (window.location.pathname !== '/') {
+              window.location.href = '/#' + cleanId;
+            } else {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
             return;
           }
           const navOffset = 75;
-          const scrollNow = function() {
-            const rect = el.getBoundingClientRect();
-            const topY = rect.top + window.pageYOffset - navOffset;
-            window.scrollTo({ top: Math.max(0, topY), behavior: 'smooth' });
-          };
-          scrollNow();
-          setTimeout(scrollNow, 150);
-          setTimeout(scrollNow, 400);
+          const startY = window.pageYOffset || document.documentElement.scrollTop || 0;
+          const rect = el.getBoundingClientRect();
+          const targetY = Math.max(0, rect.top + startY - navOffset);
+          const distance = Math.abs(targetY - startY);
+
+          // If extreme distance on mobile (>2000px): leap near target, then smooth-glide final 400px.
+          // This eliminates mobile Chrome's 10,000px momentum timeout & mid-scroll halting!
+          if (distance > 2000) {
+            const leapY = targetY > startY ? targetY - 400 : targetY + 400;
+            window.scrollTo(0, leapY);
+            requestAnimationFrame(function() {
+              const finalRect = el.getBoundingClientRect();
+              const finalY = Math.max(0, finalRect.top + (window.pageYOffset || document.documentElement.scrollTop || 0) - navOffset);
+              window.scrollTo({ top: finalY, behavior: 'smooth' });
+            });
+          } else {
+            window.scrollTo({ top: targetY, behavior: 'smooth' });
+          }
+
+          if (window.history && window.history.replaceState) {
+            window.history.replaceState(null, '', '#' + cleanId);
+          }
         };
       })();
     </script>

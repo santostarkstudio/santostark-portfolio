@@ -41,20 +41,54 @@
       <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, #090a0f 0%, transparent 15%, transparent 85%, #090a0f 100%);"></div>
     </div>
 
-    <div id="root" style="position: relative; z-index: 10; background: transparent;"></div>
+    <div id="root" style="position: relative; z-index: 10; background: transparent;"></div>
+
 
     <script>
       (function() {
-        // Bulletproof scroll-to-section with multi-interval layout stabilization
+        // Bulletproof scroll-to-section with multi-inte// Bulletproof scroll-to-section (Mobile & Desktop with extreme-distance leap glide)
         window.starkScrollTo = function(targetId) {
-          const el = document.getElementById(targetId);
-          if (!el) return;
+          const cleanId = (targetId || '').replace(/^#|\//g, '') || 'home';
+          if (!cleanId || cleanId === 'home' || cleanId === 'top') {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (window.history && window.history.replaceState) {
+              window.history.replaceState(null, '', '/');
+            }
+            return;
+          }
+          const el = document.getElementById(cleanId);
+          if (!el) {
+            if (window.location.pathname !== '/') {
+              window.location.href = '/#' + cleanId;
+            } else {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+            return;
+          }
           const navOffset = 75;
-          const scrollNow = function() {
-            const rect = el.getBoundingClientRect();
-            const topY = rect.top + window.pageYOffset - navOffset;
-            window.scrollTo({ top: Math.max(0, topY), behavior: 'smooth' });
-          };
+          const startY = window.pageYOffset || document.documentElement.scrollTop || 0;
+          const rect = el.getBoundingClientRect();
+          const targetY = Math.max(0, rect.top + startY - navOffset);
+          const distance = Math.abs(targetY - startY);
+
+          // If extreme distance on mobile (>2000px): leap near target, then smooth-glide final 400px.
+          // This eliminates mobile Chrome's 10,000px momentum timeout & mid-scroll halting!
+          if (distance > 2000) {
+            const leapY = targetY > startY ? targetY - 400 : targetY + 400;
+            window.scrollTo(0, leapY);
+            requestAnimationFrame(function() {
+              const finalRect = el.getBoundingClientRect();
+              const finalY = Math.max(0, finalRect.top + (window.pageYOffset || document.documentElement.scrollTop || 0) - navOffset);
+              window.scrollTo({ top: finalY, behavior: 'smooth' });
+            });
+          } else {
+            window.scrollTo({ top: targetY, behavior: 'smooth' });
+          }
+
+          if (window.history && window.history.replaceState) {
+            window.history.replaceState(null, '', '#' + cleanId);
+          }
+        };
           scrollNow();
           setTimeout(scrollNow, 250);
           setTimeout(scrollNow, 600);
