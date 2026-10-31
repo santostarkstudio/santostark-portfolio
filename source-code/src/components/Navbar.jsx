@@ -165,21 +165,16 @@ export default function Navbar() {
         <div className="flex items-center space-x-3 group">
           <div 
             onClick={(e) => {
-              if (heroInfo.brandLogo) {
-                e.preventDefault();
-                e.stopPropagation();
-                if (heroInfo.brandLogo.startsWith('data:')) {
-                  const win = window.open('', '_blank');
-                  if (win) {
-                    win.document.write(`<html style="background:#090a0f;"><head><title>Brand Logo Preview</title></head><body style="margin:0;background:#090a0f;display:flex;align-items:center;justify-content:center;height:100vh;"><img src="${heroInfo.brandLogo}" style="max-width:95vw;max-height:95vh;object-fit:contain;box-shadow:0 0 40px rgba(34,211,238,0.3);border-radius:16px;" /></body></html>`);
-                  }
-                } else {
-                  window.open(heroInfo.brandLogo, '_blank');
-                }
+              e.preventDefault();
+              setActiveSection('/');
+              if (window.starkScrollTo) {
+                window.starkScrollTo('home');
+              } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
               }
             }}
             className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-violet-600 p-[2px] shadow-lg shadow-cyan-500/30 group-hover:scale-105 transition-transform cursor-pointer"
-            title={heroInfo.brandLogo ? "Click to view full high quality logo in new tab ↗" : "Santo Stark Studio Logo"}
+            title="Santo Stark Studio - Back to Top"
           >
             <div className="w-full h-full bg-dark-900 rounded-[10px] flex items-center justify-center overflow-hidden">
               {heroInfo.brandLogo ? (
@@ -213,7 +208,7 @@ export default function Navbar() {
             <img 
               src="/assets/santo-stark-studio-metallic-title.png" 
               alt="Santo Stark Studio" 
-              className="h-5 sm:h-6 md:h-7 lg:h-8 w-auto max-w-[150px] sm:max-w-[200px] md:max-w-none object-contain select-none pointer-events-auto filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
+              className="h-6 sm:h-7 md:h-8 lg:h-9 w-auto max-w-[180px] sm:max-w-[230px] md:max-w-none object-contain select-none pointer-events-auto filter drop-shadow-[0_2px_10px_rgba(0,0,0,0.85)]"
               loading="eager"
             />
           </Link>
