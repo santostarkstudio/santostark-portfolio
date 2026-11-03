@@ -7326,23 +7326,21 @@ Please approve my request via ${o.channel}!`,b=`https://wa.me/918431069633?text=
     })();
   }, []);
 
-  const [t, i] = q.useState({ name: "", email: "", phone: "", subject: "", message: "", website: "" });
+  const [t, i] = q.useState({ name: "", email: "", subject: "", message: "", website: "" });
+  const [cat, setCat] = q.useState("💼 Job / Internship");
   const [r, s] = q.useState(!1);
   const [o, a] = q.useState(!1);
   const [l, c] = q.useState("");
-  const [copied, setCopied] = q.useState(!1);
+  const [refId, setRefId] = q.useState("");
 
   const h = w => {
     i({ ...t, [w.target.name]: w.target.value });
     l && c("");
   };
 
-  const handleCopyEmail = () => {
-    const emailToCopy = n.email || "santoshdabadiaiyyanna@gmail.com";
-    navigator.clipboard.writeText(emailToCopy).then(() => {
-      setCopied(!0);
-      setTimeout(() => setCopied(!1), 2500);
-    });
+  const resetForm = () => {
+    i({ name: "", email: "", subject: "", message: "", website: "" });
+    a(!1);
   };
 
   const f = async w => {
@@ -7354,13 +7352,16 @@ Please approve my request via ${o.channel}!`,b=`https://wa.me/918431069633?text=
     }
     s(!0);
     c("");
+    const generatedRef = "STARK-" + Math.floor(1000 + Math.random() * 9000);
+    setRefId(generatedRef);
     try {
       await hl("messages", {
         name: t.name,
         email: t.email,
-        phone: t.phone || "",
-        subject: t.subject || "Hiring Inquiry / Portfolio Contact",
+        category: cat,
+        subject: `[${cat}] ${t.subject || "Portfolio Contact"}`,
         message: t.message,
+        refId: generatedRef,
         timestamp: new Date().toISOString()
       });
       const v = n.email || "santoshdabadiaiyyanna@gmail.com";
@@ -7368,12 +7369,13 @@ Please approve my request via ${o.channel}!`,b=`https://wa.me/918431069633?text=
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
-          _subject: `New Message from ${t.name} (${t.subject || "Portfolio Inquiry"})`,
+          _subject: `New Transmission [${cat}] from ${t.name}`,
+          Category: cat,
           Name: t.name,
           Email: t.email,
-          Phone: t.phone || "Not Provided",
-          Subject: t.subject || "Hiring Inquiry / Portfolio Contact",
+          Subject: t.subject || "Hiring / Portfolio Contact",
           Message: t.message,
+          Ref_ID: generatedRef,
           _captcha: "false"
         })
       });
@@ -7386,71 +7388,92 @@ Please approve my request via ${o.channel}!`,b=`https://wa.me/918431069633?text=
     }
   };
 
-
-
   return m.jsx(oo, {
     title: "Contact & Communications",
-    subtitle: "Direct message channel, availability status, and security-verified contact terminal.",
+    subtitle: "Direct message terminal, dispatch hub, and security-verified transmission channel.",
     children: m.jsxs("div", {
       className: "relative max-w-6xl mx-auto px-4 sm:px-6 py-6 space-y-10",
       children: [
-        /* Main Dual Floating Glass Cards Container (Exact Image 2 Layout) */
+        /* Main Dual Floating Glass Cards Container */
         m.jsxs("div", {
           className: "grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 items-start",
           children: [
-            /* LEFT COLUMN: Section Label + Glossy Card */
+            /* LEFT COLUMN: Section Label + Stark Dispatch Hub Card */
             m.jsxs("div", {
               className: "space-y-3",
               children: [
                 m.jsx("p", {
                   className: "text-center text-sm font-medium text-slate-300/90 tracking-wide font-sans",
-                  children: "Contact Info Section"
+                  children: "Stark Studio Dispatch Hub"
                 }),
                 m.jsxs(Rt.div, {
                   initial: { opacity: 0, y: 20 },
                   animate: { opacity: 1, y: 0 },
                   transition: { duration: 0.6 },
-                  className: "pixel-glass-card p-5 sm:p-8 md:p-10 flex flex-col justify-between min-h-[460px] space-y-8",
+                  className: "pixel-glass-card p-5 sm:p-8 md:p-10 flex flex-col justify-between min-h-[460px] space-y-6 sm:space-y-8",
                   children: [
                     m.jsxs("div", {
                       className: "space-y-5 relative z-10",
                       children: [
+                        /* Live Status Pill */
+                        m.jsxs("div", {
+                          className: "inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-medium",
+                          children: [
+                            m.jsx("span", { className: "w-2 h-2 rounded-full bg-emerald-400 animate-pulse" }),
+                            m.jsx("span", { children: "Dispatch Active • Zero-Spam Protected" })
+                          ]
+                        }),
                         m.jsx("h2", {
-                          className: "text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight",
-                          children: "Get in Touch"
+                          className: "text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight",
+                          children: "Stark Dispatch Hub"
                         }),
                         m.jsx("p", {
-                          className: "text-sm sm:text-base text-slate-300 font-light leading-relaxed",
-                          children: "We're here to discuss your project and bring your ideas to life with premium design & development."
+                          className: "text-xs sm:text-sm text-slate-300 font-light leading-relaxed",
+                          children: "Direct communication channel for opportunities, technical collaborations, and inquiries. All transmissions route securely to Santo's queue."
                         }),
                         m.jsxs("div", {
-                          className: "space-y-4 pt-4",
+                          className: "space-y-3.5 pt-2",
                           children: [
-                            /* Email Row */
+                            /* Status / Role Focus Row */
                             m.jsxs("div", {
-                              className: "flex items-center justify-between group",
+                              className: "flex items-start space-x-3.5 text-slate-200 text-xs sm:text-sm font-medium",
                               children: [
+                                m.jsx("svg", { className: "w-5 h-5 text-cyan-400 shrink-0 mt-0.5", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: m.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: "1.8", d: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" }) }),
                                 m.jsxs("div", {
-                                  className: "flex items-center space-x-3.5 text-slate-200 text-sm font-medium min-w-0",
+                                  className: "min-w-0 flex-1",
                                   children: [
-                                    m.jsx("svg", { className: "w-5 h-5 text-cyan-400 shrink-0", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: m.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: "1.8", d: "M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" }) }),
-                                    m.jsx("span", { className: "truncate hover:text-cyan-300 transition-colors cursor-pointer", onClick: handleCopyEmail, children: n.email || "santoshdabadiaiyyanna@gmail.com" })
+                                    m.jsx("span", { className: "text-[10px] sm:text-xs font-mono text-cyan-400 block uppercase tracking-wider", children: "Availability & Focus" }),
+                                    m.jsx("span", { className: "text-slate-100", children: n.badge || "Seeking Cybersecurity Internships & Cloud Roles" })
                                   ]
-                                }),
-                                m.jsx("button", {
-                                  type: "button",
-                                  onClick: handleCopyEmail,
-                                  className: "ml-2 px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-cyan-300 text-xs font-mono transition-all shrink-0 cursor-pointer",
-                                  children: copied ? "✓ Copied" : "Copy"
                                 })
                               ]
                             }),
-                            /* Location Row */
+                            /* Location & Timezone Row */
                             m.jsxs("div", {
-                              className: "flex items-center space-x-3.5 text-slate-200 text-sm font-medium",
+                              className: "flex items-start space-x-3.5 text-slate-200 text-xs sm:text-sm font-medium",
                               children: [
-                                m.jsx("svg", { className: "w-5 h-5 text-violet-400 shrink-0", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: m.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: "1.8", d: "M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" }) }),
-                                m.jsx("span", { children: "Bengaluru, Karnataka, India" })
+                                m.jsx("svg", { className: "w-5 h-5 text-violet-400 shrink-0 mt-0.5", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: m.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: "1.8", d: "M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z" }) }),
+                                m.jsxs("div", {
+                                  className: "min-w-0 flex-1",
+                                  children: [
+                                    m.jsx("span", { className: "text-[10px] sm:text-xs font-mono text-violet-400 block uppercase tracking-wider", children: "Location & Working Hours" }),
+                                    m.jsx("span", { className: "text-slate-100", children: "Bengaluru, India • IST (UTC+5:30)" })
+                                  ]
+                                })
+                              ]
+                            }),
+                            /* Response Time SLA Row */
+                            m.jsxs("div", {
+                              className: "flex items-start space-x-3.5 text-slate-200 text-xs sm:text-sm font-medium",
+                              children: [
+                                m.jsx("svg", { className: "w-5 h-5 text-amber-400 shrink-0 mt-0.5", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: m.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: "1.8", d: "M13 10V3L4 14h7v7l9-11h-7z" }) }),
+                                m.jsxs("div", {
+                                  className: "min-w-0 flex-1",
+                                  children: [
+                                    m.jsx("span", { className: "text-[10px] sm:text-xs font-mono text-amber-400 block uppercase tracking-wider", children: "Response Turnaround" }),
+                                    m.jsx("span", { className: "text-slate-100", children: "Typical response within 24 hours" })
+                                  ]
+                                })
                               ]
                             })
                           ]
@@ -7480,33 +7503,62 @@ Please approve my request via ${o.channel}!`,b=`https://wa.me/918431069633?text=
               children: [
                 m.jsx("p", {
                   className: "text-center text-sm font-medium text-slate-300/90 tracking-wide font-sans",
-                  children: "Contact Form"
+                  children: "Direct Message Terminal"
                 }),
                 m.jsxs(Rt.div, {
                   initial: { opacity: 0, y: 20 },
                   animate: { opacity: 1, y: 0 },
                   transition: { duration: 0.6, delay: 0.1 },
-                  className: "pixel-glass-card p-8 sm:p-10 min-h-[460px] flex flex-col justify-between space-y-6",
+                  className: "pixel-glass-card p-5 sm:p-8 md:p-10 min-h-[460px] flex flex-col justify-between space-y-6",
                   children: [
-                    /* Success Alert */
-                    o && m.jsxs("div", {
-                      className: "p-4 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-200 text-sm flex items-center space-x-3",
+                    o ? m.jsxs("div", {
+                      className: "my-auto py-8 text-center space-y-4",
                       children: [
-                        m.jsx("span", { className: "text-lg", children: "✅" }),
+                        m.jsx("div", {
+                          className: "w-14 h-14 mx-auto rounded-2xl bg-emerald-500/20 border border-emerald-400/50 flex items-center justify-center text-emerald-400 text-2xl shadow-[0_0_20px_rgba(52,211,153,0.3)]",
+                          children: "✓"
+                        }),
                         m.jsxs("div", {
+                          className: "space-y-1.5",
                           children: [
-                            m.jsx("p", { className: "font-bold", children: "Message Sent Successfully!" }),
-                            m.jsx("p", { className: "text-xs text-emerald-300/80", children: "Thank you for reaching out. Santo will reply promptly." })
+                            m.jsx("h3", { className: "text-xl sm:text-2xl font-extrabold text-white", children: "Transmission Dispatched" }),
+                            m.jsxs("p", { className: "text-xs font-mono text-emerald-300/90", children: ["Reference: ", refId || "STARK-DISPATCH"] }),
+                            m.jsx("p", { className: "text-xs sm:text-sm text-slate-300 max-w-sm mx-auto leading-relaxed pt-1", children: "Your message has been securely routed to Santo's queue. Expect a response within 24 hours." })
                           ]
+                        }),
+                        m.jsx("button", {
+                          type: "button",
+                          onClick: resetForm,
+                          className: "mt-4 px-5 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-xs text-cyan-300 font-semibold transition-all cursor-pointer",
+                          children: "Send Another Message"
                         })
                       ]
-                    }),
-
-                    /* Form Fields (Matching Image 2 inputs) */
-                    m.jsxs("form", {
+                    }) : m.jsxs("form", {
                       onSubmit: f,
                       className: "space-y-4 relative z-10",
                       children: [
+                        /* Category Chips */
+                        m.jsxs("div", {
+                          className: "space-y-1.5",
+                          children: [
+                            m.jsx("label", { className: "text-[11px] font-mono uppercase tracking-wider text-slate-400 block", children: "Select Inquiry Category" }),
+                            m.jsx("div", {
+                              className: "flex flex-wrap gap-1.5 sm:gap-2",
+                              children: ["💼 Job / Internship", "🤝 Project / Contract", "🛡️ Security / GRC", "💬 General"].map(item => m.jsx("button", {
+                                type: "button",
+                                key: item,
+                                onClick: () => setCat(item),
+                                className: `px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-medium transition-all cursor-pointer border ${
+                                  cat === item
+                                    ? "bg-cyan-500/20 border-cyan-400 text-cyan-300 shadow-[0_0_12px_rgba(34,211,238,0.35)]"
+                                    : "bg-white/5 border-white/10 text-slate-400 hover:text-slate-200 hover:border-white/20"
+                                }`,
+                                children: item
+                              }))
+                            })
+                          ]
+                        }),
+
                         /* Honeypot hidden input */
                         m.jsx("input", {
                           type: "text",
@@ -7536,37 +7588,47 @@ Please approve my request via ${o.channel}!`,b=`https://wa.me/918431069633?text=
                           required: !0,
                           value: t.email,
                           onChange: h,
-                          placeholder: "Email Address*",
+                          placeholder: "Your Email Address*",
                           className: "pixel-input-pill"
                         }),
 
-                        /* Website / Role Input (Image 2) */
+                        /* Subject / Role Input */
                         m.jsx("input", {
                           type: "text",
                           name: "subject",
                           value: t.subject,
                           onChange: h,
-                          placeholder: "Your Website / Subject (Optional)",
+                          placeholder: "Organization / Subject (Optional)",
                           className: "pixel-input-pill"
                         }),
 
-                        /* Message Textarea (Image 2) */
-                        m.jsx("textarea", {
-                          name: "message",
-                          required: !0,
-                          rows: "3",
-                          value: t.message,
-                          onChange: h,
-                          placeholder: "Write your message...",
-                          className: "pixel-input-pill resize-none"
+                        /* Message Textarea */
+                        m.jsxs("div", {
+                          className: "relative",
+                          children: [
+                            m.jsx("textarea", {
+                              name: "message",
+                              required: !0,
+                              rows: "3",
+                              maxLength: 1000,
+                              value: t.message,
+                              onChange: h,
+                              placeholder: "Write your message or inquiry...",
+                              className: "pixel-input-pill resize-none"
+                            }),
+                            m.jsxs("span", {
+                              className: "absolute right-3 bottom-2 text-[10px] font-mono text-slate-500 pointer-events-none",
+                              children: [t.message.length, "/1000"]
+                            })
+                          ]
                         }),
 
-                        /* Vivid Pink/Purple Gradient Pill Button (Image 2) */
+                        /* Vivid Pink/Purple Gradient Pill Button */
                         m.jsx("button", {
                           type: "submit",
                           disabled: r,
                           className: "pixel-gradient-pill-btn w-full mt-2",
-                          children: r ? m.jsx("span", { children: "Sending Message..." }) : m.jsx("span", { children: "Send Message" })
+                          children: r ? m.jsx("span", { children: "Transmitting Message..." }) : m.jsx("span", { children: "Dispatch Message ✦" })
                         })
                       ]
                     })
@@ -7577,7 +7639,7 @@ Please approve my request via ${o.channel}!`,b=`https://wa.me/918431069633?text=
           ]
         }),
 
-        /* Bottom Horizon Specular Streak (Image 2) */
+        /* Bottom Horizon Specular Streak */
         m.jsx("div", {
           className: "pixel-horizon-streak mt-16 mb-4"
         })
