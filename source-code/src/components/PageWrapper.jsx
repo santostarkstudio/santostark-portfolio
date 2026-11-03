@@ -90,10 +90,10 @@ export default function PageWrapper({ children, bgImage, title, subtitle, isHome
             className="mb-8 sm:mb-10 text-center md:text-left"
           >
             <div className="inline-block">
-              <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-cyan-400 bg-clip-text text-transparent">
+              <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white">
                 {title}
               </h1>
-              <div className="mt-2 sm:mt-3 w-full h-1 bg-gradient-to-r from-cyan-500 to-violet-600 rounded-full" />
+              <div className="mt-2 sm:mt-3 w-full h-1 bg-gradient-to-r from-white via-slate-400/30 to-transparent rounded-full" />
             </div>
           </motion.div>
         )}
