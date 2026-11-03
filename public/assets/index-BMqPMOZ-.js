@@ -7377,8 +7377,6 @@ Please approve my request via ${o.channel}!`,b=`https://wa.me/918431069633?text=
           _captcha: "false"
         })
       });
-      const b = `https://wa.me/91${(n.phone || "8431069633").replace(/\D/g, "")}?text=${encodeURIComponent(`Hi Santo! My name is ${t.name} (Phone: ${t.phone || "N/A"}, Email: ${t.email}).\n\nSubject: ${t.subject || "Hiring Inquiry"}\n\nMessage: ${t.message}`)}`;
-      window.open(b, "_blank");
       a(!0);
     } catch (v) {
       console.error("Message send error:", v);
@@ -7388,12 +7386,11 @@ Please approve my request via ${o.channel}!`,b=`https://wa.me/918431069633?text=
     }
   };
 
-  const p = (n.phone || "8431069633").replace(/\D/g, "");
-  const g = `https://wa.me/91${p}?text=${encodeURIComponent("Hi Santo, I saw your portfolio and I would like to hire you!")}`;
+
 
   return m.jsx(oo, {
     title: "Contact & Communications",
-    subtitle: "Direct message channel, WhatsApp connect, availability status, and security-verified contact terminal.",
+    subtitle: "Direct message channel, availability status, and security-verified contact terminal.",
     children: m.jsxs("div", {
       className: "relative max-w-6xl mx-auto px-4 sm:px-6 py-6 space-y-10",
       children: [
@@ -7454,23 +7451,6 @@ Please approve my request via ${o.channel}!`,b=`https://wa.me/918431069633?text=
                               children: [
                                 m.jsx("svg", { className: "w-5 h-5 text-violet-400 shrink-0", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: m.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: "1.8", d: "M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" }) }),
                                 m.jsx("span", { children: "Bengaluru, Karnataka, India" })
-                              ]
-                            }),
-                            /* Phone / WhatsApp Row */
-                            m.jsxs("a", {
-                              href: g,
-                              target: "_blank",
-                              rel: "noreferrer",
-                              className: "flex items-center space-x-3.5 text-slate-200 hover:text-emerald-300 text-sm font-medium transition-colors group cursor-pointer",
-                              children: [
-                                m.jsx("svg", { className: "w-5 h-5 text-emerald-400 shrink-0", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: m.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: "1.8", d: "M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" }) }),
-                                m.jsxs("span", {
-                                  className: "flex items-center space-x-2",
-                                  children: [
-                                    m.jsx("span", { children: "+91 84310 69633" }),
-                                    m.jsx("span", { className: "text-xs text-emerald-400 font-mono group-hover:translate-x-1 transition-transform", children: "(WhatsApp →)" })
-                                  ]
-                                })
                               ]
                             })
                           ]

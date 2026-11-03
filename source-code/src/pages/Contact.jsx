@@ -72,9 +72,7 @@ export default function Contact() {
         })
       });
 
-      const cleanPhoneNum = (heroInfo.phone || '8431069633').replace(/\D/g, '');
-      const autoWhatsappUrl = `https://wa.me/91${cleanPhoneNum}?text=${encodeURIComponent(`Hi Santo! My name is ${formData.name} (Phone: ${formData.phone || 'N/A'}, Email: ${formData.email}).\n\nSubject: ${formData.subject || 'Hiring Inquiry'}\n\nMessage: ${formData.message}`)}`;
-      window.open(autoWhatsappUrl, '_blank');
+
 
       setSubmitted(true);
     } catch (err) {
@@ -85,15 +83,13 @@ export default function Contact() {
     }
   };
 
-  const cleanPhone = (heroInfo.phone || '8431069633').replace(/\D/g, '');
-  const directWhatsappUrl = `https://wa.me/91${cleanPhone}?text=${encodeURIComponent("Hi Santo, I saw your portfolio and I would like to hire you!")}`;
-  const submittedWhatsappUrl = `https://wa.me/91${cleanPhone}?text=${encodeURIComponent(`Hi Santo! My name is ${formData.name} (Phone: ${formData.phone || 'N/A'}).\n\nSubject: ${formData.subject || 'Hiring Inquiry'}\n\nMessage: ${formData.message}`)}`;
+
   const mailtoUrl = `mailto:${heroInfo.email || 'santoshdabadiaiyyanna@gmail.com'}?subject=${encodeURIComponent("Hiring Inquiry / Job Opportunity")}&body=${encodeURIComponent("Hi Santo,\n\nI would like to hire you for a project / role!")}`;
 
   return (
     <PageWrapper
       title="Contact & Communications"
-      subtitle="Direct message channel, WhatsApp connect, availability status, and security-verified contact form."
+      subtitle="Direct message channel, availability status, and security-verified contact form."
       bgImage="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=2000&q=80"
     >
       <div className="max-w-6xl mx-auto space-y-8">
@@ -111,21 +107,11 @@ export default function Contact() {
               <div>
                 <h3 className="text-2xl font-extrabold text-slate-100">Let's Connect</h3>
                 <p className="text-xs text-slate-300 mt-1 font-light leading-relaxed">
-                  Have a job opening or freelance project? Send a message below or connect via WhatsApp &amp; Email instantly.
+                  Have a job opening or freelance project? Send a message below or connect via Email instantly.
                 </p>
               </div>
 
               <div className="space-y-3 pt-2">
-                <a
-                  href={directWhatsappUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 font-bold text-xs text-slate-950 flex items-center justify-center space-x-2 shadow-lg shadow-emerald-500/20 hover:scale-105 transition-all"
-                >
-                  <MessageSquare className="w-4 h-4" />
-                  <span>💬 Direct WhatsApp Chat with Santo</span>
-                </a>
-
                 <a
                   href={mailtoUrl}
                   className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 font-bold text-xs text-slate-950 flex items-center justify-center space-x-2 shadow-lg shadow-cyan-500/20 hover:scale-105 transition-all"
@@ -144,18 +130,6 @@ export default function Contact() {
                     <span className="text-[10px] font-mono text-slate-400 block uppercase">Email</span>
                     <a href={mailtoUrl} className="font-semibold text-slate-100 hover:text-cyan-400 transition-colors">
                       {heroInfo.email || "santoshdabadiaiyyanna@gmail.com"}
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex items-center space-x-3 text-xs text-slate-300">
-                  <div className="p-3 rounded-2xl bg-violet-500/10 border border-violet-500/30 text-violet-400">
-                    <Phone className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <span className="text-[10px] font-mono text-slate-400 block uppercase">Phone / WhatsApp</span>
-                    <a href={directWhatsappUrl} target="_blank" rel="noreferrer" className="font-semibold text-slate-100 hover:text-cyan-400 transition-colors">
-                      +91 {heroInfo.phone || "8431069633"}
                     </a>
                   </div>
                 </div>
@@ -196,7 +170,7 @@ export default function Contact() {
 
               <div className="flex items-center space-x-2 mb-6">
                 <Shield className="w-5 h-5 text-cyan-400" />
-                <h3 className="text-xl font-bold text-slate-100">Send Direct Message &amp; WhatsApp Request</h3>
+                <h3 className="text-xl font-bold text-slate-100">Send Direct Message</h3>
               </div>
 
               {submitted ? (
