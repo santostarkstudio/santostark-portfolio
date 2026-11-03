@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, Github, Linkedin, Shield, CheckCircle2, Clock, Globe } from 'lucide-react';
+import { MapPin, Github, Linkedin, Shield, CheckCircle2, Clock } from 'lucide-react';
 import PageWrapper from '../components/PageWrapper';
 import { addCollectionData, subscribeToDoc, initialHeroInfo } from '../services/firebase';
 
@@ -17,6 +17,7 @@ export default function Contact() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
     subject: '',
     message: '',
     website: ''
@@ -41,7 +42,7 @@ export default function Contact() {
   };
 
   const resetForm = () => {
-    setFormData({ name: '', email: '', subject: '', message: '', website: '' });
+    setFormData({ name: '', email: '', phone: '', subject: '', message: '', website: '' });
     setSubmitted(false);
   };
 
@@ -63,6 +64,7 @@ export default function Contact() {
       await addCollectionData('messages', {
         name: formData.name,
         email: formData.email,
+        phone: formData.phone || '',
         category: category,
         subject: `[${category}] ${formData.subject || 'Portfolio Contact'}`,
         message: formData.message,
@@ -82,6 +84,7 @@ export default function Contact() {
           Category: category,
           Name: formData.name,
           Email: formData.email,
+          Phone: formData.phone || 'Not Provided',
           Subject: formData.subject || 'Hiring / Portfolio Contact',
           Message: formData.message,
           Ref_ID: generatedRef,
@@ -101,13 +104,13 @@ export default function Contact() {
   return (
     <PageWrapper
       title="Contact & Communications"
-      subtitle="Direct message terminal, dispatch hub, and security-verified transmission channel."
+      subtitle="Direct message terminal, Santo Stark Studio Hub, and security-verified transmission channel."
       bgImage="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=2000&q=80"
     >
       <div className="max-w-6xl mx-auto space-y-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
-          {/* LEFT COLUMN: Stark Studio Dispatch Hub */}
+          {/* LEFT COLUMN: Santo Stark Studio Hub */}
           <motion.div
             variants={{
               initial: { opacity: 0, x: -30 },
@@ -119,14 +122,14 @@ export default function Contact() {
               <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
 
               <div className="space-y-4">
-                {/* Live Status Pill */}
+                {/* Live Status Pill: Available */}
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-medium">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <span>Dispatch Active • Zero-Spam Protected</span>
+                  <span>Available</span>
                 </div>
 
                 <div>
-                  <h3 className="text-2xl font-extrabold text-slate-100">Stark Dispatch Hub</h3>
+                  <h3 className="text-2xl font-extrabold text-slate-100">Santo Stark Studio Hub</h3>
                   <p className="text-xs text-slate-300 mt-1 font-light leading-relaxed">
                     Direct communication channel for opportunities, technical collaborations, and inquiries. All transmissions route securely to Santo's queue.
                   </p>
@@ -186,7 +189,7 @@ export default function Contact() {
             </div>
           </motion.div>
 
-          {/* RIGHT COLUMN: Enhanced Contact Form */}
+          {/* RIGHT COLUMN: Direct Message Terminal */}
           <motion.div
             variants={{
               initial: { opacity: 0, x: 30 },
@@ -208,10 +211,10 @@ export default function Contact() {
                     <CheckCircle2 className="w-9 h-9" />
                   </div>
                   <div className="space-y-1">
-                    <h4 className="text-xl sm:text-2xl font-bold text-slate-100">Transmission Dispatched</h4>
-                    <p className="text-xs font-mono text-emerald-400">Reference: {refId || 'STARK-DISPATCH'}</p>
+                    <h4 className="text-xl sm:text-2xl font-bold text-slate-100">Message Sent</h4>
+                    <p className="text-xs font-mono text-emerald-400">Reference: {refId || 'STARK-MSG'}</p>
                     <p className="text-xs text-slate-300 max-w-md mx-auto leading-relaxed pt-1">
-                      Thank you, <strong className="text-cyan-300">{formData.name}</strong>! Your inquiry has been securely routed to Santo's queue. Expect a response within 24 hours.
+                      Thank you, <strong className="text-cyan-300">{formData.name}</strong>! Your message has been securely sent to Santo. Expect a response within 24 hours.
                     </p>
                   </div>
 
@@ -287,6 +290,18 @@ export default function Contact() {
                     />
                   </div>
 
+                  {/* Phone / Contact Number Input */}
+                  <div>
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="Your Contact Number (Phone / WhatsApp)"
+                      className="w-full px-4 py-3 rounded-2xl bg-white/5 border border-white/10 text-slate-200 text-xs sm:text-sm focus:outline-none focus:border-cyan-400 transition-colors"
+                    />
+                  </div>
+
                   {/* Subject Input */}
                   <div>
                     <input
@@ -299,30 +314,26 @@ export default function Contact() {
                     />
                   </div>
 
-                  {/* Message Textarea */}
-                  <div className="relative">
+                  {/* Message Textarea (clean, without character count numerical text) */}
+                  <div>
                     <textarea
                       name="message"
                       required
                       rows={3}
-                      maxLength={1000}
                       value={formData.message}
                       onChange={handleChange}
                       placeholder="Write your message or inquiry..."
                       className="w-full px-4 py-3 rounded-2xl bg-white/5 border border-white/10 text-slate-200 text-xs sm:text-sm focus:outline-none focus:border-cyan-400 transition-colors resize-none"
                     />
-                    <span className="absolute right-3 bottom-2 text-[10px] font-mono text-slate-500 pointer-events-none">
-                      {formData.message.length}/1000
-                    </span>
                   </div>
 
-                  {/* Submit Button */}
+                  {/* Submit Button: Message */}
                   <button
                     type="submit"
                     disabled={loading}
                     className="w-full py-3 px-6 rounded-2xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs sm:text-sm transition-all shadow-lg shadow-cyan-500/25 disabled:opacity-50 cursor-pointer"
                   >
-                    {loading ? 'Transmitting Message...' : 'Dispatch Message ✦'}
+                    {loading ? 'Sending...' : 'Message'}
                   </button>
                 </form>
               )}

@@ -7326,7 +7326,7 @@ Please approve my request via ${o.channel}!`,b=`https://wa.me/918431069633?text=
     })();
   }, []);
 
-  const [t, i] = q.useState({ name: "", email: "", subject: "", message: "", website: "" });
+  const [t, i] = q.useState({ name: "", email: "", phone: "", subject: "", message: "", website: "" });
   const [cat, setCat] = q.useState("💼 Job / Internship");
   const [r, s] = q.useState(!1);
   const [o, a] = q.useState(!1);
@@ -7339,7 +7339,7 @@ Please approve my request via ${o.channel}!`,b=`https://wa.me/918431069633?text=
   };
 
   const resetForm = () => {
-    i({ name: "", email: "", subject: "", message: "", website: "" });
+    i({ name: "", email: "", phone: "", subject: "", message: "", website: "" });
     a(!1);
   };
 
@@ -7358,6 +7358,7 @@ Please approve my request via ${o.channel}!`,b=`https://wa.me/918431069633?text=
       await hl("messages", {
         name: t.name,
         email: t.email,
+        phone: t.phone || "",
         category: cat,
         subject: `[${cat}] ${t.subject || "Portfolio Contact"}`,
         message: t.message,
@@ -7373,6 +7374,7 @@ Please approve my request via ${o.channel}!`,b=`https://wa.me/918431069633?text=
           Category: cat,
           Name: t.name,
           Email: t.email,
+          Phone: t.phone || "Not Provided",
           Subject: t.subject || "Hiring / Portfolio Contact",
           Message: t.message,
           Ref_ID: generatedRef,
@@ -7390,7 +7392,7 @@ Please approve my request via ${o.channel}!`,b=`https://wa.me/918431069633?text=
 
   return m.jsx(oo, {
     title: "Contact & Communications",
-    subtitle: "Direct message terminal, dispatch hub, and security-verified transmission channel.",
+    subtitle: "Direct message terminal, Santo Stark Studio Hub, and security-verified transmission channel.",
     children: m.jsxs("div", {
       className: "relative max-w-6xl mx-auto px-4 sm:px-6 py-6 space-y-10",
       children: [
@@ -7398,13 +7400,13 @@ Please approve my request via ${o.channel}!`,b=`https://wa.me/918431069633?text=
         m.jsxs("div", {
           className: "grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 items-start",
           children: [
-            /* LEFT COLUMN: Section Label + Stark Dispatch Hub Card */
+            /* LEFT COLUMN: Section Label + Santo Stark Studio Hub Card */
             m.jsxs("div", {
               className: "space-y-3",
               children: [
                 m.jsx("p", {
                   className: "text-center text-sm font-medium text-slate-300/90 tracking-wide font-sans",
-                  children: "Stark Studio Dispatch Hub"
+                  children: "Santo Stark Studio Hub"
                 }),
                 m.jsxs(Rt.div, {
                   initial: { opacity: 0, y: 20 },
@@ -7415,17 +7417,17 @@ Please approve my request via ${o.channel}!`,b=`https://wa.me/918431069633?text=
                     m.jsxs("div", {
                       className: "space-y-5 relative z-10",
                       children: [
-                        /* Live Status Pill */
+                        /* Live Status Pill: Available */
                         m.jsxs("div", {
                           className: "inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-medium",
                           children: [
                             m.jsx("span", { className: "w-2 h-2 rounded-full bg-emerald-400 animate-pulse" }),
-                            m.jsx("span", { children: "Dispatch Active • Zero-Spam Protected" })
+                            m.jsx("span", { children: "Available" })
                           ]
                         }),
                         m.jsx("h2", {
                           className: "text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight",
-                          children: "Stark Dispatch Hub"
+                          children: "Santo Stark Studio Hub"
                         }),
                         m.jsx("p", {
                           className: "text-xs sm:text-sm text-slate-300 font-light leading-relaxed",
@@ -7521,9 +7523,9 @@ Please approve my request via ${o.channel}!`,b=`https://wa.me/918431069633?text=
                         m.jsxs("div", {
                           className: "space-y-1.5",
                           children: [
-                            m.jsx("h3", { className: "text-xl sm:text-2xl font-extrabold text-white", children: "Transmission Dispatched" }),
-                            m.jsxs("p", { className: "text-xs font-mono text-emerald-300/90", children: ["Reference: ", refId || "STARK-DISPATCH"] }),
-                            m.jsx("p", { className: "text-xs sm:text-sm text-slate-300 max-w-sm mx-auto leading-relaxed pt-1", children: "Your message has been securely routed to Santo's queue. Expect a response within 24 hours." })
+                            m.jsx("h3", { className: "text-xl sm:text-2xl font-extrabold text-white", children: "Message Sent" }),
+                            m.jsxs("p", { className: "text-xs font-mono text-emerald-300/90", children: ["Reference: ", refId || "STARK-MSG"] }),
+                            m.jsx("p", { className: "text-xs sm:text-sm text-slate-300 max-w-sm mx-auto leading-relaxed pt-1", children: "Your message has been securely sent to Santo. Expect a response within 24 hours." })
                           ]
                         }),
                         m.jsx("button", {
@@ -7592,6 +7594,16 @@ Please approve my request via ${o.channel}!`,b=`https://wa.me/918431069633?text=
                           className: "pixel-input-pill"
                         }),
 
+                        /* Phone / Contact Number Pill Input */
+                        m.jsx("input", {
+                          type: "tel",
+                          name: "phone",
+                          value: t.phone,
+                          onChange: h,
+                          placeholder: "Your Contact Number (Phone / WhatsApp)",
+                          className: "pixel-input-pill"
+                        }),
+
                         /* Subject / Role Input */
                         m.jsx("input", {
                           type: "text",
@@ -7602,33 +7614,23 @@ Please approve my request via ${o.channel}!`,b=`https://wa.me/918431069633?text=
                           className: "pixel-input-pill"
                         }),
 
-                        /* Message Textarea */
-                        m.jsxs("div", {
-                          className: "relative",
-                          children: [
-                            m.jsx("textarea", {
-                              name: "message",
-                              required: !0,
-                              rows: "3",
-                              maxLength: 1000,
-                              value: t.message,
-                              onChange: h,
-                              placeholder: "Write your message or inquiry...",
-                              className: "pixel-input-pill resize-none"
-                            }),
-                            m.jsxs("span", {
-                              className: "absolute right-3 bottom-2 text-[10px] font-mono text-slate-500 pointer-events-none",
-                              children: [t.message.length, "/1000"]
-                            })
-                          ]
+                        /* Message Textarea (Clean, without character count numerical text) */
+                        m.jsx("textarea", {
+                          name: "message",
+                          required: !0,
+                          rows: "3",
+                          value: t.message,
+                          onChange: h,
+                          placeholder: "Write your message or inquiry...",
+                          className: "pixel-input-pill resize-none"
                         }),
 
-                        /* Vivid Pink/Purple Gradient Pill Button */
+                        /* Submit Button: Message */
                         m.jsx("button", {
                           type: "submit",
                           disabled: r,
                           className: "pixel-gradient-pill-btn w-full mt-2",
-                          children: r ? m.jsx("span", { children: "Transmitting Message..." }) : m.jsx("span", { children: "Dispatch Message ✦" })
+                          children: r ? m.jsx("span", { children: "Sending..." }) : m.jsx("span", { children: "Message" })
                         })
                       ]
                     })
