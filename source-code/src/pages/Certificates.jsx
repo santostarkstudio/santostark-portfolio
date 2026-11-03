@@ -126,18 +126,18 @@ export default function Certificates() {
                 }}
                 whileHover={{ y: -4 }}
                 onClick={() => docToOpen && openDocumentInNewTab(docToOpen, cert.title)}
-                className="glass-card p-6 rounded-3xl border border-white/10 flex flex-col justify-between cursor-pointer group shadow-xl relative overflow-hidden space-y-4"
+                className="glass-card p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-white/10 flex flex-col justify-between cursor-pointer group shadow-xl relative overflow-hidden space-y-4"
               >
                 <div className="space-y-4">
                   <div className="flex items-start justify-between gap-4">
-                    <div className="space-y-1">
+                    <div className="space-y-1 min-w-0 flex-1">
                       <span className="px-3 py-0.5 rounded-full text-[10px] font-mono uppercase font-bold tracking-wider bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">
                         {cert.category || 'Certification'}
                       </span>
-                      <h3 className="text-lg font-bold text-slate-100 group-hover:text-cyan-400 transition-colors">
+                      <h3 className="text-base sm:text-lg font-bold text-slate-100 group-hover:text-cyan-400 transition-colors break-words">
                         {cert.title}
                       </h3>
-                      <p className="text-xs font-semibold text-violet-400">
+                      <p className="text-xs font-semibold text-violet-400 break-words">
                         {cert.issuer}
                       </p>
                     </div>
@@ -178,12 +178,12 @@ export default function Certificates() {
                 </div>
 
                 <div className="pt-4 border-t border-white/10 space-y-3">
-                  <div className="flex items-center justify-between text-xs text-slate-400 font-mono">
-                    <div className="flex items-center space-x-1.5">
-                      <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                      <span>ID: {cert.credentialId || 'Verified Public Record'}</span>
+                  <div className="flex items-center justify-between gap-2 text-xs text-slate-400 font-mono min-w-0">
+                    <div className="flex items-center space-x-1.5 min-w-0 flex-1">
+                      <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+                      <span className="truncate" title={`ID: ${cert.credentialId || 'Verified Public Record'}`}>ID: {cert.credentialId || 'Verified Public Record'}</span>
                     </div>
-                    <span>{cert.date}</span>
+                    <span className="shrink-0 text-slate-400 text-[11px] sm:text-xs">{cert.date}</span>
                   </div>
 
                   <div className="flex flex-col sm:flex-row items-center gap-2">
@@ -260,7 +260,7 @@ export default function Certificates() {
           >
             <div 
               onClick={(e) => e.stopPropagation()}
-              className="relative max-w-2xl w-full glass-panel rounded-3xl border border-white/20 p-6 sm:p-8 space-y-6 shadow-2xl bg-slate-950/95"
+              className="relative max-w-2xl w-full max-h-[90vh] overflow-y-auto glass-panel rounded-2xl sm:rounded-3xl border border-white/20 p-5 sm:p-8 space-y-5 sm:space-y-6 shadow-2xl bg-slate-950/95"
             >
               <div className="flex items-start justify-between gap-4 border-b border-white/10 pb-4">
                 <div className="space-y-1">
@@ -278,8 +278,8 @@ export default function Certificates() {
                 </button>
               </div>
 
-              <div className="flex items-center justify-between text-xs text-slate-400 font-mono bg-white/5 p-3 rounded-xl border border-white/5">
-                <span className="text-emerald-400 font-semibold">✓ ID: {selectedCert.credentialId || 'Verified Public Record'}</span>
+              <div className="flex items-center justify-between gap-2 text-xs text-slate-400 font-mono bg-white/5 p-3 rounded-xl border border-white/5 min-w-0">
+                <span className="text-emerald-400 font-semibold truncate min-w-0 flex-1">✓ ID: {selectedCert.credentialId || 'Verified Public Record'}</span>
                 <span>{selectedCert.date || 'Issued'}</span>
               </div>
 
