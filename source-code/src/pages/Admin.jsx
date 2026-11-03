@@ -1446,7 +1446,7 @@ export default function Admin() {
                         </div>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <button onClick={() => { setEditingItem(p); setProjectForm(p); }} className="p-2 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 hover:bg-cyan-500/30 text-xs flex items-center gap-1"><Edit3 className="w-3.5 h-3.5" /> Edit</button>
+                        <button onClick={() => { setEditingItem(p); setProjectForm(p); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="p-2 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 hover:bg-cyan-500/30 text-xs flex items-center gap-1"><Edit3 className="w-3.5 h-3.5" /> Edit</button>
                         <button onClick={() => handleDeleteProject(p.id)} className="p-2 rounded-lg bg-rose-500/20 text-rose-300 border border-rose-500/40 hover:bg-rose-500/30 text-xs flex items-center gap-1"><Trash2 className="w-3.5 h-3.5" /> Delete</button>
                       </div>
                     </div>
@@ -1576,7 +1576,7 @@ export default function Admin() {
                           </div>
                         </div>
                         <div className="flex items-center space-x-1.5 flex-shrink-0">
-                          <button onClick={() => { setEditingItem(c); setCertForm(c); }} className="p-1.5 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 text-xs"><Edit3 className="w-3.5 h-3.5" /></button>
+                          <button onClick={() => { setEditingItem(c); setCertForm(c); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="p-1.5 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 text-xs"><Edit3 className="w-3.5 h-3.5" /></button>
                           <button onClick={() => handleDeleteCert(c.id)} className="p-1.5 rounded-lg bg-rose-500/20 text-rose-300 border border-rose-500/40 text-xs"><Trash2 className="w-3.5 h-3.5" /></button>
                         </div>
                       </div>
@@ -1639,7 +1639,7 @@ export default function Admin() {
                         <span className="text-[10px] text-cyan-400 font-mono">{s.category} • Rating: {s.rating}/10</span>
                       </div>
                       <div className="flex items-center space-x-1.5">
-                        <button onClick={() => { setEditingItem(s); setSkillForm(s); }} className="p-1.5 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 text-xs"><Edit3 className="w-3.5 h-3.5" /></button>
+                        <button onClick={() => { setEditingItem(s); setSkillForm(s); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="p-1.5 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 text-xs"><Edit3 className="w-3.5 h-3.5" /></button>
                         <button onClick={() => handleDeleteSkill(s.id)} className="p-1.5 rounded-lg bg-rose-500/20 text-rose-300 border border-rose-500/40 text-xs"><Trash2 className="w-3.5 h-3.5" /></button>
                       </div>
                     </div>
@@ -1732,7 +1732,7 @@ export default function Admin() {
                         <span className="text-[10px] text-cyan-400 font-mono">{w.period} • {w.location}</span>
                       </div>
                       <div className="flex items-center space-x-1.5">
-                        <button onClick={() => { setEditingItem(w); setWorkForm({ ...w, skills: Array.isArray(w.skills) ? w.skills.join(', ') : w.skills }); }} className="p-1.5 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 text-xs"><Edit3 className="w-3.5 h-3.5" /></button>
+                        <button onClick={() => { setEditingItem(w); setWorkForm({ ...w, skills: Array.isArray(w.skills) ? w.skills.join(', ') : w.skills }); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="p-1.5 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 text-xs"><Edit3 className="w-3.5 h-3.5" /></button>
                         <button onClick={() => handleDeleteWork(w.id)} className="p-1.5 rounded-lg bg-rose-500/20 text-rose-300 border border-rose-500/40 text-xs"><Trash2 className="w-3.5 h-3.5" /></button>
                       </div>
                     </div>
@@ -1851,6 +1851,7 @@ export default function Admin() {
                               ...edu,
                               highlights: Array.isArray(edu.highlights) ? edu.highlights.join('\n') : (edu.highlights || '')
                             });
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
                           }}
                           className="p-1.5 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 text-xs"
                           title="Edit Milestone"
@@ -2020,6 +2021,7 @@ export default function Admin() {
                               ...intr,
                               tags: Array.isArray(intr.tags) ? intr.tags.join(', ') : (intr.tags || '')
                             });
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
                           }}
                           className="p-1.5 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 text-xs"
                           title="Edit Interest"
@@ -2410,7 +2412,7 @@ export default function Admin() {
                                 });
                                 setActiveTab('studio');
                                 window.scrollTo({ top: 0, behavior: 'smooth' });
-                              }}
+                              window.scrollTo({ top: 0, behavior: "smooth" }); }}
                               className="px-3 py-1.5 rounded-xl bg-violet-500/20 border border-violet-500/40 text-violet-300 text-[11px] font-bold hover:bg-violet-500/30 transition-all flex items-center gap-1"
                             >
                               <Edit3 className="w-3.5 h-3.5" /> Edit
